@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace SudokuSolver
 {
@@ -12,8 +14,6 @@ namespace SudokuSolver
         private int[] sudokuField;
         private string sudokuString;
         private int dimension;
-        private int rowCount;
-        private int ColumnCount;
         private int firstZero;
         private int blockHeight;
         private int blockWidth;
@@ -40,6 +40,10 @@ namespace SudokuSolver
             DateTime endTime;
             startTime = DateTime.Now;
 
+            Timer timer = new Timer(1200000);
+            timer.Elapsed += OnTimedEvent;
+            timer.Start();
+
             if (!Solve(firstZero))
             {
                 throw new ArgumentOutOfRangeException("Sudoku could not be solved.");
@@ -50,7 +54,7 @@ namespace SudokuSolver
             TimeSpan neededTime = endTime - startTime;
 
             Console.WriteLine("Solved Sudoku: ");
-            Console.WriteLine("Time needed to solve: {0}", neededTime.TotalMilliseconds);
+            Console.WriteLine("Time needed to solve: {0} minutes {1}seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
             this.Print();
 
             //}
@@ -59,9 +63,13 @@ namespace SudokuSolver
             //    Console.WriteLine(e.Message);
             //}
 
+        }
 
-
-
+        private static void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Already 20 minutes needed to solve. Probably insolvable.");
+            Console.ReadLine();
+            Environment.Exit(0);
         }
 
         private bool Solve(int i)
@@ -105,6 +113,13 @@ namespace SudokuSolver
 
         private void Print()
         {
+            if (this.dimension > 9)
+            {
+                PrintBig();
+                return;
+            }
+
+
             Console.WriteLine();
 
             for (int i = 0; i < sudokuField.Length; i++)
@@ -134,6 +149,43 @@ namespace SudokuSolver
                 }
 
                 Console.Write(sudokuField[i] + " ");
+            }
+            Console.Write("|");
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        private void PrintBig()
+        {
+            Console.WriteLine();
+
+            for (int i = 0; i < sudokuField.Length; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("| ");
+
+                }
+                else
+                {
+                    if (i % this.dimension == 0)
+                    {
+
+                        Console.WriteLine("|");
+                    }
+
+                    if (i % (this.dimension * blockHeight) == 0)
+                    {
+                        Console.WriteLine(new string('-', this.dimension + (this.dimension - 1) * 2));
+                    }
+
+                    if (i % this.blockWidth == 0)
+                    {
+                        Console.Write("| ");
+                    }
+                }
+
+                Console.Write((sudokuField[i] + " ").PadLeft(3));
             }
             Console.Write("|");
             Console.WriteLine();
