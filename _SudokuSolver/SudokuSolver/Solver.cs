@@ -77,10 +77,6 @@ namespace SudokuSolver
                 {
                     return true;
                 }
-                else
-                {
-                    //    sudokuField[i+1] = 0;
-                }
             }
             else
             {
@@ -96,10 +92,6 @@ namespace SudokuSolver
                         if (Solve(i + 1))
                         {
                             return true;
-                        }
-                        else
-                        {
-                            //       sudokuField[i+1] = 0;
                         }
                     }
                 }
