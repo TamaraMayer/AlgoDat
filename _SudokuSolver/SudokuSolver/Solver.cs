@@ -32,7 +32,7 @@ namespace SudokuSolver
             Console.WriteLine("Original Sudoku: ");
             Print();
 
-            // IsSolvable();
+            IsSolvable();
 
             firstZero = Array.IndexOf(sudokuField, 0);
 
@@ -381,9 +381,18 @@ namespace SudokuSolver
 
         private void IsSolvable()
         {
-            //TODO
-            new ArgumentException("The given Sudoku cannot be solved");
+            for (int i = 0; i < sudokuField.Length; i++)
+            {
+                if (sudokuField[i] == 0)
+                {
+                    continue;
+                }
 
+                if (!IsValid(i))
+                {
+                   throw new ArgumentException("The given Sudoku cannot be solved");
+                }
+            }
         }
     }
 }
