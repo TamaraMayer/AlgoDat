@@ -54,14 +54,11 @@ namespace SudokuSolver
             this.Print();
 
             //}
-            //catch (Exception)
+            //catch (Exception e)
             //{
-            //    //TODO
+            //    Console.WriteLine(e.Message);
             //}
-            //finally
-            //{
-            //    this.Print();
-            //}
+
 
 
 
@@ -116,8 +113,6 @@ namespace SudokuSolver
 
         private void Print()
         {
-            // Console.Clear();
-
             Console.WriteLine();
 
             for (int i = 0; i < sudokuField.Length; i++)
@@ -282,7 +277,6 @@ namespace SudokuSolver
                         {
                             if (!Int32.TryParse(c, out number))
                             {
-                                //TODO
                                 throw new ArgumentException("There is at least one character that is not a number nor a comma in the original Sudoku. That is invalid!");
                             }
 
@@ -325,7 +319,6 @@ namespace SudokuSolver
 
             if (!IsDimension(amountOfRows, amountOfColumns))
             {
-                //TODO
                 throw new ArgumentException("The given Sudoko does not meet the dimension criteria. The Sudoku is invalid!");
             }
 
@@ -355,19 +348,6 @@ namespace SudokuSolver
 
         private bool IsDimension(int rows, int columns)
         {
-            //    if (rows != columns)
-            //    {
-            //        return false;
-            //    }
-
-
-            //    if (Math.Pow(Math.Sqrt(rows), 2) != rows)
-            //    {
-            //        return false;
-            //    }
-
-            //    return true;
-
             string dim = $"{rows}x{columns}";
 
             switch (dim)
