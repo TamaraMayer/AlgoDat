@@ -12,8 +12,11 @@ namespace SudokuSolver
         private int[] sudokuField;
         private string sudokuString;
         private int dimension;
+        private int rowCount;
+        private int ColumnCount;
         private int firstZero;
-        private int blockSize;
+        private int blockHeight;
+        private int blockWidth;
 
         public Solver(string toSolve)
         {
@@ -33,14 +36,16 @@ namespace SudokuSolver
 
             firstZero = Array.IndexOf(sudokuField, 0);
 
-            DateTime startTime = DateTime.Now;
+            DateTime startTime;
+            DateTime endTime;
+            startTime = DateTime.Now;
 
-            if (Solve(firstZero))
+            if (!Solve(firstZero))
             {
-                     throw new ArgumentOutOfRangeException("Sudoku could not be solved.");
+                throw new ArgumentOutOfRangeException("Sudoku could not be solved.");
             }
 
-            DateTime endTime = DateTime.Now;
+            endTime = DateTime.Now;
 
             TimeSpan neededTime = endTime - startTime;
 
@@ -71,13 +76,13 @@ namespace SudokuSolver
 
             if (sudokuField[i] != 0)//pre filled 
             {
-                if(Solve(i + 1))
+                if (Solve(i + 1))
                 {
                     return true;
                 }
                 else
                 {
-                //    sudokuField[i+1] = 0;
+                    //    sudokuField[i+1] = 0;
                 }
             }
             else
@@ -91,27 +96,27 @@ namespace SudokuSolver
 
                     if (IsValid(i))
                     {
-                        if(Solve(i + 1))
+                        if (Solve(i + 1))
                         {
                             return true;
                         }
                         else
                         {
-                     //       sudokuField[i+1] = 0;
+                            //       sudokuField[i+1] = 0;
                         }
                     }
                 }
                 sudokuField[i] = 0;
-                    return false;
+                return false;
             }
 
-              return false;
+            return false;
 
         }
 
         private void Print()
         {
-           // Console.Clear();
+            // Console.Clear();
 
             Console.WriteLine();
 
@@ -130,12 +135,12 @@ namespace SudokuSolver
                         Console.WriteLine("|");
                     }
 
-                    if (i % (this.dimension *3) == 0)
+                    if (i % (this.dimension * blockHeight) == 0)
                     {
-                        Console.WriteLine(new string('-', this.dimension + (this.dimension - 1)*2));
+                        Console.WriteLine(new string('-', this.dimension + (this.dimension - 1) * 2));
                     }
 
-                    if (i % this.blockSize == 0)
+                    if (i % this.blockWidth == 0)
                     {
                         Console.Write("| ");
                     }
@@ -202,35 +207,35 @@ namespace SudokuSolver
             int firstRow = 0;
             int firstColumn = 0;
 
-            for (int j = blockSize; j <= dimension; j = j + blockSize)
+            for (int j = blockHeight; j <= dimension; j = j + blockHeight)
             {
                 if (rowNumber < j)
                 {
                     break;
                 }
 
-                firstRow = firstRow + blockSize;
+                firstRow = firstRow + blockHeight;
             }
 
-            for (int j = blockSize; j <= dimension; j = j + blockSize)
+            for (int j = blockWidth; j <= dimension; j = j + blockWidth)
             {
                 if (columnNumber < j)
                 {
                     break;
                 }
 
-                firstColumn = firstColumn + blockSize;
+                firstColumn = firstColumn + blockWidth;
             }
 
             int row;
             int index;
             int counter = 0;
 
-            for (int r = 0; r < blockSize; r++)
+            for (int r = 0; r < blockHeight; r++)
             {
                 row = r * dimension + firstRow * dimension;
 
-                for (int c = 0; c < blockSize; c++)
+                for (int c = 0; c < blockWidth; c++)
                 {
                     index = row + c + firstColumn;
 
@@ -275,15 +280,10 @@ namespace SudokuSolver
 
                         foreach (string c in seperatedLine)
                         {
-                            //if (c.Trim().Length > 1)
-                            //{
-                            //    throw new ArgumentException("At least one number consists of more than one digit. The sudoku ");
-                            //}
-
                             if (!Int32.TryParse(c, out number))
                             {
                                 //TODO
-                                throw new ArgumentException();
+                                throw new ArgumentException("There is at least one character that is not a number nor a comma in the original Sudoku. That is invalid!");
                             }
 
                             sudokuField.Add(number);
@@ -342,7 +342,7 @@ namespace SudokuSolver
                         seperatedLine = line.Split(',');
                         if (amountOfRows != seperatedLine.Length)
                         {
-                             throw new ArgumentException("The given Sudoku has a different amount of numbers in one row than the rows above! The Sudoko is invalid!");
+                            throw new ArgumentException("The given Sudoku has a different amount of numbers in one row than the rows above! The Sudoko is invalid!");
                         }
                     }
 
@@ -350,37 +350,61 @@ namespace SudokuSolver
             }
 
             this.dimension = amountOfRows;
-            this.blockSize = Convert.ToInt32(Math.Sqrt(dimension));
 
         }
 
         private bool IsDimension(int rows, int columns)
         {
-            if (rows != columns)
-            {
-                return false;
-            }
-
-
-            if (Math.Pow(Math.Sqrt(rows), 2) != rows)
-            {
-                return false;
-            }
-
-            return true;
-
-            //string dim = $"{rows}x{columns}";
-
-            //switch (dim)
-            //{
-            //    case "9x9":
-            //        return true;
-
-            //    case "6x6":
-            //        return true;
-            //    default:
+            //    if (rows != columns)
+            //    {
             //        return false;
-            //}
+            //    }
+
+
+            //    if (Math.Pow(Math.Sqrt(rows), 2) != rows)
+            //    {
+            //        return false;
+            //    }
+
+            //    return true;
+
+            string dim = $"{rows}x{columns}";
+
+            switch (dim)
+            {
+                case "4x4":
+                    this.blockHeight = 2;
+                    this.blockWidth = 2;
+                    return true;
+
+                case "6x6":
+                    this.blockHeight = 2;
+                    this.blockWidth = 3;
+                    return true;
+
+                case "9x9":
+                    this.blockHeight = 3;
+                    this.blockWidth = 3;
+                    return true;
+
+                case "12x12":
+                    this.blockHeight = 3;
+                    this.blockWidth = 4;
+                    return true;
+
+                case "16x16":
+                    this.blockHeight = 4;
+                    this.blockWidth = 4;
+                    return true;
+
+                case "25x25":
+                    this.blockHeight = 5;
+                    this.blockWidth = 5;
+                    return true;
+
+                default:
+                    return false;
+            }
         }
 
         private void IsSolvable()
