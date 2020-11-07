@@ -25,49 +25,50 @@ namespace SudokuSolver
 
         public void Run()
         {
-            //try
-            //{
-            SetSudoku(sudokuString);
-
-            Console.WriteLine("Original Sudoku: ");
-            Print();
-
-            IsSolvable();
-
-            firstZero = Array.IndexOf(sudokuField, 0);
-
-            DateTime startTime;
-            DateTime endTime;
-            startTime = DateTime.Now;
-
-            Timer timer = new Timer(1200000);
-            timer.Elapsed += OnTimedEvent;
-            timer.Start();
-
-            if (!Solve(firstZero))
+            try
             {
-                throw new ArgumentOutOfRangeException("Sudoku could not be solved.");
+                SetSudoku(sudokuString);
+
+                Console.WriteLine("Original Sudoku: ");
+                Print();
+
+                IsSolvable();
+
+                firstZero = Array.IndexOf(sudokuField, 0);
+
+                DateTime startTime;
+                DateTime endTime;
+
+                Timer timer = new Timer(2700000);
+                timer.Elapsed += OnTimedEvent;
+                timer.Start();
+
+                startTime = DateTime.Now;
+
+                if (!Solve(firstZero))
+                {
+                    throw new ArgumentOutOfRangeException("Sudoku could not be solved.");
+                }
+
+                endTime = DateTime.Now;
+
+                TimeSpan neededTime = endTime - startTime;
+
+                Console.WriteLine("Solved Sudoku: ");
+                Console.WriteLine("Time needed to solve: {0} minutes {1}seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
+                this.Print();
+
             }
-
-            endTime = DateTime.Now;
-
-            TimeSpan neededTime = endTime - startTime;
-
-            Console.WriteLine("Solved Sudoku: ");
-            Console.WriteLine("Time needed to solve: {0} minutes {1}seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
-            this.Print();
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
         }
 
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("Already 20 minutes needed to solve. Probably insolvable.");
+            Console.WriteLine("Already 45 minutes needed to solve. Probably insolvable. Press Enter to terminate, press nothing to keep the solver running.");
             Console.ReadLine();
             Environment.Exit(0);
         }
@@ -416,9 +417,19 @@ namespace SudokuSolver
                     this.blockWidth = 4;
                     return true;
 
+                case "15x15":
+                    this.blockHeight = 3;
+                    this.blockWidth = 5;
+                    return true;
+
                 case "16x16":
                     this.blockHeight = 4;
                     this.blockWidth = 4;
+                    return true;
+
+                case "20x20":
+                    this.blockHeight = 4;
+                    this.blockWidth = 5;
                     return true;
 
                 case "25x25":
@@ -442,7 +453,7 @@ namespace SudokuSolver
 
                 if (!IsValid(i))
                 {
-                   throw new ArgumentException("The given Sudoku cannot be solved");
+                    throw new ArgumentException("The given Sudoku cannot be solved");
                 }
             }
         }
