@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SudokuSolver.Test")]
 
 namespace SudokuSolver
 {
@@ -13,21 +15,28 @@ namespace SudokuSolver
     {
         private int[] sudokuField;
         private string sudokuString;
-        private int dimension;
-        private int firstZero;
+        public int dimension;
+        public int firstZero;
         private int blockHeight;
         private int blockWidth;
 
-        public Solver(string toSolve)
-        {
-            this.sudokuString = toSolve;
+        public int[] SudokuField { get
+            {
+                return this.sudokuField;
+            }
+            set
+            {
+                this.sudokuField = value;
+            }
         }
+
+        public string SudokuString { get { return this.sudokuString; } set { this.sudokuString = value; } }
 
         public void Run()
         {
-            try
-            {
-                SetSudoku(sudokuString);
+        //    try
+        //    {
+                SetSudoku();
 
                 Console.WriteLine("Original Sudoku: ");
                 Print();
@@ -47,7 +56,7 @@ namespace SudokuSolver
 
                 if (!Solve(firstZero))
                 {
-                    throw new ArgumentOutOfRangeException("Sudoku could not be solved.");
+                    throw new ArgumentException("Sudoku could not be solved.");
                 }
 
                 endTime = DateTime.Now;
@@ -55,15 +64,14 @@ namespace SudokuSolver
                 TimeSpan neededTime = endTime - startTime;
 
                 Console.WriteLine("Solved Sudoku: ");
-                Console.WriteLine("Time needed to solve: {0} minutes {1}seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
+                Console.WriteLine("Time needed to solve: {0} minutes {1} seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
                 this.Print();
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -73,7 +81,7 @@ namespace SudokuSolver
             Environment.Exit(0);
         }
 
-        private bool Solve(int i)
+        public bool Solve(int i)
         {
             if (i >= dimension * dimension)
             {
@@ -299,7 +307,7 @@ namespace SudokuSolver
             return true;
         }
 
-        private void SetSudoku(string sudokuString)
+        internal void SetSudoku()
         {
             SetDimension();
 
@@ -442,7 +450,7 @@ namespace SudokuSolver
             }
         }
 
-        private void IsSolvable()
+        internal void IsSolvable()
         {
             for (int i = 0; i < sudokuField.Length; i++)
             {
