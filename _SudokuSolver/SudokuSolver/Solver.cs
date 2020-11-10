@@ -23,14 +23,9 @@ namespace SudokuSolver
         public int[] SudokuField { get
             {
                 return this.sudokuField;
-            }
-            set
-            {
-                this.sudokuField = value;
-            }
-        }
+            }}
 
-        public string SudokuString { get { return this.sudokuString; } set { this.sudokuString = value; } }
+        public string SudokuString {set { this.sudokuString = value; } }
 
         public void Run()
         {
