@@ -78,7 +78,7 @@ namespace AVL_Tree
 
                         if (root == null)
                         {
-                            root = new Node(this.InputField);
+                            root = new Node(this.InputField,null);
                         }
                         else
                         {

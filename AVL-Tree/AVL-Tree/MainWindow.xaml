@@ -6,7 +6,23 @@
         xmlns:local="clr-namespace:AVL_Tree"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:Tree_ViewModel/>
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Separator Width="20" Visibility="Hidden"/>
+            <TextBox Text="{Binding InputField}" Width="170"/>
+            <Separator Width="20" Visibility="Hidden"/>
+            <Button Content="Insert" Command="{Binding InsertCommand}" Width="50"/>
+            <Separator Width="20" Visibility="Hidden"/>
+            <Button Content="Remove" Command="{Binding RemoveCommand}" Width="50"/>
+        </StackPanel>
+
     </Grid>
 </Window>
