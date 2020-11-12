@@ -213,7 +213,7 @@ namespace SudokuSolver
                 rowNumber++;
             }
 
-            for (int j = 0; j < numbers.Length; j++)
+            for (int j = 0; j < this.dimension; j++)
             {
                 if (j + rowNumber * dimension == i)
                 {
@@ -230,7 +230,7 @@ namespace SudokuSolver
 
             //column
             int columnNumber = i % this.dimension;
-            for (int j = 0; j < numbers.Length; j++)
+            for (int j = 0; j <this.dimension; j++)
             {
                 if (columnNumber + j * this.dimension == i)
                 {
@@ -246,7 +246,7 @@ namespace SudokuSolver
                 return false;
             }
 
-            //box
+            //block
             int firstRow = 0;
             int firstColumn = 0;
 
