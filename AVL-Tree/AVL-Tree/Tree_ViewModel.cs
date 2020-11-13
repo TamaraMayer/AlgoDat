@@ -15,23 +15,8 @@ namespace AVL_Tree
     {
         private int inputField;
 
-        private string messageForUser;
-        private SolidColorBrush messageColor;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string MessageForUser
-        {
-            get
-            {
-                return this.messageForUser;
-            }
-            set
-            {
-                this.messageForUser = value;
-                this.Notify();
-            }
-        }
         public int InputField
         {
             get
@@ -41,19 +26,6 @@ namespace AVL_Tree
             set
             {
                 this.inputField = value;
-                this.Notify();
-            }
-        }
-
-        public SolidColorBrush MessageColor
-        {
-            get
-            {
-                return this.messageColor;
-            }
-            set
-            {
-                this.messageColor = value;
                 this.Notify();
             }
         }
@@ -75,7 +47,6 @@ namespace AVL_Tree
                 (
                     obj =>
                     {
-
                         if (root == null)
                         {
                             root = new Node(this.InputField,null);
@@ -84,7 +55,6 @@ namespace AVL_Tree
                         {
                             RecurviseInsert(root);
                         }
-
                     });
             }
         }
@@ -94,8 +64,6 @@ namespace AVL_Tree
             if (currentNode.Value == inputField)
             {
                 this.InputField = 0;
-                this.MessageForUser = "This number is already in the tree. No duplicate allowed!";
-                this.MessageColor = new SolidColorBrush(Color.FromRgb(255, 0, 0));
             }
             else
             {
@@ -122,7 +90,6 @@ namespace AVL_Tree
                     }
                 }
             }
-
         }
 
         private void Notify([CallerMemberName] string property = null)

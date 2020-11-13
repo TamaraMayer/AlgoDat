@@ -11,15 +11,14 @@
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="12*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Separator Width="20" Visibility="Hidden"/>
-            <TextBox Text="{Binding InputField}" Width="170"/>
+            <TextBox x:Name="inputField" Text="{Binding InputField}" Width="70" TextAlignment="Right" VerticalContentAlignment="Center"/>
             <Separator Width="20" Visibility="Hidden"/>
-            <Button Content="Insert" Command="{Binding InsertCommand}" Width="50"/>
+            <Button Content="Insert" Command="{Binding InsertCommand}" Width="50" CommandParameter="inputField"/>
             <Separator Width="20" Visibility="Hidden"/>
             <Button Content="Remove" Command="{Binding RemoveCommand}" Width="50"/>
         </StackPanel>
