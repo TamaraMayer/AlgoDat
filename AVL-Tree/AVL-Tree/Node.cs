@@ -12,16 +12,21 @@ namespace AVL_Tree
         private int balanceFactor;
 
         //as leafnode is 0, only 0,1,or -1 is an aceptable value, otherwise turn tree
-        public int BalanceFactor { 
+        public int BalanceFactor
+        {
             get
             {
                 return this.balanceFactor;
             }
             set
             {
-                if(value >1 || value < -1)
+                if (value > 1 || value < -1)
                 {
                     this.Rebalance();
+                }
+                else
+                {
+                    Parent.Height = Parent.CalculateHeight();
                 }
                 //TODO: eventuell nicht immer speichern sonder erst wenn rebalance sicher passt 
                 this.balanceFactor = value;
@@ -43,7 +48,7 @@ namespace AVL_Tree
             set
             {
                 this.height = value;
-                CalculateBalanceFactor(this);
+                CalculateBalanceFactor();
             }
         }
 
@@ -58,29 +63,65 @@ namespace AVL_Tree
             this.Value = value;
             this.Height = 1;
             this.Parent = parent;
-            CalculateBalanceFactor(this.Parent);
-            CalculateHeight(this.Parent);
+            parent.CalculateBalanceFactor();
         }
 
-        private void CalculateBalanceFactor(Node node)
+        private void CalculateBalanceFactor()
         {
+            int l;
+            int r;
+
             //TODO:überprüfen ob left und right nicht null?!
-            int l = this.Left.Height;
-            int r = this.Right.Height;
+            if (this.Left != null)
+            {
+                 l = this.Left.Height;
+            }
+            else
+            {
+                l = 0;
+            }
+
+            if (this.Right != null)
+            {
+                r = this.Right.Height;
+            }
+            else
+            {
+                r = 0;
+            }
+
             int b_factor = l - r;
             this.BalanceFactor = b_factor;
         }
 
-        private void CalculateHeight(Node node)
+        public int CalculateHeight()
         {
             int height = 0;
-            //TODO:überprüfen ob left und right nicht null?!
+            int l;
+            int r;
 
-            int l = this.Left.Height;
-            int r = this.Right.Height;
+            //TODO:überprüfen ob left und right nicht null?!
+            if (this.Left != null)
+            {
+                l = this.Left.Height;
+            }
+            else
+            {
+                l = 0;
+            }
+
+            if (this.Right != null)
+            {
+                r = this.Right.Height;
+            }
+            else
+            {
+                r = 0;
+            }
+
             int m = Math.Max(l, r);
             height = m + 1;
-            this.Height = height;
+            return height;
         }
 
 
