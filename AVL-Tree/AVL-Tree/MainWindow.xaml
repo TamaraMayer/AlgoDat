@@ -15,13 +15,35 @@
             <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Separator Width="20" Visibility="Hidden"/>
+            <Separator Width="10" Visibility="Hidden"/>
             <TextBox x:Name="inputField" Text="{Binding InputField}" Width="70" TextAlignment="Right" VerticalContentAlignment="Center"/>
-            <Separator Width="20" Visibility="Hidden"/>
+            <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Insert" Command="{Binding InsertCommand}" Width="50" CommandParameter="inputField"/>
-            <Separator Width="20" Visibility="Hidden"/>
+            <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Remove" Command="{Binding RemoveCommand}" Width="50"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Clear" Command="{Binding ClearCommand}" Width="50"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Count" Command="{Binding CountValueOccurenceCommand}" Width="50"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="CountAll" Command="{Binding CountAllCommand}" Width="60"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Clear" Command="{Binding ClearCommand}" Width="50"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="In Order" Command="{Binding TraverseInOrderCommand}" Width="70"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Pre Order" Command="{Binding TraversePreOrderCommand}" Width="70"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Post Order" Command="{Binding TraversePostOrderCommand}" Width="70"/>
         </StackPanel>
 
+        <TreeView>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate >
+                    
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            
+        </TreeView>
     </Grid>
 </Window>
