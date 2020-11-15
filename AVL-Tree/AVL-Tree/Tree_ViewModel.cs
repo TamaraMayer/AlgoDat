@@ -173,8 +173,18 @@ namespace AVL_Tree
                     (
                     obj =>
                     {
-
+                        TraverseInOrder(this.root);
                     });
+            }
+        }
+
+        private void TraverseInOrder(Node current)
+        {
+            if (current != null)
+            {
+                TraverseInOrder(current.Left);
+                //write bzw add to some list
+                TraverseInOrder(current.Right);
             }
         }
 
@@ -186,8 +196,28 @@ namespace AVL_Tree
                     (
                     obj =>
                     {
-
+                        TraversePreOrder(this.root);
                     });
+            }
+        }
+
+        private void TraversePreOrder(Node current)
+        {
+            if (current != null)
+            {
+                //write bzw add to some list
+                TraversePreOrder(current.Left);
+                TraversePreOrder(current.Right);
+            }
+        }
+
+        private void TraversePostOrder(Node current)
+        {
+            if (current != null)
+            {
+                TraversePostOrder(current.Left);
+                TraversePostOrder(current.Right);
+                //write bzw add to some list
             }
         }
 
@@ -199,7 +229,7 @@ namespace AVL_Tree
                     (
                     obj =>
                     {
-
+                        TraversePostOrder(this.root);
                     });
             }
         }
