@@ -51,7 +51,7 @@ namespace AVL_Tree
 
                         if (root == null)
                         {
-                            root = new Node(this.InputField,null);
+                            root = new Node(this.InputField, null);
                         }
                         else
                         {
@@ -72,7 +72,7 @@ namespace AVL_Tree
             {
                 if (currentNode.Value > this.inputField)
                 {
-                    if(currentNode.Left == null)
+                    if (currentNode.Left == null)
                     {
                         //messagebox, was inserted
                         currentNode.Left = new Node(inputField, currentNode);
@@ -111,6 +111,99 @@ namespace AVL_Tree
             }
         }
 
+        public ICommand CountAllCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //one traverse method, in ne liste speichern(passiert in traverse?!) und dann zählen
+                    });
+            }
+        }
+
+        public ICommand CountValueOccurenceCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //find, if true return 1 as count, if false return 0 as count
+
+                        Node node = Find(root);
+                        if (node != null)
+                        {
+                            
+                        }
+                        else
+                        {
+
+                        }
+                    });
+            }
+        }
+
+        public ICommand ContainsComand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+//try catch, catch = is not in the avl tree, otherwise is in, but check again
+                        Node node = Find(root);
+                        if (node != null)
+                        {
+
+                        }
+                    });
+            }
+        }
+
+        public ICommand TraverseInOrderCommand
+        {
+            get
+            {
+                return new Command
+                    (
+                    obj =>
+                    {
+
+                    });
+            }
+        }
+
+        public ICommand TraversePreOrderCommand
+        {
+            get
+            {
+                return new Command
+                    (
+                    obj =>
+                    {
+
+                    });
+            }
+        }
+
+        public ICommand TraversePostOrderCommand
+        {
+            get
+            {
+                return new Command
+                    (
+                    obj =>
+                    {
+
+                    });
+            }
+        }
+
         public ICommand ClearCommand
         {
             get
@@ -119,7 +212,7 @@ namespace AVL_Tree
                 (
                     obj =>
                     {
-                       //set root to null?!, will depend on how view will work
+                        //set root to null?!, will depend on how view will work
                     });
             }
         }
@@ -139,7 +232,7 @@ namespace AVL_Tree
                 return;
             }
 
-            if(toRemove.Left!=null && toRemove.Right != null)
+            if (toRemove.Left != null && toRemove.Right != null)
             {
                 Node temp = GetLeftestLeafNode(toRemove.Right);
 
@@ -168,7 +261,7 @@ namespace AVL_Tree
 
         private Node GetLeftestLeafNode(Node current)
         {
-           if(current.Left != null)
+            if (current.Left != null)
             {
                 return GetLeftestLeafNode(current.Left);
             }
@@ -182,13 +275,13 @@ namespace AVL_Tree
         {
             int lookFor = this.InputField;
 
-            if(current.Value == lookFor)
+            if (current.Value == lookFor)
             {
                 return current;
             }
             else
             {
-                if(current.Left.Value > lookFor)
+                if (current.Left.Value > lookFor)
                 {
                     return Find(current.Left);
                 }
