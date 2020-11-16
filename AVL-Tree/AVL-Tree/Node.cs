@@ -22,11 +22,14 @@ namespace AVL_Tree
             {
                 if (value > 1 || value < -1)
                 {
-                    this.Rebalance();
+                  //  this.Rebalance();
                 }
                 else
                 {
-                    Parent.Height = Parent.CalculateHeight();
+                    if (Parent != null)
+                    {
+                      Parent.CalculateHeight();
+                    }
                 }
                 //TODO: eventuell nicht immer speichern sonder erst wenn rebalance sicher passt 
                 this.balanceFactor = value;
@@ -63,10 +66,11 @@ namespace AVL_Tree
             this.Value = value;
             this.Height = 1;
             this.Parent = parent;
-            parent.CalculateBalanceFactor();
+
+          
         }
 
-        private void CalculateBalanceFactor()
+        public void CalculateBalanceFactor()
         {
             int l;
             int r;
@@ -94,7 +98,7 @@ namespace AVL_Tree
             this.BalanceFactor = b_factor;
         }
 
-        public int CalculateHeight()
+        public void CalculateHeight()
         {
             int height = 0;
             int l;
@@ -121,7 +125,7 @@ namespace AVL_Tree
 
             int m = Math.Max(l, r);
             height = m + 1;
-            return height;
+            this.Height= height;
         }
 
 

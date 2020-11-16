@@ -20,9 +20,61 @@ namespace AVL_Tree
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public void btnRenderTree_Click(object sender, RoutedEventArgs e)
+        {
+            Visualization.Children.Clear();
+            Visualization.RowDefinitions.Clear();
+            Visualization.ColumnDefinitions.Clear();
+
+            Tree_ViewModel vm = (Tree_ViewModel)this.DataContext;
+            vm.SetListToDraw();
+            int numberOfRows = vm.root.Height;
+            int numberOfColumns = Convert.ToInt32(Math.Pow(2,numberOfRows)-1);
+
+            RowDefinition rowDefintion;
+            ColumnDefinition columnDefintion;
+
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                rowDefintion = new RowDefinition();
+                rowDefintion.Height = new GridLength(1, GridUnitType.Star);
+
+                Visualization.RowDefinitions.Add(rowDefintion);
+            }
+
+            for (int i = 0; i < numberOfColumns; i++)
+            {
+                columnDefintion = new ColumnDefinition();
+                columnDefintion.Width = new GridLength(1, GridUnitType.Star);
+
+                Visualization.ColumnDefinitions.Add(columnDefintion);
+            }
+
+            TextBlock node;
+            int heightOfNode;
+
+            for (int i = 0; i < vm.toDraw.Count; i++)
+            {
+
+                node = new TextBlock();
+
+                if (vm.toDraw[i] != null)
+                {
+                    heightOfNode = vm.toDraw[i].Height;
+                    node.Text = vm.toDraw[i].Value.ToString();
+
+                    node.SetValue(Grid.RowProperty, numberOfRows-heightOfNode);
+                    node.SetValue(Grid.ColumnProperty, i);
+                    Visualization.Children.Add(node);
+
+                }
+            }
         }
     }
 }

@@ -13,6 +13,9 @@ namespace AVL_Tree
 {
     class Tree_ViewModel : INotifyPropertyChanged
     {
+        public List<Node> traversedList { get; private set; }
+        public List<Node> toDraw { get; private set; }
+
         private int inputField;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,13 +33,58 @@ namespace AVL_Tree
             }
         }
 
-        public Node root { get; set; }
+        internal void SetListToDraw()
+        {
+            toDraw.Clear();
 
-        public ObservableCollection<Node> Tree { get; set; }
+            TraverseInOrderForVisialisation(this.root,0);
+        }
+
+        //actual height has the topdown view on height, root has the lowest with 0, leafnotes have the highest
+        private void TraverseInOrderForVisialisation(Node current, int actualHeight)
+        {
+            if (actualHeight == root.Height)
+            {
+                return;
+            }
+
+            if (current != null)
+            {
+
+                if (current.Left != null)
+                {
+                    TraverseInOrderForVisialisation(current.Left, actualHeight + 1);
+                }
+                else
+                {
+                    TraverseInOrderForVisialisation(null, actualHeight + 1);
+                }
+
+                this.toDraw.Add(current);
+
+                if (current.Right != null)
+                {
+                    TraverseInOrderForVisialisation(current.Right, actualHeight + 1);
+                }
+                else
+                {
+                    TraverseInOrderForVisialisation(null, actualHeight + 1);
+                }
+            }
+            else
+            {
+                TraverseInOrderForVisialisation(null, actualHeight + 1);
+                this.toDraw.Add(current);
+                TraverseInOrderForVisialisation(null, actualHeight + 1);
+            }
+        }
+
+        public Node root { get; set; }
 
         public Tree_ViewModel()
         {
-            Tree = new ObservableCollection<Node>();
+            toDraw = new List<Node>();
+            traversedList = new List<Node>();
         }
 
         public ICommand InsertCommand
@@ -93,6 +141,10 @@ namespace AVL_Tree
                         RecurviseInsert(currentNode.Right);
                     }
                 }
+               
+
+                    currentNode.CalculateBalanceFactor();
+                    currentNode.CalculateHeight();
             }
         }
 
@@ -137,7 +189,7 @@ namespace AVL_Tree
                         Node node = Find(root);
                         if (node != null)
                         {
-                            
+
                         }
                         else
                         {
@@ -155,7 +207,7 @@ namespace AVL_Tree
                 (
                     obj =>
                     {
-//try catch, catch = is not in the avl tree, otherwise is in, but check again
+                        //try catch, catch = is not in the avl tree, otherwise is in, but check again
                         Node node = Find(root);
                         if (node != null)
                         {
@@ -182,9 +234,17 @@ namespace AVL_Tree
         {
             if (current != null)
             {
-                TraverseInOrder(current.Left);
-                //write bzw add to some list
-                TraverseInOrder(current.Right);
+                if (current.Left != null)
+                {
+                    TraverseInOrder(current.Left);
+                }
+
+                this.traversedList.Add(current);
+
+                if (current.Right != null)
+                {
+                    TraverseInOrder(current.Right);
+                }
             }
         }
 
@@ -205,9 +265,16 @@ namespace AVL_Tree
         {
             if (current != null)
             {
-                //write bzw add to some list
-                TraversePreOrder(current.Left);
-                TraversePreOrder(current.Right);
+                traversedList.Add(current);
+
+                if (current.Left != null)
+                {
+                    TraversePreOrder(current.Left);
+                }
+                if (current.Right != null)
+                {
+                    TraversePreOrder(current.Right);
+                }
             }
         }
 
@@ -215,8 +282,16 @@ namespace AVL_Tree
         {
             if (current != null)
             {
-                TraversePostOrder(current.Left);
-                TraversePostOrder(current.Right);
+                if (current.Left != null)
+                {
+                    TraversePostOrder(current.Left);
+                }
+                if (current.Right != null)
+                {
+                    TraversePostOrder(current.Right);
+                }
+
+                traversedList.Add(current);
                 //write bzw add to some list
             }
         }
@@ -268,7 +343,7 @@ namespace AVL_Tree
 
                 toRemove.Value = temp.Value;
                 temp.Parent.Left = null;
-                temp.Height = temp.CalculateHeight();
+               temp.CalculateHeight();
                 return;
             }
 
@@ -276,7 +351,7 @@ namespace AVL_Tree
             {
                 toRemove.Value = toRemove.Left.Value;
                 toRemove.Left = null;
-                toRemove.Height = toRemove.CalculateHeight();
+                toRemove.CalculateHeight();
                 return;
             }
 
@@ -284,7 +359,7 @@ namespace AVL_Tree
             {
                 toRemove.Value = toRemove.Right.Value;
                 toRemove.Right = null;
-                toRemove.Height = toRemove.CalculateHeight();
+                toRemove.CalculateHeight();
                 return;
             }
         }

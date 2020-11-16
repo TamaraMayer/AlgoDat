@@ -35,15 +35,11 @@
             <Button Content="Pre Order" Command="{Binding TraversePreOrderCommand}" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Post Order" Command="{Binding TraversePostOrderCommand}" Width="70"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Render" Click="btnRenderTree_Click" Width="70"/>
         </StackPanel>
 
-        <TreeView>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate >
-                    
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            
-        </TreeView>
+        <Grid x:Name="Visualization" Grid.Row="1" Margin="10,10,10,10">
+        </Grid>
     </Grid>
 </Window>
