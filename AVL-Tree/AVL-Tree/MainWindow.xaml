@@ -39,7 +39,9 @@
             <Button Content="Render" Click="btnRenderTree_Click" Width="70"/>
         </StackPanel>
 
-        <Grid x:Name="Visualization" Grid.Row="1" Margin="10,10,10,10">
-        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+            <Grid x:Name="Visualization" Grid.Row="1" Margin="10,10,10,10" >
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

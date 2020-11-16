@@ -60,7 +60,7 @@ namespace AVL_Tree
                     TraverseInOrderForVisialisation(null, actualHeight + 1);
                 }
 
-                this.toDraw.Add(current);
+                this.toDraw.Add(new Node(current.Value,actualHeight));
 
                 if (current.Right != null)
                 {
@@ -74,7 +74,7 @@ namespace AVL_Tree
             else
             {
                 TraverseInOrderForVisialisation(null, actualHeight + 1);
-                this.toDraw.Add(current);
+                this.toDraw.Add(null);
                 TraverseInOrderForVisialisation(null, actualHeight + 1);
             }
         }

@@ -61,13 +61,17 @@ namespace AVL_Tree
         public Node Right { get; set; }
 
 
+        public Node( int value, int actualheight)
+        {
+            this.Height = actualheight;
+            this.Value = value;
+        }
+
         public Node(int value, Node parent)
         {
             this.Value = value;
             this.Height = 1;
             this.Parent = parent;
-
-          
         }
 
         public void CalculateBalanceFactor()

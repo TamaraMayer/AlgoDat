@@ -35,7 +35,7 @@ namespace AVL_Tree
             Tree_ViewModel vm = (Tree_ViewModel)this.DataContext;
             vm.SetListToDraw();
             int numberOfRows = vm.root.Height;
-            int numberOfColumns = Convert.ToInt32(Math.Pow(2,numberOfRows)-1);
+            int numberOfColumns = Convert.ToInt32(Math.Pow(2, numberOfRows) - 1);
 
             RowDefinition rowDefintion;
             ColumnDefinition columnDefintion;
@@ -68,13 +68,16 @@ namespace AVL_Tree
                 {
                     heightOfNode = vm.toDraw[i].Height;
                     node.Text = vm.toDraw[i].Value.ToString();
+                    node.FontSize = 15;
 
-                    node.SetValue(Grid.RowProperty, numberOfRows-heightOfNode);
+                    //node.SetValue(Grid.RowProperty, numberOfRows - heightOfNode);
+                    node.SetValue(Grid.RowProperty, vm.toDraw[i].Height);
                     node.SetValue(Grid.ColumnProperty, i);
                     Visualization.Children.Add(node);
 
                 }
             }
         }
+
     }
 }
