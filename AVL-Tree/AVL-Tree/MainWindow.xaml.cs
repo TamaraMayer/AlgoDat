@@ -26,8 +26,9 @@ namespace AVL_Tree
             InitializeComponent();
         }
 
-        public void btnRenderTree_Click(object sender, RoutedEventArgs e)
+        public void RenderTree()
         {
+
             Visualization.Children.Clear();
             Visualization.RowDefinitions.Clear();
             Visualization.ColumnDefinitions.Clear();
@@ -57,7 +58,7 @@ namespace AVL_Tree
             }
 
             TextBlock node;
-            int heightOfNode;
+          //  int heightOfNode;
 
             for (int i = 0; i < vm.toDraw.Count; i++)
             {
@@ -66,7 +67,7 @@ namespace AVL_Tree
 
                 if (vm.toDraw[i] != null)
                 {
-                    heightOfNode = vm.toDraw[i].Height;
+                  //  heightOfNode = vm.toDraw[i].Height;
                     node.Text = vm.toDraw[i].Value.ToString();
                     node.FontSize = 15;
 
@@ -79,5 +80,73 @@ namespace AVL_Tree
             }
         }
 
+        public void btnRenderTree_Click(object sender, RoutedEventArgs e)
+        {
+            this.RenderTree();
+        }
+
+        public void btnInsert_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnRemove_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnClear_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnCount_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnCountAll_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnInOrderTraverse_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnPreOrderTraverse_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
+
+        public void btnPostOrderTraverse_Cick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.Command.Execute(null);
+            this.RenderTree();
+            inputField.Focus();
+        }
     }
 }

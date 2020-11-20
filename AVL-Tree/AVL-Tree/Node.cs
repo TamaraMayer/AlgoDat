@@ -11,7 +11,7 @@ namespace AVL_Tree
         private int height;
         private int balanceFactor;
 
-        //as leafnode is 0, only 0,1,or -1 is an aceptable value, otherwise turn tree
+        //as leafnode is 0; only 0,1,or -1 is an aceptable value, otherwise turn tree
         public int BalanceFactor
         {
             get
@@ -79,7 +79,6 @@ namespace AVL_Tree
             int l;
             int r;
 
-            //TODO:überprüfen ob left und right nicht null?!
             if (this.Left != null)
             {
                  l = this.Left.Height;
@@ -108,7 +107,6 @@ namespace AVL_Tree
             int l;
             int r;
 
-            //TODO:überprüfen ob left und right nicht null?!
             if (this.Left != null)
             {
                 l = this.Left.Height;

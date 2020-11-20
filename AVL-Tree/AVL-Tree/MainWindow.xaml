@@ -18,7 +18,7 @@
             <Separator Width="10" Visibility="Hidden"/>
             <TextBox x:Name="inputField" Text="{Binding InputField}" Width="70" TextAlignment="Right" VerticalContentAlignment="Center"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Insert" Command="{Binding InsertCommand}" Width="50" CommandParameter="inputField"/>
+            <Button Content="Insert" Command="{Binding InsertCommand}" Click="btnInsert_Cick" Width="50" CommandParameter="inputField"/>
             <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Remove" Command="{Binding RemoveCommand}" Width="50"/>
             <Separator Width="10" Visibility="Hidden"/>
@@ -36,7 +36,7 @@
             <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Post Order" Command="{Binding TraversePostOrderCommand}" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Render" Click="btnRenderTree_Click" Width="70"/>
+            <!--<Button Content="Render" Click="btnRenderTree_Click" Width="70"/>-->
         </StackPanel>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
