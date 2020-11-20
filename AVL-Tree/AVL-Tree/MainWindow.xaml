@@ -20,21 +20,19 @@
             <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Insert" Command="{Binding InsertCommand}" Click="btnInsert_Cick" Width="50" CommandParameter="inputField"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Remove" Command="{Binding RemoveCommand}" Width="50"/>
+            <Button Content="Remove" Command="{Binding RemoveCommand}" Click="btnRemove_Cick" Width="50"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Clear" Command="{Binding ClearCommand}" Width="50"/>
+            <Button Content="Clear" Command="{Binding ClearCommand}" Click="btnClear_Cick" Width="50"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Count" Command="{Binding CountValueOccurenceCommand}" Width="50"/>
+            <Button Content="Count" Command="{Binding CountValueOccurenceCommand}" Click="btnCount_Cick" Width="50"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="CountAll" Command="{Binding CountAllCommand}" Width="60"/>
+            <Button Content="CountAll" Command="{Binding CountAllCommand}" Click="btnCountAll_Cick" Width="60"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Clear" Command="{Binding ClearCommand}" Width="50"/>
+            <Button Content="In Order" Command="{Binding TraverseInOrderCommand}" Click="btnInOrderTraverse_Cick" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="In Order" Command="{Binding TraverseInOrderCommand}" Width="70"/>
+            <Button Content="Pre Order" Command="{Binding TraversePreOrderCommand}" Click="btnPreOrderTraverse_Cick" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Pre Order" Command="{Binding TraversePreOrderCommand}" Width="70"/>
-            <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Post Order" Command="{Binding TraversePostOrderCommand}" Width="70"/>
+            <Button Content="Post Order" Command="{Binding TraversePostOrderCommand}" Click="btnPostOrderTraverse_Cick" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
             <!--<Button Content="Render" Click="btnRenderTree_Click" Width="70"/>-->
         </StackPanel>
