@@ -20,47 +20,50 @@ namespace SudokuSolver
         private int blockHeight;
         private int blockWidth;
 
-        public int[] SudokuField { get
+        public int[] SudokuField
+        {
+            get
             {
                 return this.sudokuField;
-            }}
+            }
+        }
 
-        public string SudokuString {set { this.sudokuString = value; } }
+        public string SudokuString { set { this.sudokuString = value; } }
 
         public void Run()
         {
-        //    try
-        //    {
-                SetSudoku();
+            //    try
+            //    {
+            SetSudoku();
 
-                Console.WriteLine("Original Sudoku: ");
-                Print();
+            Console.WriteLine("Original Sudoku: ");
+            Print();
 
-                IsSolvable();
+            IsSolvable();
 
-                firstZero = Array.IndexOf(sudokuField, 0);
+            firstZero = Array.IndexOf(sudokuField, 0);
 
-                DateTime startTime;
-                DateTime endTime;
+            DateTime startTime;
+            DateTime endTime;
 
-                Timer timer = new Timer(2700000);
-                timer.Elapsed += OnTimedEvent;
-                timer.Start();
+            Timer timer = new Timer(2700000);
+            timer.Elapsed += OnTimedEvent;
+            timer.Start();
 
-                startTime = DateTime.Now;
+            startTime = DateTime.Now;
 
-                if (!Solve(firstZero))
-                {
-                    throw new ArgumentException("Sudoku could not be solved.");
-                }
+            if (!Solve(firstZero))
+            {
+                throw new ArgumentException("Sudoku could not be solved.");
+            }
 
-                endTime = DateTime.Now;
+            endTime = DateTime.Now;
 
-                TimeSpan neededTime = endTime - startTime;
+            TimeSpan neededTime = endTime - startTime;
 
-                Console.WriteLine("Solved Sudoku: ");
-                Console.WriteLine("Time needed to solve: {0} minutes {1} seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
-                this.Print();
+            Console.WriteLine("Solved Sudoku: ");
+            Console.WriteLine("Time needed to solve: {0} minutes {1} seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
+            this.Print();
 
             //}
             //catch (Exception e)
@@ -180,7 +183,7 @@ namespace SudokuSolver
 
                     if (i % (this.dimension * blockHeight) == 0)
                     {
-                        Console.WriteLine(new string('-', this.dimension*3 + this.blockWidth*2 +1));
+                        Console.WriteLine(new string('-', this.dimension * 3 + this.blockWidth * 2 + 1));
                     }
 
                     if (i % this.blockWidth == 0)
@@ -230,7 +233,7 @@ namespace SudokuSolver
 
             //column
             int columnNumber = i % this.dimension;
-            for (int j = 0; j <this.dimension; j++)
+            for (int j = 0; j < this.dimension; j++)
             {
                 if (columnNumber + j * this.dimension == i)
                 {
