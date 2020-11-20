@@ -19,6 +19,7 @@ namespace AVL_Tree
         private int inputField;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler TreeChanged;
 
         public int InputField
         {
@@ -37,7 +38,7 @@ namespace AVL_Tree
         {
             toDraw.Clear();
 
-            TraverseInOrderForVisialisation(this.root,0);
+            TraverseInOrderForVisialisation(this.root, 0);
         }
 
         //actual height has the topdown view on height, root has the lowest with 0, leafnotes have the highest
@@ -60,7 +61,7 @@ namespace AVL_Tree
                     TraverseInOrderForVisialisation(null, actualHeight + 1);
                 }
 
-                this.toDraw.Add(new Node(current.Value,actualHeight));
+                this.toDraw.Add(new Node(current.Value, actualHeight));
 
                 if (current.Right != null)
                 {
@@ -100,13 +101,122 @@ namespace AVL_Tree
                         if (root == null)
                         {
                             root = new Node(this.InputField, null);
+                            root.RebalanceEvent += Rebalance;
                         }
                         else
                         {
                             RecurviseInsert(root);
                         }
+
+                        this.FireTreeChangedEvent();
                     });
             }
+        }
+
+        private void Rebalance(object sender, EventArgs e)
+        {
+            Node current = sender as Node;
+
+            int b_factor = current.BalanceFactor;
+            if (b_factor > 1)
+            {
+                if (current.Left != null)
+                {
+                    if (current.Left.BalanceFactor > 0)
+                    {
+                        RotateRight(current);
+                    }
+                    else
+                    {
+                        RotateLR(current);
+                    }
+                }
+            }
+            else if (b_factor < -1)
+            {
+                if (current.Right != null)
+                {
+                    if (current.Right.BalanceFactor > 0)
+                    {
+                        RotateRL(current);
+                    }
+                    else
+                    {
+                        RotateLeft(current);
+                    }
+                }
+            }
+
+            current.CalculateHeight();
+            this.FireTreeChangedEvent();
+        }
+
+        private void RotateLeft(Node current)
+        {
+            Node temp = current.Right;
+            current.Right = temp.Left;
+            temp.Left = current;
+            temp.Parent = current.Parent;
+            temp.Left.Parent = temp;
+
+            if(current.Right != null)
+            {
+                current.Right.Parent = current;
+            }
+
+            if (temp.Parent != null)
+            {
+                temp.Parent.Left = temp;
+            }
+
+            if (current == root)
+            {
+                root = temp;
+            }
+
+            //current.CalculateHeight();
+            //temp.CalculateHeight();
+        }
+
+        private void RotateRL(Node current)
+        {
+            RotateRight(current.Right);
+            this.FireTreeChangedEvent();
+            RotateLeft(current);
+        }
+
+        private void RotateLR(Node current)
+        {
+            RotateLeft(current.Left);
+            this.FireTreeChangedEvent();
+            RotateRight(current);
+        }
+
+        private void RotateRight(Node current)
+        {
+            Node temp = current.Left;
+            current.Left = temp.Right;
+            temp.Right = current;
+            temp.Parent = current.Parent;
+            temp.Right.Parent = temp;
+
+            if (current.Left != null)
+            {
+                current.Left.Parent = current;
+            }
+
+            if (temp.Parent != null)
+            {
+                temp.Parent.Right = temp;
+            }
+
+            if (current == root)
+            {
+                root = temp;
+            }
+
+            //current.CalculateHeight();
+            //temp.CalculateHeight();
         }
 
         private void RecurviseInsert(Node currentNode)
@@ -124,6 +234,7 @@ namespace AVL_Tree
                     {
                         //messagebox, was inserted
                         currentNode.Left = new Node(inputField, currentNode);
+                        currentNode.Left.RebalanceEvent += Rebalance;
                     }
                     else
                     {
@@ -135,16 +246,17 @@ namespace AVL_Tree
                     if (currentNode.Right == null)
                     {
                         currentNode.Right = new Node(inputField, currentNode);
+                        currentNode.Right.RebalanceEvent += Rebalance;
                     }
                     else
                     {
                         RecurviseInsert(currentNode.Right);
                     }
                 }
-               
 
-                    currentNode.CalculateBalanceFactor();
-                    currentNode.CalculateHeight();
+
+                currentNode.CalculateBalanceFactor();
+                currentNode.CalculateHeight();
             }
         }
 
@@ -159,6 +271,8 @@ namespace AVL_Tree
                         //trycatch, exception
                         Node toRemove = Find(this.root);
                         Remove(toRemove);
+
+                        this.FireTreeChangedEvent();
                     });
             }
         }
@@ -318,6 +432,8 @@ namespace AVL_Tree
                     obj =>
                     {
                         //set root to null?!, will depend on how view will work
+                        this.root = null;
+                        this.FireTreeChangedEvent();
                     });
             }
         }
@@ -326,8 +442,8 @@ namespace AVL_Tree
         {
             if (toRemove.Left == null && toRemove.Right == null)
             {
-                if (toRemove.Parent.Left.Value == toRemove.Value)
-                {
+                if(toRemove.Parent.Left != null && toRemove.Parent.Left.Value == toRemove.Value)
+                { 
                     toRemove.Parent.Left = null;
                 }
                 else
@@ -339,11 +455,11 @@ namespace AVL_Tree
 
             if (toRemove.Left != null && toRemove.Right != null)
             {
-                Node temp = GetLeftestLeafNode(toRemove.Right);
+                Node temp = GetLeftestLeafNode(toRemove.Left);
 
                 toRemove.Value = temp.Value;
-                temp.Parent.Left = null;
-               temp.CalculateHeight();
+                Remove(temp);
+                toRemove.CalculateHeight();
                 return;
             }
 
@@ -370,6 +486,10 @@ namespace AVL_Tree
             {
                 return GetLeftestLeafNode(current.Left);
             }
+            else if (current.Right != null)
+            {
+                return GetLeftestLeafNode(current.Right);
+            }
             else
             {
                 return current;
@@ -386,21 +506,32 @@ namespace AVL_Tree
             }
             else
             {
-                if (current.Left.Value > lookFor)
+                if (current.Left != null)
                 {
-                    return Find(current.Left);
+                    if (current.Value >= lookFor)
+                    {
+                        return Find(current.Left);
+                    }
                 }
-                else
+
+                if (current.Right != null)
                 {
                     return Find(current.Right);
                 }
             }
+
+            throw new ArgumentException("The given number is not inside the Tree!");
             //check right+left for null and throw exception
         }
 
         private void Notify([CallerMemberName] string property = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+
+        protected virtual void FireTreeChangedEvent()
+        {
+            this.TreeChanged?.Invoke(this,null);
         }
     }
 }

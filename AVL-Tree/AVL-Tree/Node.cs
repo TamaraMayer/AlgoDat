@@ -22,6 +22,8 @@ namespace AVL_Tree
             {
                 if (value > 1 || value < -1)
                 {
+                    this.balanceFactor = value;
+                  this.FireRebalanceEvent();
                   //  this.Rebalance();
                 }
                 else
@@ -36,9 +38,11 @@ namespace AVL_Tree
             }
         }
 
-        private void Rebalance()
+        public event EventHandler RebalanceEvent;
+
+        protected virtual void FireRebalanceEvent()
         {
-            throw new NotImplementedException();
+            RebalanceEvent?.Invoke(this, null);
         }
 
         public int Value { get; set; }

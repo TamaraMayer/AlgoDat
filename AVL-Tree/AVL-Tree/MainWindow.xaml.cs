@@ -24,9 +24,12 @@ namespace AVL_Tree
         public MainWindow()
         {
             InitializeComponent();
+
+            Tree_ViewModel vm = this.DataContext as Tree_ViewModel;
+            vm.TreeChanged += RenderTree;
         }
 
-        public void RenderTree()
+        public void RenderTree(object sender, EventArgs e)
         {
 
             Visualization.Children.Clear();
@@ -34,6 +37,12 @@ namespace AVL_Tree
             Visualization.ColumnDefinitions.Clear();
 
             Tree_ViewModel vm = (Tree_ViewModel)this.DataContext;
+
+            if(vm.root == null)
+            {
+                return;
+            }
+
             vm.SetListToDraw();
             int numberOfRows = vm.root.Height;
             int numberOfColumns = Convert.ToInt32(Math.Pow(2, numberOfRows) - 1);
@@ -78,75 +87,6 @@ namespace AVL_Tree
 
                 }
             }
-        }
-
-        public void btnRenderTree_Click(object sender, RoutedEventArgs e)
-        {
-            this.RenderTree();
-        }
-
-        public void btnInsert_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnRemove_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnClear_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnCount_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnCountAll_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnInOrderTraverse_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnPreOrderTraverse_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
-        }
-
-        public void btnPostOrderTraverse_Cick(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            btn.Command.Execute(null);
-            this.RenderTree();
-            inputField.Focus();
         }
     }
 }
