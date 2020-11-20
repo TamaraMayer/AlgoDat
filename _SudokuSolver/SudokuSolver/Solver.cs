@@ -180,7 +180,7 @@ namespace SudokuSolver
 
                     if (i % (this.dimension * blockHeight) == 0)
                     {
-                        Console.WriteLine(new string('-', this.dimension + (this.dimension - 1) * 2));
+                        Console.WriteLine(new string('-', this.dimension*3 + this.blockWidth*2 +1));
                     }
 
                     if (i % this.blockWidth == 0)
