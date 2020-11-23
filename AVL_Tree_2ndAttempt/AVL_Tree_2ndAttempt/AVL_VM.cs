@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AVL_Tree_2ndAttempt
@@ -194,7 +195,10 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
+                        traversedList.Clear();
                         TraverseInOrder(this.root);
+
+                        ShowTraverseMessage("Traversed in Order");
                     });
             }
         }
@@ -206,7 +210,10 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
+                        traversedList.Clear();
                         TraversePreOrder(this.root);
+
+                        ShowTraverseMessage("Traversed pre Order");
                     });
             }
         }
@@ -218,7 +225,10 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
+                        traversedList.Clear();
                         TraversePostOrder(this.root);
+
+                        ShowTraverseMessage("Traversed post Order");
                     });
             }
         }
@@ -235,6 +245,23 @@ namespace AVL_Tree_2ndAttempt
                         this.FireTreeChangedEvent();
                     });
             }
+        }
+
+        private void ShowTraverseMessage(string message)
+        {
+            string s ="";
+
+            for (int i = 0; i < traversedList.Count; i++)
+            {
+                s += traversedList[i].Value;
+
+                if (i != traversedList.Count - 1)
+                {
+                    s += ",";
+                }
+            }
+
+            MessageBox.Show(s,message, MessageBoxButton.OK);
         }
 
         public int CalculateHeight(Node current)
@@ -395,7 +422,7 @@ namespace AVL_Tree_2ndAttempt
                 Node inOrderSuccessor = GetLeftestLeafNode(toRemove.Right);
                 Node tempParent = FindParent(toRemove.Right, inOrderSuccessor.Value);
 
-                if(tempParent.Left!= null)
+                if (tempParent.Left != null)
                 {
                     toRemove.Value = inOrderSuccessor.Value;
                     tempParent.Left = null;
