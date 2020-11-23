@@ -11,7 +11,7 @@ namespace AVL_Tree_2ndAttempt
 {
     class AVL_VM : INotifyPropertyChanged
     {
-       public Node root { get; set; }
+        public Node root { get; set; }
         public int rootHeight { get; set; }
         public List<Node> traversedList { get; private set; }
         public List<NodeToRender> toDraw { get; private set; }
@@ -121,10 +121,8 @@ namespace AVL_Tree_2ndAttempt
                     obj =>
                     {
                         //trycatch, exception
-                        Node toRemove = Find(this.root);
+                        Node toRemove = FindParent(this.root);
                         Remove(toRemove);
-
-                        this.CalculateHeight(root);
 
                         this.FireTreeChangedEvent();
                     });
@@ -306,5 +304,114 @@ namespace AVL_Tree_2ndAttempt
             throw new ArgumentException("The given number is not inside the Tree!");
             //check right+left for null and throw exception
         }
+
+        private Node FindParent(Node current)
+        {
+            if (current.Left != null)
+            {
+                if (current.Left.Value == this.InputField)
+                {
+                    return current;
+                }
+            }
+
+            if (current.Right != null)
+            {
+                if (current.Right.Value == this.InputField)
+                {
+                    return current;
+                }
+            }
+
+            if (current.Value >= inputField)
+            {
+                if (current.Left != null)
+                {
+                    return FindParent(current.Left);
+                }
+            }
+            else
+            {
+                if (current.Right != null)
+                {
+                    return FindParent(current.Right);
+                }
+            }
+
+            throw new ArgumentException("The given number is not inside the Tree!");
+            //check right+left for null and throw exception
+        }
+
+        private void Remove(Node toRemove)
+        {
+
+        }
+
+        private Node GetLeftestLeafNode(Node current)
+        {
+            if (current.Left != null)
+            {
+                return GetLeftestLeafNode(current.Left);
+            }
+            else if (current.Right != null)
+            {
+                return GetLeftestLeafNode(current.Right);
+            }
+            else
+            {
+                return current;
+            }
+        }
+        private void TraverseInOrder(Node current)
+        {
+            if (current != null)
+            {
+                if (current.Left != null)
+                {
+                    TraverseInOrder(current.Left);
+                }
+
+                this.traversedList.Add(current);
+
+                if (current.Right != null)
+                {
+                    TraverseInOrder(current.Right);
+                }
+            }
+        }
+        private void TraversePreOrder(Node current)
+        {
+            if (current != null)
+            {
+                traversedList.Add(current);
+
+                if (current.Left != null)
+                {
+                    TraversePreOrder(current.Left);
+                }
+                if (current.Right != null)
+                {
+                    TraversePreOrder(current.Right);
+                }
+            }
+        }
+        private void TraversePostOrder(Node current)
+        {
+            if (current != null)
+            {
+                if (current.Left != null)
+                {
+                    TraversePostOrder(current.Left);
+                }
+                if (current.Right != null)
+                {
+                    TraversePostOrder(current.Right);
+                }
+
+                traversedList.Add(current);
+                //write bzw add to some list
+            }
+        }
+
     }
 }

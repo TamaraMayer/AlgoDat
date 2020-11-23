@@ -24,7 +24,7 @@ namespace AVL_Tree_2ndAttempt
         {
             InitializeComponent();
             AVL_VM vm = this.DataContext as AVL_VM;
-            vm.TreeChanged += RenderTree;
+            vm.TreeChangedEvent += RenderTree;
         }
 
         public void RenderTree(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace AVL_Tree_2ndAttempt
                     node.FontSize = 15;
 
                     //node.SetValue(Grid.RowProperty, numberOfRows - heightOfNode);
-                    node.SetValue(Grid.RowProperty, vm.toDraw[i].Height);
+                    node.SetValue(Grid.RowProperty, vm.toDraw[i].ActualHeight);
                     node.SetValue(Grid.ColumnProperty, i);
                     Visualization.Children.Add(node);
 
