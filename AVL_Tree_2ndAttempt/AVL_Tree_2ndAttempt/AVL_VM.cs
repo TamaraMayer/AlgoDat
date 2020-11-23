@@ -121,8 +121,8 @@ namespace AVL_Tree_2ndAttempt
                     obj =>
                     {
                         //trycatch, exception
-                        Node toRemove = FindParent(this.root);
-                        Remove(toRemove);
+                        Node toRemove = FindParent(this.root, this.InputField);
+                        Remove(toRemove, this.InputField);
 
                         this.FireTreeChangedEvent();
                     });
@@ -305,11 +305,11 @@ namespace AVL_Tree_2ndAttempt
             //check right+left for null and throw exception
         }
 
-        private Node FindParent(Node current)
+        private Node FindParent(Node current, int target)
         {
             if (current.Left != null)
             {
-                if (current.Left.Value == this.InputField)
+                if (current.Left.Value == target)
                 {
                     return current;
                 }
@@ -317,7 +317,7 @@ namespace AVL_Tree_2ndAttempt
 
             if (current.Right != null)
             {
-                if (current.Right.Value == this.InputField)
+                if (current.Right.Value == target)
                 {
                     return current;
                 }
@@ -327,14 +327,14 @@ namespace AVL_Tree_2ndAttempt
             {
                 if (current.Left != null)
                 {
-                    return FindParent(current.Left);
+                    return FindParent(current.Left, target);
                 }
             }
             else
             {
                 if (current.Right != null)
                 {
-                    return FindParent(current.Right);
+                    return FindParent(current.Right, target);
                 }
             }
 
@@ -342,9 +342,84 @@ namespace AVL_Tree_2ndAttempt
             //check right+left for null and throw exception
         }
 
-        private void Remove(Node toRemove)
+        private void Remove(Node toRemoveParent, int target)
         {
+            bool left;
+            Node toRemove;
 
+            if (toRemoveParent.Left != null)
+            {
+                if (toRemoveParent.Left.Value == target)
+                {
+                    left = true;
+                    toRemove = toRemoveParent.Left;
+                }
+                else
+                {
+                    left = false;
+                    toRemove = toRemoveParent.Right;
+                }
+            }
+            else
+            {
+                left = false;
+                toRemove = toRemoveParent.Right;
+            }
+
+            #region KEINE KINDER
+            //  wenn das zu entfernende Blatt keine Kinder hat
+            if (toRemove.Left == null && toRemove.Right == null)
+            {
+                if (left)
+                {
+                    toRemoveParent.Left = null;
+                }
+                else
+                {
+                    toRemoveParent.Right = null;
+                }
+                return;
+            }
+            #endregion KEINE KINDER
+
+            if (toRemove.Left != null && toRemove.Right != null)
+            {
+                Node inOrderSuccessor = GetLeftestLeafNode(toRemove.Right);
+                Node tempParent = FindParent(toRemove.Right, inOrderSuccessor.Value);
+
+                if(tempParent.Left!= null)
+                {
+                    toRemove.Value = inOrderSuccessor.Value;
+                    tempParent.Left = null;
+                }
+                else
+                {
+                    if (left)
+                    {
+                        toRemoveParent.Left = inOrderSuccessor;
+                    }
+                    else
+                    {
+                        toRemoveParent.Right = inOrderSuccessor;
+                    }
+                }
+
+                return;
+            }
+
+            #region ONLY ONE CHILD
+            if (toRemove.Left != null)
+            {
+                toRemoveParent.Left = toRemove.Left;
+                return;
+            }
+
+            if (toRemove.Right != null)
+            {
+                toRemoveParent.Right = toRemove.Right;
+                return;
+            }
+            #endregion ONLY ONE CHILD
         }
 
         private Node GetLeftestLeafNode(Node current)
