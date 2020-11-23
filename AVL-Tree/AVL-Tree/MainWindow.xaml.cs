@@ -31,7 +31,6 @@ namespace AVL_Tree
 
         public void RenderTree(object sender, EventArgs e)
         {
-
             Visualization.Children.Clear();
             Visualization.RowDefinitions.Clear();
             Visualization.ColumnDefinitions.Clear();
@@ -44,7 +43,7 @@ namespace AVL_Tree
             }
 
             vm.SetListToDraw();
-            int numberOfRows = vm.root.Height;
+            int numberOfRows = vm.CalculateHeight(vm.root);
             int numberOfColumns = Convert.ToInt32(Math.Pow(2, numberOfRows) - 1);
 
             RowDefinition rowDefintion;

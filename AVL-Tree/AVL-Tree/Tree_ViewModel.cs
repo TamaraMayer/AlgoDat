@@ -159,7 +159,7 @@ namespace AVL_Tree
             current.BalanceFactor = b_factor;
         }
 
-        private int CalculateHeight(Node current)
+        public int CalculateHeight(Node current)
         {
             int height = 0;
             if (current != null)
