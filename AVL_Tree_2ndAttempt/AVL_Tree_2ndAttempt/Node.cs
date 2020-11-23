@@ -12,5 +12,10 @@ namespace AVL_Tree_2ndAttempt
         public Node Right { get; set; }
         public int Value { get; set; }
 
+        public Node(int value)
+        {
+            this.Value = value;
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AVL_Tree_2ndAttempt
 {
@@ -85,6 +86,155 @@ namespace AVL_Tree_2ndAttempt
                 TraverseInOrderForVisialisation(null, actualHeight + 1);
                 this.toDraw.Add(null);
                 TraverseInOrderForVisialisation(null, actualHeight + 1);
+            }
+        }
+
+        public ICommand InsertCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //trycatch
+
+                        if (root == null)
+                        {
+                            root = new Node(this.InputField);
+                        }
+                        else
+                        {
+                            RecurviseInsert(root);
+                        }
+
+                        this.FireTreeChangedEvent();
+                    });
+            }
+        }
+
+        public ICommand RemoveCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //trycatch, exception
+                        Node toRemove = Find(this.root);
+                        Remove(toRemove);
+
+                        this.CalculateHeight(root);
+
+                        this.FireTreeChangedEvent();
+                    });
+            }
+        }
+
+        public ICommand CountAllCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //one traverse method, in ne liste speichern(passiert in traverse?!) und dann zählen
+                    });
+            }
+        }
+
+        public ICommand CountValueOccurenceCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //find, if true return 1 as count, if false return 0 as count
+
+                        Node node = Find(root);
+                        if (node != null)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    });
+            }
+        }
+
+        public ICommand ContainsComand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //try catch, catch = is not in the avl tree, otherwise is in, but check again
+                        Node node = Find(root);
+                        if (node != null)
+                        {
+
+                        }
+                    });
+            }
+        }
+
+        public ICommand TraverseInOrderCommand
+        {
+            get
+            {
+                return new Command
+                    (
+                    obj =>
+                    {
+                        TraverseInOrder(this.root);
+                    });
+            }
+        }
+        public ICommand TraversePreOrderCommand
+        {
+            get
+            {
+                return new Command
+                    (
+                    obj =>
+                    {
+                        TraversePreOrder(this.root);
+                    });
+            }
+        }
+        public ICommand TraversePostOrderCommand
+        {
+            get
+            {
+                return new Command
+                    (
+                    obj =>
+                    {
+                        TraversePostOrder(this.root);
+                    });
+            }
+        }
+
+        public ICommand ClearCommand
+        {
+            get
+            {
+                return new Command
+                (
+                    obj =>
+                    {
+                        //set root to null?!, will depend on how view will work
+                        this.root = null;
+                        this.FireTreeChangedEvent();
+                    });
             }
         }
     }
