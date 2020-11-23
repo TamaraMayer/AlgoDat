@@ -112,7 +112,6 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-
         public ICommand RemoveCommand
         {
             get
@@ -131,7 +130,6 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-
         public ICommand CountAllCommand
         {
             get
@@ -144,7 +142,6 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-
         public ICommand CountValueOccurenceCommand
         {
             get
@@ -167,7 +164,6 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-
         public ICommand ContainsComand
         {
             get
@@ -185,7 +181,6 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-
         public ICommand TraverseInOrderCommand
         {
             get
@@ -222,7 +217,6 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-
         public ICommand ClearCommand
         {
             get
@@ -236,6 +230,81 @@ namespace AVL_Tree_2ndAttempt
                         this.FireTreeChangedEvent();
                     });
             }
+        }
+
+        public int CalculateHeight(Node current)
+        {
+            int height = 0;
+            if (current != null)
+            {
+                int l = CalculateHeight(current.Left);
+                int r = CalculateHeight(current.Right);
+                int m = Math.Max(l, r);
+                height = m + 1;
+            }
+            return height;
+        }
+        private void RecurviseInsert(Node currentNode)
+        {
+            if (currentNode.Value == inputField)
+            {
+                this.InputField = 0;
+                //Message box, could not be inserted, but eigentlich als Exception
+            }
+            else
+            {
+                if (currentNode.Value > this.inputField)
+                {
+                    if (currentNode.Left == null)
+                    {
+                        //TODO messagebox, was inserted
+                        currentNode.Left = new Node(inputField);
+                    }
+                    else
+                    {
+                        RecurviseInsert(currentNode.Left);
+                    }
+                }
+                else
+                {
+                    if (currentNode.Right == null)
+                    {
+                        //TODO messagebox, was inserted
+                        currentNode.Right = new Node(inputField);
+                    }
+                    else
+                    {
+                        RecurviseInsert(currentNode.Right);
+                    }
+                }
+            }
+        }
+        private Node Find(Node current)
+        {
+            int lookFor = this.InputField;
+
+            if (current.Value == lookFor)
+            {
+                return current;
+            }
+            else
+            {
+                if (current.Left != null)
+                {
+                    if (current.Value >= lookFor)
+                    {
+                        return Find(current.Left);
+                    }
+                }
+
+                if (current.Right != null)
+                {
+                    return Find(current.Right);
+                }
+            }
+
+            throw new ArgumentException("The given number is not inside the Tree!");
+            //check right+left for null and throw exception
         }
     }
 }
