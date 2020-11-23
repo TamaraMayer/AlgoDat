@@ -11,5 +11,6 @@ namespace AVL_Tree_2ndAttempt
        public Node Left { get; set; }
         public Node Right { get; set; }
         public int Value { get; set; }
+
     }
 }
