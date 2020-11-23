@@ -108,6 +108,7 @@ namespace AVL_Tree
                             RecurviseInsert(root);
                         }
 
+                        CalculateHeight(root);
                         this.FireTreeChangedEvent();
                     });
             }
@@ -147,8 +148,29 @@ namespace AVL_Tree
                 }
             }
 
-            current.CalculateHeight();
+//            CalculateHeight(current);
             this.FireTreeChangedEvent();
+        }
+
+        private void BalanceToTop(Node current)
+        {
+            int b_factor = CalculateHeight(current.Left) - CalculateHeight(current.Right);
+
+            current.BalanceFactor = b_factor;
+        }
+
+        private int CalculateHeight(Node current)
+        {
+            int height = 0;
+            if (current != null)
+            {
+                int l = CalculateHeight(current.Left);
+                int r = CalculateHeight(current.Right);
+                int m = Math.Max(l, r);
+                height = m + 1;
+              //  current.Height = height;
+            }
+            return height;
         }
 
         private void RotateLeft(Node current)
@@ -166,7 +188,7 @@ namespace AVL_Tree
 
             if (temp.Parent != null)
             {
-                temp.Parent.Left = temp;
+                temp.Parent.Right = temp;
             }
 
             if (current == root)
@@ -180,14 +202,28 @@ namespace AVL_Tree
 
         private void RotateRL(Node current)
         {
-            RotateRight(current.Right);
+            current.Right.Left.Right = current.Right;
+            current.Right = current.Right.Left;
+            current.Right.Parent = current;
+            current.Right.Right.Left = null;
+            current.Right.Right.Parent = current.Right;
+
+           // RotateRight(current.Right);
             this.FireTreeChangedEvent();
             RotateLeft(current);
         }
 
         private void RotateLR(Node current)
         {
-            RotateLeft(current.Left);
+
+            current.Left.Right.Left = current.Left;
+            current.Left = current.Left.Right;
+            current.Left.Parent = current;
+            current.Left.Left.Right = null;
+            current.Left.Left.Parent = current.Left;
+
+
+            // RotateLeft(current.Left);
             this.FireTreeChangedEvent();
             RotateRight(current);
         }
@@ -235,6 +271,8 @@ namespace AVL_Tree
                         //messagebox, was inserted
                         currentNode.Left = new Node(inputField, currentNode);
                         currentNode.Left.RebalanceEvent += Rebalance;
+                        //TODO balance to top
+                        BalanceToTop(currentNode.Left);
                     }
                     else
                     {
@@ -247,16 +285,14 @@ namespace AVL_Tree
                     {
                         currentNode.Right = new Node(inputField, currentNode);
                         currentNode.Right.RebalanceEvent += Rebalance;
+                        //TODO balance to top
+                        BalanceToTop(currentNode.Right);
                     }
                     else
                     {
                         RecurviseInsert(currentNode.Right);
                     }
                 }
-
-
-                currentNode.CalculateBalanceFactor();
-                currentNode.CalculateHeight();
             }
         }
 
@@ -271,6 +307,8 @@ namespace AVL_Tree
                         //trycatch, exception
                         Node toRemove = Find(this.root);
                         Remove(toRemove);
+
+                        this.CalculateHeight(root);
 
                         this.FireTreeChangedEvent();
                     });

@@ -22,17 +22,17 @@ namespace AVL_Tree
             {
                 if (value > 1 || value < -1)
                 {
-                    this.balanceFactor = value;
+                  this.balanceFactor = value;
                   this.FireRebalanceEvent();
                   //  this.Rebalance();
                 }
-                else
-                {
-                    if (Parent != null)
-                    {
-                      Parent.CalculateHeight();
-                    }
-                }
+               // else
+                //{
+                //    if (Parent != null)
+                //    {
+                //      Parent.CalculateHeight();
+                //    }
+              //  }
                 //TODO: eventuell nicht immer speichern sonder erst wenn rebalance sicher passt 
                 this.balanceFactor = value;
             }
