@@ -41,7 +41,7 @@ namespace AVL_Tree_2ndAttempt
             }
 
             vm.SetListToDraw();
-            int numberOfRows = vm.CalculateHeight(vm.root);
+            int numberOfRows = vm.rootHeight;
             int numberOfColumns = Convert.ToInt32(Math.Pow(2, numberOfRows) - 1);
 
             RowDefinition rowDefintion;

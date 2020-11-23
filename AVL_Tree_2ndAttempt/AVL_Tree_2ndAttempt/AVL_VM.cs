@@ -33,6 +33,12 @@ namespace AVL_Tree_2ndAttempt
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler TreeChangedEvent;
 
+        public AVL_VM()
+        {
+            traversedList = new List<Node>();
+            toDraw = new List<NodeToRender>();
+        }
+
         private void Notify([CallerMemberName] string property = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
@@ -46,6 +52,7 @@ namespace AVL_Tree_2ndAttempt
         internal void SetListToDraw()
         {
             toDraw.Clear();
+            this.rootHeight = CalculateHeight(root);
 
             TraverseInOrderForVisialisation(this.root, 0);
         }
@@ -382,6 +389,7 @@ namespace AVL_Tree_2ndAttempt
             }
             #endregion KEINE KINDER
 
+            #region ZWEI KINDER
             if (toRemove.Left != null && toRemove.Right != null)
             {
                 Node inOrderSuccessor = GetLeftestLeafNode(toRemove.Right);
@@ -406,6 +414,7 @@ namespace AVL_Tree_2ndAttempt
 
                 return;
             }
+            #endregion ZWEI KINDER
 
             #region ONLY ONE CHILD
             if (toRemove.Left != null)
