@@ -12,9 +12,17 @@ namespace AVL_Tree_2ndAttempt
 {
     class AVL_VM : INotifyPropertyChanged
     {
+        // is the root node of the AVL tree
         public Node root { get; set; }
+
+        //is the height of the root, will be calculated and saved with every rendering
         public int rootHeight { get; set; }
+
+        //is the list of nodes in the traversed order
         public List<Node> traversedList { get; private set; }
+
+        //is the list of nodes for rendering, in inOrderTraverse, with nulls to show empty spots in the visualization
+        //is called and set from code behind
         public List<NodeToRender> toDraw { get; private set; }
 
         private int inputField;
@@ -50,6 +58,7 @@ namespace AVL_Tree_2ndAttempt
             this.TreeChangedEvent?.Invoke(this, null);
         }
 
+        //called by code behind for visualization purposes only
         internal void SetListToDraw()
         {
             toDraw.Clear();
@@ -61,6 +70,8 @@ namespace AVL_Tree_2ndAttempt
         //actual height has the topdown view on height, root has the lowest with 0, leafnotes have the highest
         private void TraverseInOrderForVisialisation(Node current, int actualHeight)
         {
+            //basically like traverse in order but with nulls so that "all" elements in the tree are contained
+
             if (actualHeight == this.rootHeight)
             {
                 return;
@@ -115,7 +126,7 @@ namespace AVL_Tree_2ndAttempt
                         {
                             RecurviseInsert(root);
                         }
-                        //TODO rebalance
+                        // rebalance is in recursive insert, every node from the one where it is inserted to the root is checked
                         this.FireTreeChangedEvent();
                     });
             }
@@ -144,7 +155,12 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //one traverse method, in ne liste speichern(passiert in traverse?!) und dann zählen
+                        //traverse (can be any of the traverses) count that to get the number of elements in the tree
+
+                        TraverseInOrder(root);
+                        int i = traversedList.Count;
+
+                        MessageBox.Show($"There are {i} elements in the tree!", "Count All", MessageBoxButton.OK);
                     });
             }
         }
@@ -156,16 +172,16 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //find, if true return 1 as count, if false return 0 as count
+                        //try catch if workes dann if, catch bekommt else
 
                         Node node = Find(root);
                         if (node != null)
                         {
-
+                            MessageBox.Show($"The number {inputField} occurs once in the tree!", "Count Specific", MessageBoxButton.OK);
                         }
                         else
                         {
-
+                            MessageBox.Show($"The number {inputField} is not in the tree!", "Count Specific", MessageBoxButton.OK);
                         }
                     });
             }
@@ -315,6 +331,7 @@ namespace AVL_Tree_2ndAttempt
                 }
             }
         }
+   
         private Node Find(Node current)
         {
             int lookFor = this.InputField;
