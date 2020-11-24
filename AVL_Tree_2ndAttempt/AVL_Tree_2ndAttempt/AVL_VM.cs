@@ -40,6 +40,8 @@ namespace AVL_Tree_2ndAttempt
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        //when triggered the tree changed in some way and has to be rendered new
         public event EventHandler TreeChangedEvent;
 
         public AVL_VM()
@@ -194,12 +196,7 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //try catch, catch = is not in the avl tree, otherwise is in, but check again
-                        Node node = Find(root);
-                        if (node != null)
-                        {
-
-                        }
+                        //TODO same as CountValueOccurenceCommand, with other messages
                     });
             }
         }
@@ -211,6 +208,8 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
+                        //clear the list, traverse starting at the root node, then show the message
+
                         traversedList.Clear();
                         TraverseInOrder(this.root);
 
@@ -226,6 +225,8 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
+                        //clear the list, traverse starting at the root node, then show the message
+
                         traversedList.Clear();
                         TraversePreOrder(this.root);
 
@@ -241,6 +242,8 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
+                        //clear the list, traverse starting at the root node, then show the message
+
                         traversedList.Clear();
                         TraversePostOrder(this.root);
 
@@ -256,7 +259,8 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //set root to null?!, will depend on how view will work
+                        //set root node to null
+
                         this.root = null;
                         this.FireTreeChangedEvent();
                     });
