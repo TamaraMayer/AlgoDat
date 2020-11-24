@@ -131,7 +131,7 @@ namespace AVL_Tree_2ndAttempt
                         //TODO trycatch, exception catch block message box with exception message
                         Node toRemoveParent = FindParent(this.root, this.InputField);
                         Remove(toRemoveParent, this.InputField);
-                        //TODO rebalance
+                        Rebalance(toRemoveParent);
                         this.FireTreeChangedEvent();
                     });
             }
@@ -195,7 +195,7 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
-                        traversedList.Clear();  
+                        traversedList.Clear();
                         TraverseInOrder(this.root);
 
                         ShowTraverseMessage("Traversed in Order");
@@ -249,7 +249,7 @@ namespace AVL_Tree_2ndAttempt
 
         private void ShowTraverseMessage(string message)
         {
-            string s ="";
+            string s = "";
 
             for (int i = 0; i < traversedList.Count; i++)
             {
@@ -261,7 +261,7 @@ namespace AVL_Tree_2ndAttempt
                 }
             }
 
-            MessageBox.Show(s,message, MessageBoxButton.OK);
+            MessageBox.Show(s, message, MessageBoxButton.OK);
         }
 
         public int CalculateHeight(Node current)
@@ -280,7 +280,7 @@ namespace AVL_Tree_2ndAttempt
         {
             if (currentNode.Value == inputField)
             {
-                this.InputField =0;
+                this.InputField = 0;
                 //Message box, could not be inserted, but eigentlich als Exception
             }
             else
@@ -296,6 +296,8 @@ namespace AVL_Tree_2ndAttempt
                     {
                         RecurviseInsert(currentNode.Left);
                     }
+
+                    Rebalance(currentNode);
                 }
                 else
                 {
@@ -308,6 +310,8 @@ namespace AVL_Tree_2ndAttempt
                     {
                         RecurviseInsert(currentNode.Right);
                     }
+
+                    Rebalance(currentNode);
                 }
             }
         }
@@ -381,22 +385,14 @@ namespace AVL_Tree_2ndAttempt
             bool left;
             Node toRemove;
 
-            if (toRemoveParent.Left != null)
+            left = IsLeft(toRemoveParent, target);
+
+            if (left)
             {
-                if (toRemoveParent.Left.Value == target)
-                {
-                    left = true;
-                    toRemove = toRemoveParent.Left;
-                }
-                else
-                {
-                    left = false;
-                    toRemove = toRemoveParent.Right;
-                }
+                toRemove = toRemoveParent.Left;
             }
             else
             {
-                left = false;
                 toRemove = toRemoveParent.Right;
             }
 
@@ -526,5 +522,185 @@ namespace AVL_Tree_2ndAttempt
 
 
 
+        private void Rebalance(Node current)
+        {
+            //checks for null are "unnesseccary", balance factor would return 0
+
+            int b_factor = CalculateBalanceFactor(current);
+
+            if (b_factor > 1)
+            {
+                if (current.Left != null)
+                {
+                    if (CalculateBalanceFactor(current.Left) > 0)
+                    {
+                        RotateRight(current);
+                    }
+                    else
+                    {
+                        RotateLR(current);
+                    }
+                }
+            }
+            else if (b_factor < -1)
+            {
+                if (current.Right != null)
+                {
+                    if (CalculateBalanceFactor(current.Right) > 0)
+                    {
+                        RotateRL(current);
+                    }
+                    else
+                    {
+                        RotateLeft(current);
+                    }
+                }
+            }
+
+            this.FireTreeChangedEvent();
+        }
+
+        private int CalculateBalanceFactor(Node current)
+        {
+            int l = CalculateHeight(current.Left);
+            int r = CalculateHeight(current.Right);
+            int b_factor = l - r;
+            return b_factor;
+        }
+
+        private bool IsLeft(Node parent, int target)
+        {
+            if (parent.Left != null)
+            {
+                if (parent.Left.Value == target)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void RotateLeft(Node current)
+        {
+            Node parent;
+            bool left = false;
+
+            try
+            {
+                parent = FindParent(root, current.Value);
+                left = IsLeft(parent, current.Value);
+            }
+            catch
+            {
+                parent = null;
+            }
+
+
+
+
+
+            Node temp = current.Right;
+            current.Right = temp.Left;
+            temp.Left = current;
+
+            if (parent != null)
+            {
+                if (left)
+                {
+                    parent.Left = temp;
+
+                }
+                else
+                {
+                    parent.Right = temp;
+                }
+            }
+
+            if (current == root)
+            {
+                root = temp;
+            }
+
+        }
+
+        private void RotateRL(Node current)
+        {
+            //current.Right.Left.Right = current.Right;
+            //current.Right = current.Right.Left;
+            //current.Right.Parent = current;
+            //current.Right.Right.Left = null;
+            //current.Right.Right.Parent = current.Right;
+
+            //// RotateRight(current.Right);
+            //this.FireTreeChangedEvent();
+            //RotateLeft(current);
+
+            Node temp = current.Right;
+            RotateRight(temp);
+            RotateLeft(current);
+        }
+
+        private void RotateLR(Node current)
+        {
+
+            //current.Left.Right.Left = current.Left;
+            //current.Left = current.Left.Right;
+            //current.Left.Parent = current;
+            //current.Left.Left.Right = null;
+            //current.Left.Left.Parent = current.Left;
+
+
+            //// RotateLeft(current.Left);
+            //this.FireTreeChangedEvent();
+            //RotateRight(current);
+
+            Node temp = current.Left;
+            RotateLeft(temp);
+            RotateRight(current);
+        }
+
+        private void RotateRight(Node current)
+        {
+            Node parent;
+            bool left = false;
+
+            try
+            {
+                parent = FindParent(root, current.Value);
+                left = IsLeft(parent, current.Value);
+            }
+            catch
+            {
+                parent = null;
+            }
+
+            Node temp = current.Left;
+            current.Left = temp.Right;
+            temp.Right = current;
+
+            if (parent != null)
+            {
+                if (left)
+                {
+                    parent.Left = temp;
+                }
+                else
+                {
+                    parent.Right = temp;
+                }
+            }
+
+            if (current == root)
+            {
+                root = temp;
+            }
+        }
     }
 }
