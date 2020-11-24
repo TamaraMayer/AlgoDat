@@ -105,7 +105,7 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //trycatch
+                        //trycatch in finally reset input field to zero, in catch block messagebox 
 
                         if (root == null)
                         {
@@ -115,7 +115,7 @@ namespace AVL_Tree_2ndAttempt
                         {
                             RecurviseInsert(root);
                         }
-
+                        //TODO rebalance
                         this.FireTreeChangedEvent();
                     });
             }
@@ -128,10 +128,10 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //trycatch, exception
-                        Node toRemove = FindParent(this.root, this.InputField);
-                        Remove(toRemove, this.InputField);
-
+                        //TODO trycatch, exception catch block message box with exception message
+                        Node toRemoveParent = FindParent(this.root, this.InputField);
+                        Remove(toRemoveParent, this.InputField);
+                        //TODO rebalance
                         this.FireTreeChangedEvent();
                     });
             }
@@ -195,7 +195,7 @@ namespace AVL_Tree_2ndAttempt
                     (
                     obj =>
                     {
-                        traversedList.Clear();
+                        traversedList.Clear();  
                         TraverseInOrder(this.root);
 
                         ShowTraverseMessage("Traversed in Order");
@@ -280,7 +280,7 @@ namespace AVL_Tree_2ndAttempt
         {
             if (currentNode.Value == inputField)
             {
-                this.InputField = 0;
+                this.InputField =0;
                 //Message box, could not be inserted, but eigentlich als Exception
             }
             else
@@ -523,6 +523,8 @@ namespace AVL_Tree_2ndAttempt
                 //write bzw add to some list
             }
         }
+
+
 
     }
 }
