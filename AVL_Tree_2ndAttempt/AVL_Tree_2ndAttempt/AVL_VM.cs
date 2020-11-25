@@ -621,6 +621,9 @@ namespace AVL_Tree_2ndAttempt
 
         private int CalculateBalanceFactor(Node current)
         {
+            //calculates height of the left and right subtree
+            //subtracts right height from left and return it
+
             int l = CalculateHeight(current.Left);
             int r = CalculateHeight(current.Right);
             int b_factor = l - r;
@@ -629,6 +632,8 @@ namespace AVL_Tree_2ndAttempt
 
         private bool IsLeft(Node parent, int target)
         {
+            //checks if the target value is on the left side of the given node
+
             if (parent.Left != null)
             {
                 if (parent.Left.Value == target)
@@ -651,6 +656,9 @@ namespace AVL_Tree_2ndAttempt
             Node parent;
             bool left = false;
 
+            //tries to find the parent of the node to rotate, if there is one checks on which side it is
+            //if there is none (which means the current node is the root), set parent to null
+
             try
             {
                 parent = FindParent(root, current.Value);
@@ -663,7 +671,7 @@ namespace AVL_Tree_2ndAttempt
 
 
 
-
+            //TODO comment
 
             Node temp = current.Right;
             current.Right = temp.Left;
@@ -691,15 +699,9 @@ namespace AVL_Tree_2ndAttempt
 
         private void RotateRL(Node current)
         {
-            //current.Right.Left.Right = current.Right;
-            //current.Right = current.Right.Left;
-            //current.Right.Parent = current;
-            //current.Right.Right.Left = null;
-            //current.Right.Right.Parent = current.Right;
-
-            //// RotateRight(current.Right);
-            //this.FireTreeChangedEvent();
-            //RotateLeft(current);
+            //Sets a temporary node to the right child of the current node
+            //then rotates the temporary node right
+            //and then rotates the current node left
 
             Node temp = current.Right;
             RotateRight(temp);
@@ -708,17 +710,9 @@ namespace AVL_Tree_2ndAttempt
 
         private void RotateLR(Node current)
         {
-
-            //current.Left.Right.Left = current.Left;
-            //current.Left = current.Left.Right;
-            //current.Left.Parent = current;
-            //current.Left.Left.Right = null;
-            //current.Left.Left.Parent = current.Left;
-
-
-            //// RotateLeft(current.Left);
-            //this.FireTreeChangedEvent();
-            //RotateRight(current);
+            //Sets a temporary node to the left child of the current node
+            //then rotates the temporary node left
+            //and then rotates the current node right
 
             Node temp = current.Left;
             RotateLeft(temp);
@@ -730,6 +724,9 @@ namespace AVL_Tree_2ndAttempt
             Node parent;
             bool left = false;
 
+            //tries to find the parent of the node to rotate, if there is one checks on which side it is
+            //if there is none (which means the current node is the root), set parent to null
+
             try
             {
                 parent = FindParent(root, current.Value);
@@ -739,6 +736,8 @@ namespace AVL_Tree_2ndAttempt
             {
                 parent = null;
             }
+
+            //TODO comment
 
             Node temp = current.Left;
             current.Left = temp.Right;
