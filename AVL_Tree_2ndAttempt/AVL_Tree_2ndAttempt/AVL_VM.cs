@@ -79,7 +79,7 @@ namespace AVL_Tree_2ndAttempt
                         //if root is null add the value as the root node, otherwise call recursive insert with the root
                         //after inserting the tree changed event is called/fired
                         //recursive insert can throw an exception when the value is already in the list
-                        //when this exception is catched shows the message to the user
+                        //when this exception is caught shows the message to the user
                         //finally resets the inputfield to zero
 
                         try
@@ -118,7 +118,7 @@ namespace AVL_Tree_2ndAttempt
                         //trys to find the parent of the node with the to remove value, can throw an exception
                         //after finding the parent calls the remove method
                         //and in both cases rebalances the tree and fires the tree change event
-                        //when this exception is catched shows the message to the user
+                        //when the exception from FindParent is caught shows the message to the user
                         //finally resets the inputfield to zero
 
                         Node toRemoveParent;
@@ -127,6 +127,7 @@ namespace AVL_Tree_2ndAttempt
                         {
                             if (root.Value == this.InputField)
                             {
+                                //TODo check again if this whole command works
                                 RemoveRootValue();
                                 Rebalance(this.root);
                             }
@@ -176,16 +177,23 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //try catch if workes dann number exists, also occured one time; catch heißt es ist nicht im baum
+                        //tries to find the number in the input field starting at the root, can throw an exception
+                        //if no exception thrown and caught the number occurs, otherwise not
+                        //finally sets the inputfield to zero
+
                         try
                         {
-                            Node node = Find(root);
+                            Node node = Find(root, this.InputField);
 
                             MessageBox.Show($"The number {inputField} occurs once in the tree!", "Count Specific", MessageBoxButton.OK);
                         }
                         catch
                         {
                             MessageBox.Show($"The number {inputField} is not in the tree!", "Count Specific", MessageBoxButton.OK);
+                        }
+                        finally
+                        {
+                            this.InputField = 0;
                         }
                     });
             }
@@ -201,7 +209,7 @@ namespace AVL_Tree_2ndAttempt
                         //try catch if workes dann number exists; catch heißt es ist nicht im baum
                         try
                         {
-                            Node node = Find(root);
+                            Node node = Find(root, this.InputField);
 
                             MessageBox.Show($"The number {inputField} is in the tree!", "Contains", MessageBoxButton.OK);
                         }
@@ -350,12 +358,10 @@ namespace AVL_Tree_2ndAttempt
             }
         }
 
-        private Node Find(Node current)
+        private Node Find(Node current, int lookFor)
         {
             //recursivly goes through the tree until it either finds a node with the value and returns it
             //or throws an exception when the last node has no children
-
-            int lookFor = this.InputField;
 
             if (current.Value == lookFor)
             {
@@ -367,13 +373,13 @@ namespace AVL_Tree_2ndAttempt
                 {
                     if (current.Value >= lookFor)
                     {
-                        return Find(current.Left);
+                        return Find(current.Left, lookFor);
                     }
                 }
 
                 if (current.Right != null)
                 {
-                    return Find(current.Right);
+                    return Find(current.Right,lookFor);
                 }
             }
 
@@ -501,6 +507,7 @@ namespace AVL_Tree_2ndAttempt
 
         private void RemoveRootValue()
         {
+            //TODO
             throw new NotImplementedException();
         }
 
