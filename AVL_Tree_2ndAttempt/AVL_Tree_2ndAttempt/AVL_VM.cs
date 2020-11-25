@@ -26,6 +26,8 @@ namespace AVL_Tree_2ndAttempt
         public List<NodeToRender> toDraw { get; private set; }
 
         private int inputField;
+
+        //Property the input field in the view is bound to, thats the reason for the notify
         public int InputField
         {
             get
@@ -46,68 +48,24 @@ namespace AVL_Tree_2ndAttempt
 
         public AVL_VM()
         {
+            //die 2 listen instanzieren
+
             traversedList = new List<Node>();
             toDraw = new List<NodeToRender>();
         }
 
         private void Notify([CallerMemberName] string property = null)
         {
+            //fires event that a property has changed
+
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         protected virtual void FireTreeChangedEvent()
         {
+            //fires the event that the tree has changed
+
             this.TreeChangedEvent?.Invoke(this, null);
-        }
-
-        //called by code behind for visualization purposes only
-        internal void SetListToDraw()
-        {
-            toDraw.Clear();
-            this.rootHeight = CalculateHeight(root);
-
-            TraverseInOrderForVisialisation(this.root, 0);
-        }
-
-        //actual height has the topdown view on height, root has the lowest with 0, leafnotes have the highest
-        private void TraverseInOrderForVisialisation(Node current, int actualHeight)
-        {
-            //basically like traverse in order but with nulls so that "all" elements in the tree are contained
-
-            if (actualHeight == this.rootHeight)
-            {
-                return;
-            }
-
-            if (current != null)
-            {
-
-                if (current.Left != null)
-                {
-                    TraverseInOrderForVisialisation(current.Left, actualHeight + 1);
-                }
-                else
-                {
-                    TraverseInOrderForVisialisation(null, actualHeight + 1);
-                }
-
-                this.toDraw.Add(new NodeToRender(current.Value, actualHeight));
-
-                if (current.Right != null)
-                {
-                    TraverseInOrderForVisialisation(current.Right, actualHeight + 1);
-                }
-                else
-                {
-                    TraverseInOrderForVisialisation(null, actualHeight + 1);
-                }
-            }
-            else
-            {
-                TraverseInOrderForVisialisation(null, actualHeight + 1);
-                this.toDraw.Add(null);
-                TraverseInOrderForVisialisation(null, actualHeight + 1);
-            }
         }
 
         public ICommand InsertCommand
@@ -118,18 +76,28 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //trycatch in finally reset input field to zero, in catch block messagebox 
+                        //if root is null add the value as the root node, otherwise call recursive insert with the root
+                        //after inserting the tree changed event is called/fired
+                        //recursive insert can throw an exception when the value is already in the list
+                        //when this exception is catched shows the message to the user
 
-                        if (root == null)
+                        try
                         {
-                            root = new Node(this.InputField);
+                            if (root == null)
+                            {
+                                root = new Node(this.InputField);
+                            }
+                            else
+                            {
+                                RecurviseInsert(root);
+                            }
+                            // rebalance is in recursive insert, every node from the one where it is inserted to the root is checked
+                            this.FireTreeChangedEvent();
                         }
-                        else
+                        catch(Exception e)
                         {
-                            RecurviseInsert(root);
+                            MessageBox.Show(e.Message, "Insert", MessageBoxButton.OK);
                         }
-                        // rebalance is in recursive insert, every node from the one where it is inserted to the root is checked
-                        this.FireTreeChangedEvent();
                     });
             }
         }
@@ -573,6 +541,59 @@ namespace AVL_Tree_2ndAttempt
                 }
 
                 traversedList.Add(current);
+            }
+        }
+
+        internal void SetListToDraw()
+        {
+            //called by code behind for visualization purposes only
+            //first clears the list, then calculates the height of the root
+            //then traverses the tree for visualization
+
+            toDraw.Clear();
+            this.rootHeight = CalculateHeight(root);
+
+            TraverseInOrderForVisialisation(this.root, 0);
+        }
+
+        //actual height has the topdown view on height, root has the lowest with 0, leafnotes have the highest
+        private void TraverseInOrderForVisialisation(Node current, int actualHeight)
+        {
+            //basically like traverse in order but with nulls so that "all" elements in the tree are contained
+
+            if (actualHeight == this.rootHeight)
+            {
+                return;
+            }
+
+            if (current != null)
+            {
+
+                if (current.Left != null)
+                {
+                    TraverseInOrderForVisialisation(current.Left, actualHeight + 1);
+                }
+                else
+                {
+                    TraverseInOrderForVisialisation(null, actualHeight + 1);
+                }
+
+                this.toDraw.Add(new NodeToRender(current.Value, actualHeight));
+
+                if (current.Right != null)
+                {
+                    TraverseInOrderForVisialisation(current.Right, actualHeight + 1);
+                }
+                else
+                {
+                    TraverseInOrderForVisialisation(null, actualHeight + 1);
+                }
+            }
+            else
+            {
+                TraverseInOrderForVisialisation(null, actualHeight + 1);
+                this.toDraw.Add(null);
+                TraverseInOrderForVisialisation(null, actualHeight + 1);
             }
         }
 
