@@ -123,13 +123,21 @@ namespace AVL_Tree_2ndAttempt
 
                         Node toRemoveParent;
 
+                        if(this.root == null)
+                        {
+                            MessageBox.Show("There is no tree, nothing can be removed", "Remove", MessageBoxButton.OK);
+                        }
+
                         try
                         {
                             if (root.Value == this.InputField)
                             {
-                                //TODo check again if this whole command works
                                 RemoveRootValue();
-                                Rebalance(this.root);
+
+                                if (this.root != null)
+                                {
+                                    Rebalance(this.root);
+                                }
                             }
                             else
                             {
@@ -389,7 +397,7 @@ namespace AVL_Tree_2ndAttempt
 
                 if (current.Right != null)
                 {
-                    return Find(current.Right,lookFor);
+                    return Find(current.Right, lookFor);
                 }
             }
 
@@ -485,11 +493,12 @@ namespace AVL_Tree_2ndAttempt
             }
             #endregion KEINE KINDER
 
+            //könnt eine eigene Methode sein weil es hier und im RemoveRoot genau gleich ist
             #region ZWEI KINDER
             //wenn das blatt zwei kinder hat, wird der nachfolger vom inorder traverse gesucht, also das linkeste blatt im rechten subbaum
             //dann den parent zu diesem nachfolger
             //dann wird der wert des inOrderSuccessor in den toRemoveNode gespeichtert und
-            //dann rekursiv der inOrderSuccessor
+            //dann rekursiv der inOrderSuccessor removed
             if (toRemove.Left != null && toRemove.Right != null)
             {
                 Node inOrderSuccessor = GetInOrderSuccessor(toRemove.Right);
@@ -529,8 +538,62 @@ namespace AVL_Tree_2ndAttempt
 
         private void RemoveRootValue()
         {
-            //TODO
-            throw new NotImplementedException();
+            //sets root node as node toRemove
+            //there are 3 possibilities to remove the node
+            //has no children, has 2 children, has only one child
+
+            Node toRemove = this.root;
+
+            #region KEINE KINDER
+            //wenn das zu entfernende Blatt keine Kinder hat, einfach das blatt entfernen
+            //weil es die root ist, diese auf null setzen
+            if (toRemove.Left == null && toRemove.Right == null)
+            {
+                this.root = null;
+            }
+            #endregion KEINE KINDER
+
+            //könnt eine eigene Methode sein weil es hier und im Remove genau gleich ist
+            #region ZWEI KINDER
+            //wenn das blatt zwei kinder hat, wird der nachfolger vom inorder traverse gesucht, also das linkeste blatt im rechten subbaum
+            //dann den parent zu diesem nachfolger
+            //dann wird der wert des inOrderSuccessor in den toRemoveNode gespeichtert und
+            //dann rekursiv der inOrderSuccessor removed
+            if (toRemove.Left != null && toRemove.Right != null)
+            {
+                Node inOrderSuccessor = GetInOrderSuccessor(toRemove.Right);
+                Node tempParent;
+
+                if (inOrderSuccessor.Value == toRemove.Right.Value)
+                {
+                    tempParent = toRemove;
+                }
+                else
+                {
+                    tempParent = FindParent(toRemove.Right, inOrderSuccessor.Value);
+                }
+
+                toRemove.Value = inOrderSuccessor.Value;
+                Remove(tempParent, inOrderSuccessor.Value);
+
+                return;
+            }
+            #endregion ZWEI KINDER
+
+            #region ONLY ONE CHILD
+            //checks on which side the toRemove node has the child, and sets this to the spot of the toRemove node beim toRemoveParent node
+            if (toRemove.Left != null)
+            {
+                this.root = toRemove.Left;
+                return;
+            }
+
+            if (toRemove.Right != null)
+            {
+                this.root = toRemove.Right;
+                return;
+            }
+            #endregion ONLY ONE CHILD
         }
 
         private Node GetInOrderSuccessor(Node current)
