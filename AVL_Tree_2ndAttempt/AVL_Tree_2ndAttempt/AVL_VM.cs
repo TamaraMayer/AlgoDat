@@ -296,10 +296,11 @@ namespace AVL_Tree_2ndAttempt
 
         private void ShowTraverseMessage(string message)
         {
-            string s = "";
-
             //goes through the traversed list and saves the value into the string, and adds a semicolon 
             //aslong as it is not the last element in the list.
+
+            string s = "";
+
             for (int i = 0; i < traversedList.Count; i++)
             {
                 s += traversedList[i].Value;
@@ -325,6 +326,7 @@ namespace AVL_Tree_2ndAttempt
                 int m = Math.Max(l, r);
                 height = m + 1;
             }
+
             return height;
         }
         private void RecurviseInsert(Node currentNode)
@@ -361,6 +363,7 @@ namespace AVL_Tree_2ndAttempt
                         RecurviseInsert(currentNode.Right);
                     }
                 }
+
                 Rebalance(currentNode);
             }
         }
@@ -395,6 +398,12 @@ namespace AVL_Tree_2ndAttempt
 
         private Node FindParent(Node current, int target)
         {
+            //just a precausion, should never be thrown within this whole code
+            if (current == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(current), "The specified parameter may not be null!");
+            }
+
             //recursivly goes through the tree until it either finds a node with the value and returns its parent
             //or throws an exception when the last node has no children
 
@@ -434,6 +443,12 @@ namespace AVL_Tree_2ndAttempt
 
         private void Remove(Node toRemoveParent, int target)
         {
+            //just a precausion, should never be thrown within this whole code
+            if (toRemoveParent == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(toRemoveParent), "The specified parameter may not be null!");
+            }
+
             //checks if the node to be removed is on the right or the left side of the prent node and sets the node that needs to be removed
             //there are 3 possibilities to remove the node
             //has no children, has 2 children, has only one child
