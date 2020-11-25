@@ -824,13 +824,15 @@ namespace AVL_Tree_2ndAttempt
                 parent = null;
             }
 
-
-            //TODO comment
+            //sets a temporary node that gets the value and children of the right child of the current node,
+            //the right child becomes the value and children of the left child of the temporary node
+            //and the temporary nodes left child is set to the current node
 
             Node temp = current.Right;
             current.Right = temp.Left;
             temp.Left = current;
 
+            //if there is a parent set the according child to be the temporary node
             if (parent != null)
             {
                 if (left)
@@ -844,9 +846,10 @@ namespace AVL_Tree_2ndAttempt
                 }
             }
 
+            //if the node current node was the root, the root is now the temporary node
             if (current == root)
             {
-                root = temp;
+                this.root = temp;
             }
 
         }
@@ -891,12 +894,15 @@ namespace AVL_Tree_2ndAttempt
                 parent = null;
             }
 
-            //TODO comment
+            //sets a temporary node that gets the value and children of the left child of the current node,
+            //the left child becomes the value and children of the right child of the temporary node
+            //and the temporary nodes right child is set to the current node
 
             Node temp = current.Left;
             current.Left = temp.Right;
             temp.Right = current;
 
+            //if there is a parent set the according child to be the temporary node
             if (parent != null)
             {
                 if (left)
@@ -909,6 +915,7 @@ namespace AVL_Tree_2ndAttempt
                 }
             }
 
+            //if the node current node was the root, the root is now the temporary node
             if (current == root)
             {
                 root = temp;

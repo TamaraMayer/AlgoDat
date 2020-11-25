@@ -16,6 +16,5 @@ namespace AVL_Tree_2ndAttempt
         {
             this.Value = value;
         }
-
     }
 }
