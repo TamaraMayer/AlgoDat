@@ -80,6 +80,7 @@ namespace AVL_Tree_2ndAttempt
                         //after inserting the tree changed event is called/fired
                         //recursive insert can throw an exception when the value is already in the list
                         //when this exception is catched shows the message to the user
+                        //finally resets the inputfield to zero
 
                         try
                         {
@@ -94,9 +95,13 @@ namespace AVL_Tree_2ndAttempt
                             // rebalance is in recursive insert, every node from the one where it is inserted to the root is checked
                             this.FireTreeChangedEvent();
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             MessageBox.Show(e.Message, "Insert", MessageBoxButton.OK);
+                        }
+                        finally
+                        {
+                            this.InputField = 0;
                         }
                     });
             }
@@ -109,11 +114,40 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //TODO trycatch, exception catch block message box with exception message
-                        Node toRemoveParent = FindParent(this.root, this.InputField);
-                        Remove(toRemoveParent, this.InputField);
-                        Rebalance(toRemoveParent);
-                        this.FireTreeChangedEvent();
+                        //Checks if the value to be removed is the value of the root node, if yes, calls the remove root method, otherwise
+                        //trys to find the parent of the node with the to remove value, can throw an exception
+                        //after finding the parent calls the remove method
+                        //and in both cases rebalances the tree and fires the tree change event
+                        //when this exception is catched shows the message to the user
+                        //finally resets the inputfield to zero
+
+                        Node toRemoveParent;
+
+                        try
+                        {
+                            if (root.Value == this.InputField)
+                            {
+                                RemoveRootValue();
+                                Rebalance(this.root);
+                            }
+                            else
+                            {
+                                toRemoveParent = FindParent(this.root, this.InputField);
+                                Remove(toRemoveParent, this.InputField);
+
+                                Rebalance(toRemoveParent);
+                            }
+
+                            this.FireTreeChangedEvent();
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message, "Remove", MessageBoxButton.OK);
+                        }
+                        finally
+                        {
+                            this.InputField = 0;
+                        }
                     });
             }
         }
@@ -394,6 +428,7 @@ namespace AVL_Tree_2ndAttempt
             bool left;
             Node toRemove;
 
+
             left = IsLeft(toRemoveParent, target);
 
             if (left)
@@ -462,6 +497,11 @@ namespace AVL_Tree_2ndAttempt
                 return;
             }
             #endregion ONLY ONE CHILD
+        }
+
+        private void RemoveRootValue()
+        {
+            throw new NotImplementedException();
         }
 
         private Node GetLeftestLeafNode(Node current)
