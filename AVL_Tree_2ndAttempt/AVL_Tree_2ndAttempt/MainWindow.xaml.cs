@@ -80,6 +80,7 @@ namespace AVL_Tree_2ndAttempt
                     //node.SetValue(Grid.RowProperty, numberOfRows - heightOfNode);
                     node.SetValue(Grid.RowProperty, vm.toDraw[i].ActualHeight);
                     node.SetValue(Grid.ColumnProperty, i);
+                    node.HorizontalAlignment = HorizontalAlignment.Center;
                     Visualization.Children.Add(node);
 
                 }
