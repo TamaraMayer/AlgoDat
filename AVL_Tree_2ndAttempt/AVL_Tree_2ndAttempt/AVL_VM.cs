@@ -327,31 +327,24 @@ namespace AVL_Tree_2ndAttempt
                     if (currentNode.Left == null)
                     {
                         currentNode.Left = new Node(inputField);
-
-                        MessageBox.Show($"{this.InputField} was inserted!", "Insert", MessageBoxButton.OK);
                     }
                     else
                     {
                         RecurviseInsert(currentNode.Left);
                     }
-
-                    Rebalance(currentNode);
                 }
                 else
                 {
                     if (currentNode.Right == null)
                     {
                         currentNode.Right = new Node(inputField);
-
-                        MessageBox.Show($"{this.InputField} was inserted!", "Insert", MessageBoxButton.OK);
                     }
                     else
                     {
                         RecurviseInsert(currentNode.Right);
                     }
-
-                    Rebalance(currentNode);
                 }
+                Rebalance(currentNode);
             }
         }
 
@@ -422,7 +415,6 @@ namespace AVL_Tree_2ndAttempt
             }
 
             throw new ArgumentException("The given number is not inside the Tree!");
-            //check right+left for null and throw exception
         }
 
         private void Remove(Node toRemoveParent, int target)
@@ -466,7 +458,7 @@ namespace AVL_Tree_2ndAttempt
             //wenn das blatt zwei kinder hat, wird der nachfolger vom inorder traverse gesucht, also das linkeste blatt im rechten subbaum
             //dann den parent zu diesem nachfolger
             //dann wird der wert des inOrderSuccessor in den toRemoveNode gespeichtert und
-            //der inOrderSuccessor bei seinem parent gelöscht
+            //dann rekursiv der inOrderSuccessor
             if (toRemove.Left != null && toRemove.Right != null)
             {
                 Node inOrderSuccessor = GetLeftestLeafNode(toRemove.Right);
@@ -489,6 +481,7 @@ namespace AVL_Tree_2ndAttempt
             #endregion ZWEI KINDER
 
             #region ONLY ONE CHILD
+            //checks on which side the toRemove node has the child, and sets this to the spot of the toRemove node beim toRemoveParent node
             if (toRemove.Left != null)
             {
                 toRemoveParent.Left = toRemove.Left;
@@ -505,15 +498,14 @@ namespace AVL_Tree_2ndAttempt
 
         private Node GetLeftestLeafNode(Node current)
         {
+            // checks if the given node has a left child,
+            //if yes, calls itself with the left child
+            //if no returns itself
+
             if (current.Left != null)
             {
                 return GetLeftestLeafNode(current.Left);
             }
-            //else
-            //if (current.Right != null)
-            //{
-            //    return GetLeftestLeafNode(current.Right);
-            //}
             else
             {
                 return current;
@@ -521,6 +513,11 @@ namespace AVL_Tree_2ndAttempt
         }
         private void TraverseInOrder(Node current)
         {
+            //if the node is not null, checks if there is a left child
+            //if yes, calls itself with the left child
+            //then adds the current node to the list
+            //then checks if there is a right child, if yes calls itself with the right child
+
             if (current != null)
             {
                 if (current.Left != null)
@@ -538,6 +535,11 @@ namespace AVL_Tree_2ndAttempt
         }
         private void TraversePreOrder(Node current)
         {
+            //if the node is not null
+            //adds the current node to the list
+            //then checks if there is a left child, if yes calls itself with the left child
+            //then checks if there is a right child, if yes calls itself with the right child
+
             if (current != null)
             {
                 traversedList.Add(current);
@@ -554,6 +556,11 @@ namespace AVL_Tree_2ndAttempt
         }
         private void TraversePostOrder(Node current)
         {
+            //if the node is not null
+            //checks if there is a left child, if yes calls itself with the left child
+            //then checks if there is a right child, if yes calls itself with the right child
+            //then adds the current node to the list
+
             if (current != null)
             {
                 if (current.Left != null)
@@ -566,15 +573,19 @@ namespace AVL_Tree_2ndAttempt
                 }
 
                 traversedList.Add(current);
-                //write bzw add to some list
             }
         }
-
-
 
         private void Rebalance(Node current)
         {
             //checks for null are "unnesseccary", balance factor would return 0
+
+            //calculates balance factor for the current node,
+            //if its grater than 1, checks the left side of the node
+            //if the balance factor of the left side is bigger than zero it calls the rotate right method, otherwise the rotate left right method
+            //if the balance factor of the current node is smaller than or equal to zero, checks if the balance factor is smaller than minus 1
+            //if it is, checks the right side of the node
+            //if the balance factor of the left side is bigger than zero it calls the rotate right left method, otherwise the rotate left method
 
             int b_factor = CalculateBalanceFactor(current);
 
@@ -606,8 +617,6 @@ namespace AVL_Tree_2ndAttempt
                     }
                 }
             }
-
-            this.FireTreeChangedEvent();
         }
 
         private int CalculateBalanceFactor(Node current)
