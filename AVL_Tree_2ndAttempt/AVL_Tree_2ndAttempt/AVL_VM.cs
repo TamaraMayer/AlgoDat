@@ -492,7 +492,7 @@ namespace AVL_Tree_2ndAttempt
             //dann rekursiv der inOrderSuccessor
             if (toRemove.Left != null && toRemove.Right != null)
             {
-                Node inOrderSuccessor = GetLeftestLeafNode(toRemove.Right);
+                Node inOrderSuccessor = GetInOrderSuccessor(toRemove.Right);
                 Node tempParent;
 
                 if (inOrderSuccessor.Value == toRemove.Right.Value)
@@ -533,15 +533,15 @@ namespace AVL_Tree_2ndAttempt
             throw new NotImplementedException();
         }
 
-        private Node GetLeftestLeafNode(Node current)
+        private Node GetInOrderSuccessor(Node current)
         {
-            // checks if the given node has a left child,
+            //checks if the given node has a left child,
             //if yes, calls itself with the left child
             //if no returns itself
 
             if (current.Left != null)
             {
-                return GetLeftestLeafNode(current.Left);
+                return GetInOrderSuccessor(current.Left);
             }
             else
             {
@@ -723,6 +723,8 @@ namespace AVL_Tree_2ndAttempt
         private bool IsLeft(Node parent, int target)
         {
             //checks if the target value is on the left side of the given node
+            //return true if yes,
+            //return false if not on left side, or left side is null
 
             if (parent.Left != null)
             {
@@ -758,7 +760,6 @@ namespace AVL_Tree_2ndAttempt
             {
                 parent = null;
             }
-
 
 
             //TODO comment
