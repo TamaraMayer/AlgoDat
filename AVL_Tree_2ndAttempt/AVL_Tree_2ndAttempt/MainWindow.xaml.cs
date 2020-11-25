@@ -29,6 +29,8 @@ namespace AVL_Tree_2ndAttempt
 
         public void RenderTree(object sender, EventArgs e)
         {
+            //clears the Visualizaiton Grid
+
             Visualization.Children.Clear();
             Visualization.RowDefinitions.Clear();
             Visualization.ColumnDefinitions.Clear();
@@ -40,10 +42,13 @@ namespace AVL_Tree_2ndAttempt
                 return;
             }
 
+            //sets list to draw, gets the number of rows and calculates the number of columns
             vm.SetListToDraw();
             int numberOfRows = vm.rootHeight;
             int numberOfColumns = Convert.ToInt32(Math.Pow(2, numberOfRows) - 1);
 
+
+            //adds the row and columnsdefinition to the grid
             RowDefinition rowDefintion;
             ColumnDefinition columnDefintion;
 
@@ -64,25 +69,21 @@ namespace AVL_Tree_2ndAttempt
             }
 
             TextBlock node;
-            //  int heightOfNode;
 
+            //creates textblocks for every node with an entry and adds it to its spot in the grid
             for (int i = 0; i < vm.toDraw.Count; i++)
             {
-
                 node = new TextBlock();
 
                 if (vm.toDraw[i] != null)
                 {
-                    //  heightOfNode = vm.toDraw[i].Height;
                     node.Text = vm.toDraw[i].Value.ToString();
                     node.FontSize = 15;
 
-                    //node.SetValue(Grid.RowProperty, numberOfRows - heightOfNode);
                     node.SetValue(Grid.RowProperty, vm.toDraw[i].ActualHeight);
                     node.SetValue(Grid.ColumnProperty, i);
                     node.HorizontalAlignment = HorizontalAlignment.Center;
                     Visualization.Children.Add(node);
-
                 }
             }
         }
