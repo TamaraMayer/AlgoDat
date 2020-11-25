@@ -174,14 +174,14 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //try catch if workes dann if, catch bekommt else
-
-                        Node node = Find(root);
-                        if (node != null)
+                        //try catch if workes dann number exists, also occured one time; catch heißt es ist nicht im baum
+                        try
                         {
+                            Node node = Find(root);
+
                             MessageBox.Show($"The number {inputField} occurs once in the tree!", "Count Specific", MessageBoxButton.OK);
                         }
-                        else
+                        catch
                         {
                             MessageBox.Show($"The number {inputField} is not in the tree!", "Count Specific", MessageBoxButton.OK);
                         }
@@ -196,7 +196,17 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //TODO same as CountValueOccurenceCommand, with other messages
+                        //try catch if workes dann number exists; catch heißt es ist nicht im baum
+                        try
+                        {
+                            Node node = Find(root);
+
+                            MessageBox.Show($"The number {inputField} is in the tree!", "Contains", MessageBoxButton.OK);
+                        }
+                        catch
+                        {
+                            MessageBox.Show($"The number {inputField} is not in the tree!", "Contains", MessageBoxButton.OK);
+                        }
                     });
             }
         }
@@ -271,13 +281,15 @@ namespace AVL_Tree_2ndAttempt
         {
             string s = "";
 
+            //goes through the traversed list and saves the value into the string, and adds a semicolon 
+            //aslong as it is not the last element in the list.
             for (int i = 0; i < traversedList.Count; i++)
             {
                 s += traversedList[i].Value;
 
                 if (i != traversedList.Count - 1)
                 {
-                    s += ",";
+                    s += ", ";
                 }
             }
 
@@ -286,6 +298,8 @@ namespace AVL_Tree_2ndAttempt
 
         public int CalculateHeight(Node current)
         {
+            //recursivly calculates the height of all nodes, starting with the one in the parameter
+
             int height = 0;
             if (current != null)
             {
@@ -298,19 +312,23 @@ namespace AVL_Tree_2ndAttempt
         }
         private void RecurviseInsert(Node currentNode)
         {
-            if (currentNode.Value == inputField)
+            //recursivly goes through the tree until it either finds a node with the value and throws an exception
+            //or a place to insert is found, after inserting all nodes that were went through will be checked if
+            //this node is unbalanced and needs to be rotated
+
+            if (currentNode.Value == InputField)
             {
-                this.InputField = 0;
-                //Message box, could not be inserted, but eigentlich als Exception
+                throw new ArgumentException($"{this.InputField} could not be inserted, it is already in the tree. No duplicates allowed!");
             }
             else
             {
-                if (currentNode.Value > this.inputField)
+                if (currentNode.Value > this.InputField)
                 {
                     if (currentNode.Left == null)
                     {
-                        //TODO messagebox, was inserted
                         currentNode.Left = new Node(inputField);
+
+                        MessageBox.Show($"{this.InputField} was inserted!", "Insert", MessageBoxButton.OK);
                     }
                     else
                     {
@@ -323,8 +341,9 @@ namespace AVL_Tree_2ndAttempt
                 {
                     if (currentNode.Right == null)
                     {
-                        //TODO messagebox, was inserted
                         currentNode.Right = new Node(inputField);
+
+                        MessageBox.Show($"{this.InputField} was inserted!", "Insert", MessageBoxButton.OK);
                     }
                     else
                     {
@@ -335,9 +354,12 @@ namespace AVL_Tree_2ndAttempt
                 }
             }
         }
-   
+
         private Node Find(Node current)
         {
+            //recursivly goes through the tree until it either finds a node with the value and returns it
+            //or throws an exception when the last node has no children
+
             int lookFor = this.InputField;
 
             if (current.Value == lookFor)
@@ -361,11 +383,13 @@ namespace AVL_Tree_2ndAttempt
             }
 
             throw new ArgumentException("The given number is not inside the Tree!");
-            //check right+left for null and throw exception
         }
 
         private Node FindParent(Node current, int target)
         {
+            //recursivly goes through the tree until it either finds a node with the value and returns its parent
+            //or throws an exception when the last node has no children
+
             if (current.Left != null)
             {
                 if (current.Left.Value == target)
@@ -403,6 +427,10 @@ namespace AVL_Tree_2ndAttempt
 
         private void Remove(Node toRemoveParent, int target)
         {
+            //checks if the node to be removed is on the right or the left side of the prent node and sets the node that needs to be removed
+            //there are 3 possibilities to remove the node
+            //has no children, has 2 children, has only one child
+
             bool left;
             Node toRemove;
 
@@ -418,7 +446,8 @@ namespace AVL_Tree_2ndAttempt
             }
 
             #region KEINE KINDER
-            //  wenn das zu entfernende Blatt keine Kinder hat
+            //wenn das zu entfernende Blatt keine Kinder hat, einfach das blatt entfernen
+            //sprich beim parent die vorher herausgefundene seite auf null setzen
             if (toRemove.Left == null && toRemove.Right == null)
             {
                 if (left)
@@ -434,27 +463,26 @@ namespace AVL_Tree_2ndAttempt
             #endregion KEINE KINDER
 
             #region ZWEI KINDER
+            //wenn das blatt zwei kinder hat, wird der nachfolger vom inorder traverse gesucht, also das linkeste blatt im rechten subbaum
+            //dann den parent zu diesem nachfolger
+            //dann wird der wert des inOrderSuccessor in den toRemoveNode gespeichtert und
+            //der inOrderSuccessor bei seinem parent gelöscht
             if (toRemove.Left != null && toRemove.Right != null)
             {
                 Node inOrderSuccessor = GetLeftestLeafNode(toRemove.Right);
-                Node tempParent = FindParent(toRemove.Right, inOrderSuccessor.Value);
+                Node tempParent;
 
-                if (tempParent.Left != null)
+                if (inOrderSuccessor.Value == toRemove.Right.Value)
                 {
-                    toRemove.Value = inOrderSuccessor.Value;
-                    tempParent.Left = null;
+                    tempParent = toRemove;
                 }
                 else
                 {
-                    if (left)
-                    {
-                        toRemoveParent.Left = inOrderSuccessor;
-                    }
-                    else
-                    {
-                        toRemoveParent.Right = inOrderSuccessor;
-                    }
+                    tempParent = FindParent(toRemove.Right, inOrderSuccessor.Value);
                 }
+
+                toRemove.Value = inOrderSuccessor.Value;
+                Remove(tempParent, inOrderSuccessor.Value);
 
                 return;
             }
@@ -481,10 +509,11 @@ namespace AVL_Tree_2ndAttempt
             {
                 return GetLeftestLeafNode(current.Left);
             }
-            else if (current.Right != null)
-            {
-                return GetLeftestLeafNode(current.Right);
-            }
+            //else
+            //if (current.Right != null)
+            //{
+            //    return GetLeftestLeafNode(current.Right);
+            //}
             else
             {
                 return current;
