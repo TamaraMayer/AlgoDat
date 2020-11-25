@@ -178,7 +178,7 @@ namespace AVL_Tree_2ndAttempt
                     obj =>
                     {
                         //tries to find the number in the input field starting at the root, can throw an exception
-                        //if no exception thrown and caught the number occurs, otherwise not
+                        //if no exception thrown and caught the number occurs exactly once since in this tree no suplicates are allowed, otherwise it is not in the tree
                         //finally sets the inputfield to zero
 
                         try
@@ -198,7 +198,7 @@ namespace AVL_Tree_2ndAttempt
                     });
             }
         }
-        public ICommand ContainsComand
+        public ICommand ContainsCommand
         {
             get
             {
@@ -206,7 +206,10 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //try catch if workes dann number exists; catch heißt es ist nicht im baum
+                        //tries to find the number in the input field starting at the root, can throw an exception
+                        //if no exception thrown and caught the number occurs, otherwise not
+                        //finally sets the inputfield to zero
+
                         try
                         {
                             Node node = Find(root, this.InputField);
@@ -216,6 +219,10 @@ namespace AVL_Tree_2ndAttempt
                         catch
                         {
                             MessageBox.Show($"The number {inputField} is not in the tree!", "Contains", MessageBoxButton.OK);
+                        }
+                        finally
+                        {
+                            this.InputField = 0;
                         }
                     });
             }
@@ -279,7 +286,7 @@ namespace AVL_Tree_2ndAttempt
                 (
                     obj =>
                     {
-                        //set root node to null
+                        //set root node to null and fire tree changed event
 
                         this.root = null;
                         this.FireTreeChangedEvent();
