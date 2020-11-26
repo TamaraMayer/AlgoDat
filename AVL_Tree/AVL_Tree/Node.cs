@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AVL_Tree
 {
-    class Node
+    public class Node
     {
         public Node Left { get; set; }
         public Node Right { get; set; }

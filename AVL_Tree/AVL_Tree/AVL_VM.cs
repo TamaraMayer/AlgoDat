@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace AVL_Tree
 {
-    class AVL_VM : INotifyPropertyChanged
+    public class AVL_VM : INotifyPropertyChanged
     {
         // is the root node of the AVL tree
         public Node root { get; set; }

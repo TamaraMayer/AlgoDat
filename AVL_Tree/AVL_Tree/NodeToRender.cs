@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AVL_Tree
 {
-    class NodeToRender
+    public class NodeToRender
     {
         public int Value { get; set; }
         public int ActualHeight { get; set; }
