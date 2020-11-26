@@ -611,7 +611,7 @@ namespace AVL_Tree
                 return current;
             }
         }
-        private void TraverseInOrder(Node current)
+        internal void TraverseInOrder(Node current)
         {
             //if the node is not null, checks if there is a left child
             //if yes, calls itself with the left child
