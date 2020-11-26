@@ -10,8 +10,8 @@ namespace AVL_Tree.Test
         [TestInitialize]
         public void Setup()
         {
+            //View model zum testen setzen
             this.vm = new AVL_VM();
-            //this.vm.root = null;
         }
 
         [TestMethod]
@@ -22,6 +22,28 @@ namespace AVL_Tree.Test
 
             string expectedResult = "12456789";
             int[] values = new int[] { 1, 2, 6, 7, 8, 9, 4, 5 };
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                vm.InputField = values[i];
+                vm.InsertCommand.Execute(null);
+            }
+
+            vm.TraverseInOrder(vm.root);
+
+            string actual = ConvertionForAssert.ConvertNodeListToString(vm.traversedList);
+
+            Assert.AreEqual(expectedResult, actual);
+        }
+    
+    [TestMethod]
+        public void Should_InsertSomeValues_usingInsertCommand_AndRotate()
+        {
+            //inserts values into the tree, basically just to test last rotation
+            //traverses in order starting at root, gets a string out of this tree and this string is compared with the expected Result
+
+            string expectedResult = "126";
+            int[] values = new int[] { 6,2,1 };
 
             for (int i = 0; i < values.Length; i++)
             {

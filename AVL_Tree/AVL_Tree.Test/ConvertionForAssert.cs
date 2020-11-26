@@ -8,17 +8,8 @@ namespace AVL_Tree.Test
     {
         public static string ConvertNodeListToString(List<Node> nodes)
         {
-            string s = "";
+            //writes all values into one string without seperation
 
-            foreach (Node n in nodes)
-            {
-                s += n.Value;
-            }
-
-            return s;
-        }
-        public static string ConvertNodeListWithNullValuesToString(List<Node> nodes)
-        {
             string s = "";
 
             foreach (Node n in nodes)
@@ -31,6 +22,8 @@ namespace AVL_Tree.Test
 
         public static bool CompareNodesToRender(List<NodeToRender> expected,List<NodeToRender> actual)
         {
+            //compares properties of nodes in the lists
+
             if(expected.Count != actual.Count)
             {
                 return false;

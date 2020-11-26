@@ -30,6 +30,8 @@ namespace AVL_Tree.Test
         [TestMethod]
         public void ShouldRemoveRootValue_WhenOnlyRootInTree()
         {
+            //Resets the root node so that only a root node is in the tree, deletes the root node
+
             vm.root = new Node(7);
             vm.InputField = 7;
 
@@ -41,6 +43,10 @@ namespace AVL_Tree.Test
         [TestMethod]
         public void ShouldRemoveRootValue_FromBiggerTree()
         {
+            //inserts more values to get a bigger tree, removes root value
+
+            string expected = "1234568910111213";
+
             int[] values = new int[] { 3, 10, 11, 12, 13 };
 
             for (int i = 0; i < values.Length; i++)
@@ -53,7 +59,11 @@ namespace AVL_Tree.Test
 
             vm.RemoveCommand.Execute(null);
 
-            Assert.IsNull(vm.root);
+            vm.TraverseInOrder(vm.root);
+
+            string actual = ConvertionForAssert.ConvertNodeListToString(vm.traversedList);
+
+            Assert.AreEqual(expected, actual);
         }
 
         [DataTestMethod]
@@ -61,6 +71,8 @@ namespace AVL_Tree.Test
         [DataRow(7,3)]
         public void ShouldRemoveRootValue_WhenRootHasOnlyOneChild(int root, int child)
         {
+            //inserts root and one child, deletes root, checks if value of new root and child are equal
+
             vm.root = new Node(root);
             vm.InputField = child;
             vm.InsertCommand.Execute(null);
@@ -68,8 +80,7 @@ namespace AVL_Tree.Test
             vm.InputField = root;
             vm.RemoveCommand.Execute(null);
 
-            //TODO not sure if are equal funkt
-            Assert.AreEqual(new Node(child),vm.root);
+            Assert.AreEqual(child,vm.root.Value);
         }
 
         [DataTestMethod]
@@ -78,6 +89,8 @@ namespace AVL_Tree.Test
         [DataRow(1,"2456789")]
         public void ShouldRemoveValue(int value, string expected)
         {
+            //removes the given value
+
             vm.InputField = value;
 
             vm.RemoveCommand.Execute(null);
@@ -102,6 +115,8 @@ namespace AVL_Tree.Test
         [TestMethod]
         public void ShouldFindValueLeftOfRoot()
         {
+            //a value left of the root is looked for
+
             Node expected = vm.root.Left.Right.Left;
 
             Node actual = vm.Find(vm.root, 4);
@@ -112,6 +127,8 @@ namespace AVL_Tree.Test
         [TestMethod]
         public void ShouldFindValueRightOfRoot()
         {
+            //a value right of the root is looked for
+
             Node expected = vm.root.Right.Right;
 
             Node actual = vm.Find(vm.root, 9);
@@ -138,12 +155,10 @@ namespace AVL_Tree.Test
         }
 
         [TestMethod]
-        public void ShouldFindParentOfRootEqualsNull()
+        public void ShouldFindParentOfRoot_EqualsNull()
         {
-            Node expected = vm.root.Left.Right;
-
-            Node actual = vm.FindParent(vm.root, 6);
-            Assert.AreEqual(expected, actual);
+            Node actual = vm.FindParent(vm.root, 7);
+            Assert.IsNull(actual);
         }
 
         [TestMethod]
@@ -157,7 +172,7 @@ namespace AVL_Tree.Test
         }
 
         [TestMethod]
-        public void ShouldGetInOrderSuccessor_WithTwoLeftChildren()
+        public void ShouldGetInOrderSuccessor_WithLeftChildren()
         {
             int[] values = new int[] { 3,10,11,12,13 };
 
@@ -231,6 +246,8 @@ namespace AVL_Tree.Test
         [TestMethod]
         public void ShouldSetListForRendering()
         {
+            //Set expected list
+
             List<NodeToRender> expected = new List<NodeToRender> { null,
            new NodeToRender(1,2), null,
            new NodeToRender(2,1), new NodeToRender(4,3),
