@@ -52,14 +52,14 @@ namespace AVL_Tree
             traversedList = new List<Node>();
             toDraw = new List<NodeToRender>();
 
-            this.root = new Node(7);
-            this.root.Right = new Node(8);
-            this.root.Right.Right = new Node(9);
-            this.root.Left = new Node(2);
-            this.root.Left.Left = new Node(1);
-            this.root.Left.Right = new Node(5);
-            this.root.Left.Right.Left = new Node(4);
-            this.root.Left.Right.Right = new Node(6);
+            //this.root = new Node(7);
+            //this.root.Right = new Node(8);
+            //this.root.Right.Right = new Node(9);
+            //this.root.Left = new Node(2);
+            //this.root.Left.Left = new Node(1);
+            //this.root.Left.Right = new Node(5);
+            //this.root.Left.Right.Left = new Node(4);
+            //this.root.Left.Right.Right = new Node(6);
         }
 
         private void Notify([CallerMemberName] string property = null)
@@ -627,15 +627,33 @@ namespace AVL_Tree
             //if yes, calls itself with the left child
             //if no returns itself
 
+            if(current.Right == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(current), "The given Node has no children on the right side, can't find an inorder successor. \r\n Only nodes with right child are supposed to call this method!");
+            }
+
             if (current.Right.Left != null)
             {
-                return GetInOrderSuccessor(current.Right.Left);
+                return GetLeftestLeafNode(current.Right.Left);
             }
             else
             {
                 return current.Right;
             }
         }
+
+        internal Node GetLeftestLeafNode(Node current)
+        {
+            if (current.Left != null)
+            {
+                return GetLeftestLeafNode(current.Left);
+            }
+            else
+            {
+                return current;
+            }
+        }
+
         internal void TraverseInOrder(Node current)
         {
             //if the node is not null, checks if there is a left child

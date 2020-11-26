@@ -6,7 +6,7 @@ using System.Text;
 namespace AVL_Tree.Test
 {
     [TestClass]
-   public class AVL_Test
+    public class AVL_Test
     {
         public AVL_VM vm;
 
@@ -59,22 +59,52 @@ namespace AVL_Tree.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
-        public void ShouldFindValue()
+        [TestMethod]
+        public void ShouldFindRootValue()
         {
             Node expected = vm.root;
 
-            Node actual = vm.Find(vm.root,7);
+            Node actual = vm.Find(vm.root, 7);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestMethod]
+        public void ShouldFindValueLeftOfRoot()
+        {
+            Node expected = vm.root.Left.Right.Left;
+
+            Node actual = vm.Find(vm.root, 4);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void ShouldFindParentOfValue()
+        public void ShouldFindValueRightOfRoot()
+        {
+            Node expected = vm.root.Right.Right;
+
+            Node actual = vm.Find(vm.root, 9);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ShouldFindParentOfValue_LeftOfRoot()
         {
             Node expected = vm.root.Left.Right;
 
             Node actual = vm.FindParent(vm.root, 6);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ShouldFindParentOfValue_RightOfRoot()
+        {
+            Node expected = vm.root.Right;
+
+            Node actual = vm.FindParent(vm.root, 9);
             Assert.AreEqual(expected, actual);
         }
 
@@ -88,13 +118,67 @@ namespace AVL_Tree.Test
         }
 
         [TestMethod]
-        public void ShouldGetInOrderSuccessor()
+        public void ShouldGetInOrderSuccessor_WithoutLeftChild()
         {
             Node expected = vm.root.Right;
 
             Node actual = vm.GetInOrderSuccessor(vm.root);
 
             Assert.AreEqual(expected.Value, actual.Value);
+        }
+
+        [TestMethod]
+        public void ShouldGetInOrderSuccessor_WithLeftChild()
+        {
+            Node expected = vm.root.Left.Right.Left;
+
+            Node actual = vm.GetInOrderSuccessor(vm.root.Left);
+
+            Assert.AreEqual(expected.Value, actual.Value);
+        }
+
+        [TestMethod]
+        public void ShouldClearTree()
+        {
+            vm.ClearCommand.Execute(null);
+
+            Assert.AreEqual(null, vm.root);
+        }
+
+        [TestMethod]
+        public void ShouldTraverseTreeInOrder()
+        {
+            string expected = "12456789";
+
+            vm.TraverseInOrderCommand.Execute(null);
+
+            string actual = ConvertionForAssert.ConvertNodeListToString(vm.traversedList);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ShouldTraverseTreePreOrder()
+        {
+            string expected = "72154689";
+
+            vm.TraversePreOrderCommand.Execute(null);
+
+            string actual = ConvertionForAssert.ConvertNodeListToString(vm.traversedList);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ShouldTraverseTreePostOrder()
+        {
+            string expected = "14652987";
+
+            vm.TraversePostOrderCommand.Execute(null);
+
+            string actual = ConvertionForAssert.ConvertNodeListToString(vm.traversedList);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }
