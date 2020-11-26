@@ -52,14 +52,14 @@ namespace AVL_Tree
             traversedList = new List<Node>();
             toDraw = new List<NodeToRender>();
 
-            //this.root = new Node(7);
-            //this.root.Right = new Node(8);
-            //this.root.Right.Right = new Node(9);
-            //this.root.Left = new Node(2);
-            //this.root.Left.Left = new Node(1);
-            //this.root.Left.Right = new Node(5);
-            //this.root.Left.Right.Left = new Node(4);
-            //this.root.Left.Right.Right = new Node(6);
+            this.root = new Node(7);
+            this.root.Right = new Node(8);
+            this.root.Right.Right = new Node(9);
+            this.root.Left = new Node(2);
+            this.root.Left.Left = new Node(1);
+            this.root.Left.Right = new Node(5);
+            this.root.Left.Right.Left = new Node(4);
+            this.root.Left.Right.Right = new Node(6);
         }
 
         private void Notify([CallerMemberName] string property = null)
@@ -138,7 +138,20 @@ namespace AVL_Tree
 
                         try
                         {
-                            if (root.Value == this.InputField)
+                            //if (root.Value == this.InputField)
+                            //{
+                            //    RemoveRootValue();
+
+                            //    if (this.root != null)
+                            //    {
+                            //        Rebalance(this.root);
+                            //    }
+                            //}
+                            //else
+                            //{
+                            toRemoveParent = FindParent(this.root, this.InputField);
+
+                            if (toRemoveParent == null)
                             {
                                 RemoveRootValue();
 
@@ -149,11 +162,10 @@ namespace AVL_Tree
                             }
                             else
                             {
-                                toRemoveParent = FindParent(this.root, this.InputField);
                                 Remove(toRemoveParent, this.InputField);
-
                                 Rebalance(toRemoveParent);
                             }
+                            //}
 
                             this.FireTreeChangedEvent();
                         }
@@ -418,6 +430,11 @@ namespace AVL_Tree
             if (current == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(current), "The specified parameter may not be null!");
+            }
+
+            if (current == this.root)
+            {
+                return null;
             }
 
             //recursivly goes through the tree until it either finds a node with the value and returns its parent
@@ -822,14 +839,11 @@ namespace AVL_Tree
             //tries to find the parent of the node to rotate, if there is one checks on which side it is
             //if there is none (which means the current node is the root), set parent to null
 
-            try
+            parent = FindParent(root, current.Value);
+
+            if (parent != null)
             {
-                parent = FindParent(root, current.Value);
                 left = IsLeft(parent, current.Value);
-            }
-            catch
-            {
-                parent = null;
             }
 
             //sets a temporary node that gets the value and children of the right child of the current node,
@@ -892,15 +906,13 @@ namespace AVL_Tree
             //tries to find the parent of the node to rotate, if there is one checks on which side it is
             //if there is none (which means the current node is the root), set parent to null
 
-            try
+            parent = FindParent(root, current.Value);
+
+            if (parent != null)
             {
-                parent = FindParent(root, current.Value);
                 left = IsLeft(parent, current.Value);
             }
-            catch
-            {
-                parent = null;
-            }
+
 
             //sets a temporary node that gets the value and children of the left child of the current node,
             //the left child becomes the value and children of the right child of the temporary node

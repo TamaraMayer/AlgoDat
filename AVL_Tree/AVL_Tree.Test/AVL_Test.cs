@@ -79,6 +79,15 @@ namespace AVL_Tree.Test
         }
 
         [TestMethod]
+        public void ShouldFindParentOfRootEqualsNull()
+        {
+            Node expected = vm.root.Left.Right;
+
+            Node actual = vm.FindParent(vm.root, 6);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void ShouldGetInOrderSuccessor()
         {
             Node expected = vm.root.Right;
