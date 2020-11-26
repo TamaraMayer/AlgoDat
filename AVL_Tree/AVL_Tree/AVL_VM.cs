@@ -432,7 +432,7 @@ namespace AVL_Tree
                 throw new ArgumentOutOfRangeException(nameof(current), "The specified parameter may not be null!");
             }
 
-            if (current == this.root)
+            if (target == this.root.Value)
             {
                 return null;
             }
@@ -526,7 +526,7 @@ namespace AVL_Tree
             //dann rekursiv der inOrderSuccessor removed
             if (toRemove.Left != null && toRemove.Right != null)
             {
-                Node inOrderSuccessor = GetInOrderSuccessor(toRemove.Right);
+                Node inOrderSuccessor = GetInOrderSuccessor(toRemove);
                 Node tempParent;
 
                 if (inOrderSuccessor.Value == toRemove.Right.Value)
@@ -586,7 +586,7 @@ namespace AVL_Tree
             //dann rekursiv der inOrderSuccessor removed
             if (toRemove.Left != null && toRemove.Right != null)
             {
-                Node inOrderSuccessor = GetInOrderSuccessor(toRemove.Right);
+                Node inOrderSuccessor = GetInOrderSuccessor(toRemove);
                 Node tempParent;
 
                 if (inOrderSuccessor.Value == toRemove.Right.Value)
