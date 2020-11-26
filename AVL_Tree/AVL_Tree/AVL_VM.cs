@@ -60,6 +60,7 @@ namespace AVL_Tree
             //this.root.Left.Right = new Node(5);
             //this.root.Left.Right.Left = new Node(4);
             //this.root.Left.Right.Right = new Node(6);
+
         }
 
         private void Notify([CallerMemberName] string property = null)
@@ -644,6 +645,11 @@ namespace AVL_Tree
 
         internal Node GetLeftestLeafNode(Node current)
         {
+            if (current.Right == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(current), "The given Node has no children on the right side, can't find an inorder successor. \r\n Only nodes with right child are supposed to call this method!");
+            }
+
             if (current.Left != null)
             {
                 return GetLeftestLeafNode(current.Left);

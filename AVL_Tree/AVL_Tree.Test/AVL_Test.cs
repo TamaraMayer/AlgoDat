@@ -124,7 +124,7 @@ namespace AVL_Tree.Test
 
             Node actual = vm.GetInOrderSuccessor(vm.root);
 
-            Assert.AreEqual(expected.Value, actual.Value);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -134,7 +134,17 @@ namespace AVL_Tree.Test
 
             Node actual = vm.GetInOrderSuccessor(vm.root.Left);
 
-            Assert.AreEqual(expected.Value, actual.Value);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ChecksIfValueIsLeftOfParent_ShouldReturn_false()
+        {
+            bool expected = false;
+
+            bool actual = vm.IsLeft(vm.root.Right, 9);
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -179,6 +189,25 @@ namespace AVL_Tree.Test
             string actual = ConvertionForAssert.ConvertNodeListToString(vm.traversedList);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ShouldSetListForRendering()
+        {
+            List<NodeToRender> expected = new List<NodeToRender> { null,
+           new NodeToRender(1,2), null,
+           new NodeToRender(2,1), new NodeToRender(4,3),
+           new NodeToRender(5,2), new NodeToRender(6,3),
+           new NodeToRender(7,0), null,
+           null,null,
+           new NodeToRender(8,1), null,
+           new NodeToRender(9,2),null};
+
+            vm.SetListToDraw();
+
+            bool actual = ConvertionForAssert.CompareNodesToRender(expected, vm.toDraw);
+
+            Assert.IsTrue(actual);
         }
     }
 }
