@@ -300,7 +300,7 @@ namespace AVL_Tree
             }
         }
 
-        private void ShowTraverseMessage(string message)
+        internal void ShowTraverseMessage(string message)
         {
             //goes through the traversed list and saves the value into the string, and adds a semicolon 
             //aslong as it is not the last element in the list.
@@ -335,7 +335,7 @@ namespace AVL_Tree
 
             return height;
         }
-        private void RecurviseInsert(Node currentNode)
+        internal void RecurviseInsert(Node currentNode)
         {
             //recursivly goes through the tree until it either finds a node with the value and throws an exception
             //or a place to insert is found, after inserting all nodes that were went through will be checked if
@@ -374,7 +374,7 @@ namespace AVL_Tree
             }
         }
 
-        private Node Find(Node current, int lookFor)
+        internal Node Find(Node current, int lookFor)
         {
             //recursivly goes through the tree until it either finds a node with the value and returns it
             //or throws an exception when the last node has no children
@@ -402,7 +402,7 @@ namespace AVL_Tree
             throw new ArgumentException("The given number is not inside the Tree!");
         }
 
-        private Node FindParent(Node current, int target)
+        internal Node FindParent(Node current, int target)
         {
             //just a precausion, should never be thrown within this whole code
             if (current == null)
@@ -447,7 +447,7 @@ namespace AVL_Tree
             throw new ArgumentException("The given number is not inside the Tree!");
         }
 
-        private void Remove(Node toRemoveParent, int target)
+        internal void Remove(Node toRemoveParent, int target)
         {
             //just a precausion, should never be thrown within this whole code
             if (toRemoveParent == null)
@@ -534,7 +534,7 @@ namespace AVL_Tree
             #endregion ONLY ONE CHILD
         }
 
-        private void RemoveRootValue()
+        internal void RemoveRootValue()
         {
             //sets root node as node toRemove
             //there are 3 possibilities to remove the node
@@ -594,7 +594,7 @@ namespace AVL_Tree
             #endregion ONLY ONE CHILD
         }
 
-        private Node GetInOrderSuccessor(Node current)
+        internal Node GetInOrderSuccessor(Node current)
         {
             //checks if the given node has a left child,
             //if yes, calls itself with the left child
@@ -609,7 +609,7 @@ namespace AVL_Tree
                 return current;
             }
         }
-        private void TraverseInOrder(Node current)
+        internal void TraverseInOrder(Node current)
         {
             //if the node is not null, checks if there is a left child
             //if yes, calls itself with the left child
@@ -631,7 +631,7 @@ namespace AVL_Tree
                 }
             }
         }
-        private void TraversePreOrder(Node current)
+        internal void TraversePreOrder(Node current)
         {
             //if the node is not null
             //adds the current node to the list
@@ -652,7 +652,7 @@ namespace AVL_Tree
                 }
             }
         }
-        private void TraversePostOrder(Node current)
+        internal void TraversePostOrder(Node current)
         {
             //if the node is not null
             //checks if there is a left child, if yes calls itself with the left child
@@ -687,7 +687,7 @@ namespace AVL_Tree
         }
 
         //actual height has the topdown view on height, root has the lowest with 0, leafnotes have the highest
-        private void TraverseInOrderForVisialisation(Node current, int actualHeight)
+        internal void TraverseInOrderForVisialisation(Node current, int actualHeight)
         {
             //basically like traverse in order but with nulls so that "all" elements in the tree are contained
 
@@ -727,7 +727,7 @@ namespace AVL_Tree
             }
         }
 
-        private void Rebalance(Node current)
+        internal void Rebalance(Node current)
         {
             //checks for null are "unnesseccary", balance factor would return 0
 
@@ -770,7 +770,7 @@ namespace AVL_Tree
             }
         }
 
-        private int CalculateBalanceFactor(Node current)
+        internal int CalculateBalanceFactor(Node current)
         {
             //calculates height of the left and right subtree
             //subtracts right height from left and return it
@@ -781,7 +781,7 @@ namespace AVL_Tree
             return b_factor;
         }
 
-        private bool IsLeft(Node parent, int target)
+        internal bool IsLeft(Node parent, int target)
         {
             //checks if the target value is on the left side of the given node
             //return true if yes,
@@ -804,7 +804,7 @@ namespace AVL_Tree
             }
         }
 
-        private void RotateLeft(Node current)
+        internal void RotateLeft(Node current)
         {
             Node parent;
             bool left = false;
@@ -852,7 +852,7 @@ namespace AVL_Tree
 
         }
 
-        private void RotateRL(Node current)
+        internal void RotateRL(Node current)
         {
             //Sets a temporary node to the right child of the current node
             //then rotates the temporary node right
@@ -863,7 +863,7 @@ namespace AVL_Tree
             RotateLeft(current);
         }
 
-        private void RotateLR(Node current)
+        internal void RotateLR(Node current)
         {
             //Sets a temporary node to the left child of the current node
             //then rotates the temporary node left
@@ -874,7 +874,7 @@ namespace AVL_Tree
             RotateRight(current);
         }
 
-        private void RotateRight(Node current)
+        internal void RotateRight(Node current)
         {
             Node parent;
             bool left = false;
