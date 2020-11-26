@@ -52,6 +52,15 @@ namespace AVL_Tree_2ndAttempt
 
             traversedList = new List<Node>();
             toDraw = new List<NodeToRender>();
+
+            this.root = new Node(7);
+            this.root.Right = new Node(8);
+            this.root.Right.Right = new Node(9);
+            this.root.Left = new Node(2);
+            this.root.Left.Left = new Node(1);
+            this.root.Left.Right = new Node(5);
+            this.root.Left.Right.Left = new Node(4);
+            this.root.Left.Right.Right = new Node(6);
         }
 
         private void Notify([CallerMemberName] string property = null)
