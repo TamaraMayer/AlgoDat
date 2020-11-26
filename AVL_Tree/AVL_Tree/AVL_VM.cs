@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("AVL_Tree.Test")]
 
 namespace AVL_Tree
 {
