@@ -21,7 +21,9 @@ namespace AVL_Tree.Test
         [TestMethod]
         public void ShouldGetArgumentException_RecursiveInsert()
         {
-            
+            vm.InputField = 4;
+
+            Assert.ThrowsException<ArgumentException>(vm.RecurviseInsert(vm.root), "4 could not be inserted, it is already in the tree. No duplicates allowed!");
         }
     }
 }
