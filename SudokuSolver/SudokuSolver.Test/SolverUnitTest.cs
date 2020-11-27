@@ -17,6 +17,8 @@ namespace SudokuSolver.Test
         [TestMethod]
         public void Should_Solve_9x9_Sudoku()
         {
+            //Sets sudoku string
+
             solver.SudokuString = @"0, 0, 8, 0, 6, 0, 4, 0, 9
                                4, 3, 0, 0, 9, 0, 0, 0, 5
                                0, 0, 2, 4, 0, 0, 0, 0, 3
@@ -27,6 +29,7 @@ namespace SudokuSolver.Test
                                9, 1, 5, 0, 0, 0, 2, 0, 0
                                0, 0, 0, 0, 0, 9, 6, 0, 0";
 
+            //is the solved sudoku as array
             int[] solvedSudoku =
             {
                 7,5,8,3,6,1,4,2,9,4,3,6,7,9,2,1,8,5,1,9,2,4,5,8,7,6,3,3,2,1,9,8,4,5,7,6,8,6,9,5,2,7,3,1,4,5,4,7,1,3,6,8,9,2,6,8,4,2,1,5,9,3,7,9,1,5,6,7,3,2,4,8,2,7,3,8,4,9,6,5,1
@@ -34,6 +37,7 @@ namespace SudokuSolver.Test
 
             solver.Run();
 
+            //compares the two sudokus
             Assert.IsTrue(CompareSudokus(solvedSudoku, solver.SudokuField));
         }
 
@@ -41,15 +45,16 @@ namespace SudokuSolver.Test
         //impossible to solve cause uneven amount of numbers
         public void Should_Throw_ArgumentException_becauseToManyNumbersInOneLine()
         {
+            //sudoku has a digit to much in one line
             solver.SudokuString = @"7, 3, 0, 0, 0, 0, 0, 9, 8
-                               4, 0, 2, 0, 0, 0, 0, 0, 6
-                               0, 0, 0, 0, 1, 7, 0, 0, 0
-                              1, 5, 4, 7, 0, 0, 2, 0, 0, 8
-                              0, 0, 9, 0, 0, 0, 0, 0, 7
-                               0, 0, 0, 0, 0, 6, 5, 0, 0
-                               0, 6, 0, 1, 0, 0, 4, 0, 0
-                             0, 0, 1, 5, 0, 0, 0, 8, 3
-                              0, 0, 5, 0, 9, 0, 0, 0, 0";
+                                    4, 0, 2, 0, 0, 0, 0, 0, 6
+                                    0, 0, 0, 0, 1, 7, 0, 0, 0
+                                    1, 5, 4, 7, 0, 0, 2, 0, 0, 8
+                                    0, 0, 9, 0, 0, 0, 0, 0, 7
+                                    0, 0, 0, 0, 0, 6, 5, 0, 0
+                                    0, 6, 0, 1, 0, 0, 4, 0, 0
+                                    0, 0, 1, 5, 0, 0, 0, 8, 3
+                                    0, 0, 5, 0, 9, 0, 0, 0, 0";
 
             Assert.ThrowsException<ArgumentException>(solver.SetSudoku, "There is at least one character that is not a number nor a comma in the original Sudoku. That is invalid!");
         }
@@ -57,13 +62,15 @@ namespace SudokuSolver.Test
         [TestMethod]
         public void Should_Throw_ArgumentExceptionBecauseMoreColumnsThanRows()
         {
+            //sudoku has 7 rows and 8 columns
+
             solver.SudokuString = @"7, 3, 0, 0, 0, 0, 0, 9, 8
-                               4, 0, 2, 0, 0, 0, 0, 0, 6
-                               0, 0, 0, 0, 1, 7, 0, 0, 0
-                              1, 5, 4, 7, 0, 0, 2, 0, 0
-                              0, 0, 9, 0, 0, 0, 0, 0, 7
-                             0, 0, 1, 5, 0, 0, 0, 8, 3
-                              0, 0, 5, 0, 9, 0, 0, 0, 0";
+                                    4, 0, 2, 0, 0, 0, 0, 0, 6
+                                    0, 0, 0, 0, 1, 7, 0, 0, 0
+                                    1, 5, 4, 7, 0, 0, 2, 0, 0
+                                    0, 0, 9, 0, 0, 0, 0, 0, 7
+                                    0, 0, 1, 5, 0, 0, 0, 8, 3
+                                    0, 0, 5, 0, 9, 0, 0, 0, 0";
 
             Assert.ThrowsException<ArgumentException>(solver.SetSudoku, "The given Sudoko does not meet the dimension criteria. The Sudoku is invalid!");
         }
@@ -71,15 +78,16 @@ namespace SudokuSolver.Test
         [TestMethod]
         public void Should_ReturnFalse_becauseGivenSudokuDoesNotMeetRules()
         {
+            //two 8 in one row
             solver.SudokuString = @"0, 0, 8, 8, 6, 0, 4, 0, 9
-                               4, 3, 0, 0, 9, 0, 0, 0, 5
-                               0, 0, 2, 4, 0, 0, 0, 0, 3
-                               0, 0, 0, 9, 0, 0, 0, 7, 6
-                               8, 0, 0, 0, 0, 7, 0, 0, 4
-                               5, 4, 0, 0, 3, 6, 0, 9, 0
-                               0, 0, 0, 2, 0, 5, 0, 3, 0
-                               9, 1, 5, 0, 0, 0, 2, 0, 0
-                               0, 0, 0, 0, 0, 9, 6, 0, 0";
+                                    4, 3, 0, 0, 9, 0, 0, 0, 5
+                                    0, 0, 2, 4, 0, 0, 0, 0, 3
+                                    0, 0, 0, 9, 0, 0, 0, 7, 6
+                                    8, 0, 0, 0, 0, 7, 0, 0, 4
+                                    5, 4, 0, 0, 3, 6, 0, 9, 0
+                                    0, 0, 0, 2, 0, 5, 0, 3, 0
+                                    9, 1, 5, 0, 0, 0, 2, 0, 0
+                                    0, 0, 0, 0, 0, 9, 6, 0, 0";
 
             solver.SetSudoku();
 
@@ -89,15 +97,17 @@ namespace SudokuSolver.Test
         [TestMethod]
         public void Should_Throw_ArgumentException_becauseGivenSudokuHasNotOnlyNumbers()
         {
+            //there is an 'a' within the sudoku string
+
             solver.SudokuString = @"0, 0, 8, a, 6, 0, 4, 0, 9
-                               4, 3, 0, 0, 9, 0, 0, 0, 5
-                               0, 0, 2, 4, 0, 0, 0, 0, 3
-                               0, 0, 0, 9, 0, 0, 0, 7, 6
-                               8, 0, 0, 0, 0, 7, 0, 0, 4
-                               5, 4, 0, 0, 3, 6, 0, 9, 0
-                               0, 0, 0, 2, 0, 5, 0, 3, 0
-                               9, 1, 5, 0, 0, 0, 2, 0, 0
-                               0, 0, 0, 0, 0, 9, 6, 0, 0";
+                                    4, 3, 0, 0, 9, 0, 0, 0, 5
+                                    0, 0, 2, 4, 0, 0, 0, 0, 3
+                                    0, 0, 0, 9, 0, 0, 0, 7, 6
+                                    8, 0, 0, 0, 0, 7, 0, 0, 4
+                                    5, 4, 0, 0, 3, 6, 0, 9, 0
+                                    0, 0, 0, 2, 0, 5, 0, 3, 0
+                                    9, 1, 5, 0, 0, 0, 2, 0, 0
+                                    0, 0, 0, 0, 0, 9, 6, 0, 0";
 
             Assert.ThrowsException<ArgumentException>(solver.SetSudoku, "There is at least one character that is not a number nor a comma in the original Sudoku. That is invalid!");
         }
@@ -105,8 +115,6 @@ namespace SudokuSolver.Test
         [TestMethod]
         public void Should_ReturnFalse_becauseGivenSudokuCouldNotBeSolved()
         {
-            //Check this again
-
             //impossible to solve in small
             solver.SudokuString = @"0,0,1,0
                                     0,0,2,0
@@ -114,8 +122,8 @@ namespace SudokuSolver.Test
                                     0,0,0,0";
 
             solver.SetSudoku();
-            //we start solve with 0 because thats the index where the first 0 is.
 
+            //we start solve with 0 because thats the index where the first 0 is.
             Assert.IsFalse(solver.Solve(0));
         }
 
@@ -287,11 +295,14 @@ namespace SudokuSolver.Test
 
         public bool CompareSudokus(int[] expected, int[] actual)
         {
+            //checks if arrays are the same length
+
             if (expected.Length != actual.Length)
             {
                 return false;
             }
 
+            //checks if values are the same
             for (int i = 0; i < expected.Length; i++)
             {
                 if (expected[i] != actual[i])
