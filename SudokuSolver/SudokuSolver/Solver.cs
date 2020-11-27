@@ -39,6 +39,7 @@ namespace SudokuSolver
             if (!IsSolvable())
             {
                 Console.WriteLine("The given Sudoku cannot be solved, it already breaks the rules!");
+                return;
             }
 
             firstZero = Array.IndexOf(sudokuField, 0);
@@ -55,6 +56,7 @@ namespace SudokuSolver
             if (!Solve(firstZero))
             {
                 Console.WriteLine("Sudoku could not be solved.");
+                return;
             }
 
             endTime = DateTime.Now;

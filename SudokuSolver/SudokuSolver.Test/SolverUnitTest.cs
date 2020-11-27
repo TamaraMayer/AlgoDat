@@ -34,7 +34,7 @@ namespace SudokuSolver.Test
 
             solver.Run();
 
-            Assert.AreEqual(solvedSudoku, solver.SudokuField);
+            Assert.IsTrue(CompareSudokus(solvedSudoku, solver.SudokuField));
         }
 
         [TestMethod]
@@ -113,6 +113,7 @@ namespace SudokuSolver.Test
                                     1,2,0,0
                                     0,0,0,0";
 
+            solver.SetSudoku();
             //we start solve with 0 because thats the index where the first 0 is.
 
             Assert.IsFalse(solver.Solve(0));
@@ -141,7 +142,7 @@ namespace SudokuSolver.Test
 
             solver.Run();
 
-            Assert.AreEqual(solvedSudoku, solver.SudokuField);
+            Assert.IsTrue(CompareSudokus(solvedSudoku, solver.SudokuField));
         }
 
         [TestMethod]
@@ -194,7 +195,7 @@ namespace SudokuSolver.Test
 
             solver.Run();
 
-           Assert.AreEqual(solvedSudoku, solver.SudokuField);
+            Assert.IsTrue(CompareSudokus(solvedSudoku, solver.SudokuField));
         }
 
         [TestMethod]
@@ -286,7 +287,20 @@ namespace SudokuSolver.Test
 
         public bool CompareSudokus(int[] expected, int[] actual)
         {
+            if (expected.Length != actual.Length)
+            {
+                return false;
+            }
 
+            for (int i = 0; i < expected.Length; i++)
+            {
+                if (expected[i] != actual[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
