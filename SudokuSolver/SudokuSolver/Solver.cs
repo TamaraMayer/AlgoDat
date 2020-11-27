@@ -29,49 +29,59 @@ namespace SudokuSolver
 
         public void Run()
         {
-            //    try
-            //    {
-            SetSudoku();
-
-            Console.WriteLine("Original Sudoku: ");
-            Print();
-
-            if (!IsSolvable())
+            try
             {
-                Console.WriteLine("The given Sudoku cannot be solved, it already breaks the rules!");
-                return;
+                //sets sudoku string to array
+                SetSudoku();
+
+                //print original sudoku
+                Console.WriteLine("Original Sudoku: ");
+                Print();
+
+                //checks if it is solvable
+                if (!IsSolvable())
+                {
+                    Console.WriteLine("The given Sudoku cannot be solved, it already breaks the rules!");
+                    return;
+                }
+
+                //looks for first zero
+                firstZero = Array.IndexOf(sudokuField, 0);
+
+                DateTime startTime;
+                DateTime endTime;
+
+                //Sets a timer with 45 minutes
+                //even if 45 minutes are over it will still keep solving
+                Timer timer = new Timer(2700000);
+                timer.Elapsed += OnTimedEvent;
+                timer.Start();
+
+                //saves the start time
+                startTime = DateTime.Now;
+
+                //tries to solve the sudoku starting at the first zero
+                if (!Solve(firstZero))
+                {
+                    Console.WriteLine("Sudoku could not be solved.");
+                    return;
+                }
+
+                //saves end time
+                endTime = DateTime.Now;
+
+                //calculates time needed
+                TimeSpan neededTime = endTime - startTime;
+
+                Console.WriteLine("Solved Sudoku: ");
+                Console.WriteLine("Time needed to solve: {0} minutes {1} seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
+                this.Print();
+
             }
-
-            firstZero = Array.IndexOf(sudokuField, 0);
-
-            DateTime startTime;
-            DateTime endTime;
-
-            Timer timer = new Timer(2700000);
-            timer.Elapsed += OnTimedEvent;
-            timer.Start();
-
-            startTime = DateTime.Now;
-
-            if (!Solve(firstZero))
+            catch (Exception e)
             {
-                Console.WriteLine("Sudoku could not be solved.");
-                return;
+                Console.WriteLine(e.Message);
             }
-
-            endTime = DateTime.Now;
-
-            TimeSpan neededTime = endTime - startTime;
-
-            Console.WriteLine("Solved Sudoku: ");
-            Console.WriteLine("Time needed to solve: {0} minutes {1} seconds {2} milliseconds", neededTime.Minutes, neededTime.Seconds, neededTime.Milliseconds);
-            this.Print();
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
         }
 
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -83,13 +93,16 @@ namespace SudokuSolver
 
         public bool Solve(int i)
         {
+            //checks if this index is still in sudoku
             if (i >= dimension * dimension)
             {
                 return true;
             }
 
-            if (sudokuField[i] != 0)//pre filled 
+            //pre filled fields
+            if (sudokuField[i] != 0)
             {
+                //solve the next field
                 if (Solve(i + 1))
                 {
                     return true;
@@ -97,12 +110,13 @@ namespace SudokuSolver
             }
             else
             {
+                //go through the possible numbers starting at 1
+                //check if it is valid, if yes continue with next field, if not try next number
+                //if for loop is over, set back to zero
+                //if the firstzero retruns false sudoku is unsolvable
                 for (int j = 1; j <= dimension; j++)
                 {
-
                     sudokuField[i] = j;
-
-                    //   this.Print();
 
                     if (IsValid(i))
                     {
@@ -121,13 +135,15 @@ namespace SudokuSolver
 
         private void Print()
         {
+            //if the dimension is bigger than 9 printbig
+
             if (this.dimension > 9)
             {
                 PrintBig();
                 return;
             }
 
-
+            //otherwise this print
             Console.WriteLine();
 
             for (int i = 0; i < sudokuField.Length; i++)
@@ -165,6 +181,8 @@ namespace SudokuSolver
 
         private void PrintBig()
         {
+            //prints the sudoku with dimensions bigger than 9
+
             Console.WriteLine();
 
             for (int i = 0; i < sudokuField.Length; i++)
@@ -202,11 +220,14 @@ namespace SudokuSolver
 
         private bool IsValid(int i)
         {
+            //checks for each row, column, and block if the number is valid there
+
             int[] numbers = new int[this.dimension];
 
-            //row
+            #region row
             int rowNumber = 0;
 
+            //checks and sets in which row number the number is
             for (int j = dimension; j <= sudokuField.Length; j = j + dimension)
             {
                 if (i < j)
@@ -217,6 +238,7 @@ namespace SudokuSolver
                 rowNumber++;
             }
 
+            //gets the other numbers in that row, the index itself is set with 0
             for (int j = 0; j < this.dimension; j++)
             {
                 if (j + rowNumber * dimension == i)
@@ -227,13 +249,19 @@ namespace SudokuSolver
 
                 numbers[j] = this.sudokuField[j + rowNumber * dimension];
             }
+
+            //checks if the number is already in the array(row)
             if (numbers.Contains(this.sudokuField[i]))
             {
                 return false;
             }
+            #endregion row
 
-            //column
+            #region column
+            //sets the columnNumber based on the index and the dimension of the sudoku
             int columnNumber = i % this.dimension;
+
+            //as for row gets the other numbers in that column
             for (int j = 0; j < this.dimension; j++)
             {
                 if (columnNumber + j * this.dimension == i)
@@ -245,15 +273,18 @@ namespace SudokuSolver
                 numbers[j] = this.sudokuField[columnNumber + j * this.dimension];
             }
 
+            //check
             if (numbers.Contains(this.sudokuField[i]))
             {
                 return false;
             }
+            #endregion column
 
-            //block
+            #region block
             int firstRow = 0;
             int firstColumn = 0;
 
+            //first figures out which is the first row of the block, and which is the first column of the block
             for (int j = blockHeight; j <= dimension; j = j + blockHeight)
             {
                 if (rowNumber < j)
@@ -278,6 +309,7 @@ namespace SudokuSolver
             int index;
             int counter = 0;
 
+            //then gets the numbers in that block
             for (int r = 0; r < blockHeight; r++)
             {
                 row = r * dimension + firstRow * dimension;
@@ -298,16 +330,22 @@ namespace SudokuSolver
                 }
             }
 
+            //check
             if (numbers.Contains(this.sudokuField[i]))
             {
                 return false;
             }
+            #endregion block
 
             return true;
         }
 
         internal void SetSudoku()
         {
+            //converts the string that was given at initialiation of th class into an array
+            //first sets the dimension
+            //then goes through each line of the string and saves it each int into the array
+
             SetDimension();
 
             List<int> sudokuField = new List<int>();
@@ -347,6 +385,7 @@ namespace SudokuSolver
             int amountOfRows = 0;
             int amountOfColumns;
 
+            //figures out how many lines (rows) there are
             using (StringReader reader = new StringReader(sudokuString))
             {
                 string line = string.Empty;
@@ -361,6 +400,7 @@ namespace SudokuSolver
                 } while (line != null);
             }
 
+            //figures out how many columns there are in the first line
             using (StringReader reader = new StringReader(sudokuString))
             {
                 string line = reader.ReadLine();
@@ -369,11 +409,13 @@ namespace SudokuSolver
                 amountOfColumns = seperatedLine.Length;
             }
 
+            //checks if there is a dimension saved with those values
             if (!IsDimension(amountOfRows, amountOfColumns))
             {
                 throw new ArgumentException("The given Sudoko does not meet the dimension criteria. The Sudoku is invalid!");
             }
 
+            //checks if all other lines have the same amount of columns
             using (StringReader reader = new StringReader(sudokuString))
             {
                 string line;
@@ -395,11 +437,12 @@ namespace SudokuSolver
             }
 
             this.dimension = amountOfRows;
-
         }
 
         private bool IsDimension(int rows, int columns)
         {
+            //sets parameters into a string and compares them to the saved dimensions
+
             string dim = $"{rows}x{columns}";
 
             switch (dim)
@@ -451,6 +494,9 @@ namespace SudokuSolver
 
         internal bool IsSolvable()
         {
+            //goes through the original set array and checks for each value if it is valid in its position,
+            //or if there is already a mistake in the given sudoku
+
             for (int i = 0; i < sudokuField.Length; i++)
             {
                 if (sudokuField[i] == 0)
