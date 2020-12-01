@@ -27,8 +27,51 @@ namespace Visualtization
 
         public void ShowMaze_Click(object sender, RoutedEventArgs e)
         {
-            Grid grid = new Grid();
+            Visualization.Children.Clear();
+            Visualization.RowDefinitions.Clear();
+            Visualization.ColumnDefinitions.Clear();
 
+            MainWindowVM vm = (MainWindowVM)this.DataContext;
+
+            //sets list to draw, gets the number of rows and calculates the number of columns
+            int numberOfRows = vm.Height * 2 + 1;
+            int numberOfColumns = vm.Width * 2 + 1;
+
+
+            //adds the row and columnsdefinition to the grid
+            RowDefinition rowDefintion;
+            ColumnDefinition columnDefintion;
+
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                rowDefintion = new RowDefinition();
+                rowDefintion.Height = new GridLength(1, GridUnitType.Star);
+
+                Visualization.RowDefinitions.Add(rowDefintion);
+            }
+
+            for (int i = 0; i < numberOfColumns; i++)
+            {
+                columnDefintion = new ColumnDefinition();
+                columnDefintion.Width = new GridLength(1, GridUnitType.Star);
+
+                Visualization.ColumnDefinitions.Add(columnDefintion);
+            }
+
+            TextBlock block;
+
+            for (int i = 0; i < vm.Maze.MazeCells.GetLength(0); i++)
+            {
+                for (int j = 0; j < vm.Maze.MazeCells.GetLength(1); j++)
+                {
+                    block = new TextBlock();
+                    block.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+
+                    if (vm.Maze.MazeCells[i, j].North)
+                    {
+                    }
+                }
+            }
         }
 
         public void ShowPath_Click(object sender, RoutedEventArgs e)
