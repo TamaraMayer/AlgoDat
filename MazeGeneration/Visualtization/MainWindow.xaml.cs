@@ -66,7 +66,7 @@ namespace Visualtization
                 {
                     if (vm.Maze.MazeCells[i, j].North)
                     {
-                        for (int h = 0; i < 3; i++)
+                        for (int h = 0; h < 3; h++)
                         {
                             block = new TextBlock();
                             block.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
