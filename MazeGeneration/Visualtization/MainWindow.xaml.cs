@@ -64,11 +64,17 @@ namespace Visualtization
             {
                 for (int j = 0; j < vm.Maze.MazeCells.GetLength(1); j++)
                 {
-                    block = new TextBlock();
-                    block.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-
                     if (vm.Maze.MazeCells[i, j].North)
                     {
+                        for (int h = 0; i < 3; i++)
+                        {
+                            block = new TextBlock();
+                            block.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+
+                            block.SetValue(Grid.RowProperty, i);
+                            block.SetValue(Grid.ColumnProperty, j * 2 + h);
+                            Visualization.Children.Add(block);
+                        }
                     }
                 }
             }

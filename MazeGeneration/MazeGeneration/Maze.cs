@@ -23,19 +23,42 @@ namespace MazeGeneration
 
         public void Generate()
         {
-            int randCol = random.Next(this.Height + 1);
-            int randRow = random.Next(this.Width + 1);
+            int numberofEmptyFields;
+            int randCol = random.Next(this.Height);
+            int randRow = random.Next(this.Width);
 
             MazeCells[randRow, randCol] = new Cell();
 
             List<Cell_PathGeneration> path;
 
-            while (Array.IndexOf(MazeCells, null) > -1)
+            numberofEmptyFields = GetNumberOfEmptyFields();
+
+            while (numberofEmptyFields > 0)
             {
                 path = CreatePath();
 
                 AddPathToMaze(path);
+
+                numberofEmptyFields = GetNumberOfEmptyFields();
             }
+        }
+
+        private int GetNumberOfEmptyFields()
+        {
+            int counter=0;
+
+            for (int i = 0; i < MazeCells.GetLength(0); i++)
+            {
+                for (int j = 0; j < MazeCells.GetLength(1); j++)
+                {
+                    if (MazeCells[i, j] == null)
+                    {
+                        counter++;
+                    }
+                }
+            }
+
+            return counter;
         }
 
         private void AddPathToMaze(List<Cell_PathGeneration> path)
@@ -101,32 +124,32 @@ namespace MazeGeneration
 
             do
             {
-                column = random.Next(this.Height + 1);
-                row = random.Next(this.Width + 1);
+                column = random.Next(this.Height);
+                row = random.Next(this.Width);
             }
             while (MazeCells[row, column] != null);
 
-            goTo = random.Next(5);
+            do
+            {
+                goTo = random.Next(1, 5);
+            } while (!IsInsideMaze(column,row,goTo, true));
 
-            path.Add(new Cell_PathGeneration(row, column, (Direction)goTo, Direction.None));
+
+            path.Add(new Cell_PathGeneration(column, row, (Direction)goTo, Direction.None));
 
             do
             {
-                row = SetNewRow(goTo, row);
-                column = SetNewColumn(goTo, column);
+                row = SetNewRow(goTo, path[path.Count-1].Row);
+                column = SetNewColumn(goTo, path[path.Count - 1].Column);
 
-                if (row < 0 || row > this.Width)
+                if (!IsInsideMaze(column, row, goTo, false))
                 {
+                    goTo = random.Next(1, 5);
                     continue;
                 }
 
-                if (column < 0 || column > this.Height)
-                {
-                    continue;
-                }
-
-                cameFrom = goTo;
-                goTo = random.Next(5);
+                cameFrom = SetCameFrom(goTo);
+                goTo = random.Next(1,5);
 
                 if (MazeCells[row, column] != null)
                 {
@@ -158,6 +181,44 @@ namespace MazeGeneration
             while (true);
         }
 
+        private bool IsInsideMaze(int column, int row, int goTo, bool calculateNewFields)
+        {
+            if (calculateNewFields)
+            {
+                row = SetNewRow(goTo, row);
+                column = SetNewColumn(goTo, column);
+            }
+
+            if (row < 0 || row >= this.Width)
+            {
+                return false;
+            }
+
+            if (column < 0 || column >= this.Height)
+            {
+                return false;                
+            }
+
+            return true;
+        }
+
+        private int SetCameFrom(int goTo)
+        {
+            switch (goTo)
+            {
+                case 1:
+                    return 3;
+                case 2:
+                    return 4;
+                case 3:
+                    return 1;
+                case 4:
+                    return 2;
+                default:
+                    return 0;
+            }
+        }
+
         private int SetNewRow(int goTo, int row)
         {
             switch (goTo)
@@ -176,9 +237,9 @@ namespace MazeGeneration
             switch (goTo)
             {
                 case 2:
-                    return column - 1;
-                case 4:
                     return column + 1;
+                case 4:
+                    return column - 1;
                 default:
                     return column;
             }
