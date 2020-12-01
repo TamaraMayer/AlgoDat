@@ -97,7 +97,7 @@ namespace MazeGeneration
             int goTo;
             int cameFrom;
             Cell_PathGeneration newCell;
-            bool continueWalking = true;
+            Cell_PathGeneration isInPath;
 
             do
             {
@@ -112,23 +112,50 @@ namespace MazeGeneration
 
             do
             {
+                row = SetNewRow(goTo, row);
+                column = SetNewColumn(goTo, column);
+
+                if (row < 0 || row > this.Width)
+                {
+                    continue;
+                }
+
+                if (column < 0 || column > this.Height)
+                {
+                    continue;
+                }
+
                 cameFrom = goTo;
                 goTo = random.Next(5);
 
                 if (MazeCells[column, row] != null)
                 {
-                    continueWalking = false;
                     path.Add(new Cell_PathGeneration(column, row, Direction.None, (Direction)cameFrom));
+                    return path;
                 }
+                else
+                {
+                    newCell = new Cell_PathGeneration(column, row, (Direction)goTo, (Direction)cameFrom);
 
-                newCell = new Cell_PathGeneration(column, row, (Direction)goTo, (Direction)cameFrom);
+                    isInPath = path.Find(p => p.Column == newCell.Column && p.Row == newCell.Row);
 
+                    if (isInPath != null)
+                    {
+                        //TODO delete up to the found one, and change goto
 
+                       int index= path.FindIndex(p => p.Column == newCell.Column && p.Row == newCell.Row);
 
-                row = SetNewRow(goTo, row);
-                column = SetNewColumn(goTo, column);
+                        path.RemoveRange(index + 1, path.Count - index - 1);
+
+                        path[index].GoTo = (Direction)goTo;
+                    }
+                    else
+                    {
+                        path.Add(newCell);
+                    }
+                }
             }
-            while (continueWalking);
+            while (true);
         }
 
         private int SetNewColumn(int goTo, int column)
