@@ -8,6 +8,9 @@ namespace MazeGeneration
         {
             Maze maze = new Maze(50, 20);
             maze.Generate();
+
+            maze = new Maze(20, 50);
+            maze.Generate();
         }
     }
 }
