@@ -23,15 +23,16 @@ namespace MazeGeneration
 
         public void Generate()
         {
-            int numberofEmptyFields;
+            int numberofEmptyFields =0;
             int randCol = random.Next(this.Height);
             int randRow = random.Next(this.Width);
 
-            MazeCells[randRow, randCol] = new Cell();
+            this.MazeCells[randRow, randCol] = new Cell();
 
             List<Cell_PathGeneration> path;
 
-            numberofEmptyFields = GetNumberOfEmptyFields();
+            numberofEmptyFields = this.Height * this.Width - 1;
+           // numberofEmptyFields = this.GetNumberOfEmptyFields();
 
             while (numberofEmptyFields > 0)
             {
@@ -47,11 +48,11 @@ namespace MazeGeneration
         {
             int counter=0;
 
-            for (int i = 0; i < MazeCells.GetLength(0); i++)
+            for (int i = 0; i <this.MazeCells.GetLength(0); i++)
             {
-                for (int j = 0; j < MazeCells.GetLength(1); j++)
+                for (int j = 0; j < this.MazeCells.GetLength(1); j++)
                 {
-                    if (MazeCells[i, j] == null)
+                    if (this.MazeCells[i, j] == null)
                     {
                         counter++;
                     }
@@ -68,47 +69,47 @@ namespace MazeGeneration
 
             foreach (Cell_PathGeneration cell in path)
             {
-                MazeCells[cell.Row, cell.Column] = new Cell();
+                this.MazeCells[cell.Row, cell.Column] = new Cell();
 
                 if (cell.CameFrom == Direction.North || cell.GoTo == Direction.North)
                 {
-                    MazeCells[cell.Row, cell.Column].North = false;
+                    this.MazeCells[cell.Row, cell.Column].North = false;
                 }
 
                 if (cell.CameFrom == Direction.East || cell.GoTo == Direction.East)
                 {
-                    MazeCells[cell.Row, cell.Column].East = false;
+                    this.MazeCells[cell.Row, cell.Column].East = false;
                 }
 
                 if (cell.CameFrom == Direction.South || cell.GoTo == Direction.South)
                 {
-                    MazeCells[cell.Row, cell.Column].South = false;
+                    this.MazeCells[cell.Row, cell.Column].South = false;
                 }
 
                 if (cell.CameFrom == Direction.West || cell.GoTo == Direction.West)
                 {
-                    MazeCells[cell.Row, cell.Column].West = false;
+                    this.MazeCells[cell.Row, cell.Column].West = false;
                 }
             }
 
             if (lastCell.CameFrom == Direction.North)
             {
-                MazeCells[lastCell.Row, lastCell.Column].North = false;
+                this.MazeCells[lastCell.Row, lastCell.Column].North = false;
             }
 
             if (lastCell.CameFrom == Direction.East)
             {
-                MazeCells[lastCell.Row, lastCell.Column].East = false;
+                this.MazeCells[lastCell.Row, lastCell.Column].East = false;
             }
 
             if (lastCell.CameFrom == Direction.South)
             {
-                MazeCells[lastCell.Row, lastCell.Column].South = false;
+                this.MazeCells[lastCell.Row, lastCell.Column].South = false;
             }
 
             if (lastCell.CameFrom == Direction.West)
             {
-                MazeCells[lastCell.Row, lastCell.Column].West = false;
+                this.MazeCells[lastCell.Row, lastCell.Column].West = false;
             }
         }
 
@@ -122,42 +123,47 @@ namespace MazeGeneration
             Cell_PathGeneration newCell;
             Cell_PathGeneration isInPath;
 
+            //get the start point for the maze to not be in the maze
             do
             {
-                column = random.Next(this.Height);
-                row = random.Next(this.Width);
+                column = random.Next(this.Width);
+                row = random.Next(this.Height);
             }
-            while (MazeCells[row, column] != null);
+            while (this.MazeCells[row, column] != null);
 
+            //check that the next step will be within the maze
             do
             {
                 goTo = random.Next(1, 5);
-            } while (!IsInsideMaze(column,row,goTo, true));
+            } while (!IsInsideMaze(column,row,goTo));
 
-
+            //add the start point to the path
             path.Add(new Cell_PathGeneration(column, row, (Direction)goTo, Direction.None));
 
             do
             {
+                //set row and column for the next cell
                 row = SetNewRow(goTo, path[path.Count-1].Row);
                 column = SetNewColumn(goTo, path[path.Count - 1].Column);
 
-                if (!IsInsideMaze(column, row, goTo, false))
-                {
-                    goTo = random.Next(1, 5);
-                    continue;
-                }
-
+                //set came from to the opposite of the direction the previous cell went to
                 cameFrom = SetCameFrom(goTo);
-                goTo = random.Next(1,5);
 
-                if (MazeCells[row, column] != null)
+
+                if (this.MazeCells[row, column] != null)
                 {
                     path.Add(new Cell_PathGeneration(column, row, Direction.None, (Direction)cameFrom));
                     return path;
                 }
                 else
                 {
+                    //check that the next step will be within the maze
+                    do
+                    {
+                        goTo = random.Next(1, 5);
+                    } while (!IsInsideMaze(column, row, goTo));
+
+
                     newCell = new Cell_PathGeneration(column, row, (Direction)goTo, (Direction)cameFrom);
 
                     isInPath = path.Find(p => p.Column == newCell.Column && p.Row == newCell.Row);
@@ -181,22 +187,21 @@ namespace MazeGeneration
             while (true);
         }
 
-        private bool IsInsideMaze(int column, int row, int goTo, bool calculateNewFields)
+        private bool IsInsideMaze(int column, int row, int goTo)
         {
-            if (calculateNewFields)
-            {
+            
                 row = SetNewRow(goTo, row);
                 column = SetNewColumn(goTo, column);
-            }
+            
 
-            if (row < 0 || row >= this.Width)
+            if (column < 0 || column >= this.Width)
             {
                 return false;
             }
 
-            if (column < 0 || column >= this.Height)
+            if (row < 0 || row >= this.Height)
             {
-                return false;                
+                return false;
             }
 
             return true;

@@ -6,7 +6,8 @@ namespace MazeGeneration
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Maze maze = new Maze(50, 20);
+            maze.Generate();
         }
     }
 }
