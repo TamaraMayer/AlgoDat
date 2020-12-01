@@ -40,7 +40,10 @@ namespace MazeGeneration
 
         private void AddPathToMaze(List<Cell_PathGeneration> path)
         {
-            foreach(Cell_PathGeneration cell in path)
+            Cell_PathGeneration lastCell = path[path.Count - 1];
+            path.RemoveAt(path.Count - 1);
+
+            foreach (Cell_PathGeneration cell in path)
             {
                 MazeCells[cell.Column, cell.Row] = new Cell();
 
@@ -64,19 +67,94 @@ namespace MazeGeneration
                     MazeCells[cell.Column, cell.Row].West = false;
                 }
             }
+
+            if (lastCell.CameFrom == Direction.North)
+            {
+                MazeCells[lastCell.Column, lastCell.Row].North = false;
+            }
+
+            if (lastCell.CameFrom == Direction.East)
+            {
+                MazeCells[lastCell.Column, lastCell.Row].East = false;
+            }
+
+            if (lastCell.CameFrom == Direction.South)
+            {
+                MazeCells[lastCell.Column, lastCell.Row].South = false;
+            }
+
+            if (lastCell.CameFrom == Direction.West)
+            {
+                MazeCells[lastCell.Column, lastCell.Row].West = false;
+            }
         }
 
         private List<Cell_PathGeneration> CreatePath()
         {
-            int randCol;
-            int randRow;
+            List<Cell_PathGeneration> path = new List<Cell_PathGeneration>();
+            int column;
+            int row;
+            int goTo;
+            int cameFrom;
+            Cell_PathGeneration newCell;
+            bool continueWalking = true;
 
             do
             {
-                randCol = random.Next(this.Height + 1);
-                randRow = random.Next(this.Width + 1);
+                column = random.Next(this.Height + 1);
+                row = random.Next(this.Width + 1);
             }
-            while (MazeCells[randCol, randRow] == null);
+            while (MazeCells[column, row] != null);
+
+            goTo = random.Next(5);
+
+            path.Add(new Cell_PathGeneration(column, row, (Direction)goTo, Direction.None));
+
+            do
+            {
+                cameFrom = goTo;
+                goTo = random.Next(5);
+
+                if (MazeCells[column, row] != null)
+                {
+                    continueWalking = false;
+                    path.Add(new Cell_PathGeneration(column, row, Direction.None, (Direction)cameFrom));
+                }
+
+                newCell = new Cell_PathGeneration(column, row, (Direction)goTo, (Direction)cameFrom);
+
+
+
+                row = SetNewRow(goTo, row);
+                column = SetNewColumn(goTo, column);
+            }
+            while (continueWalking);
+        }
+
+        private int SetNewColumn(int goTo, int column)
+        {
+            switch (goTo)
+            {
+                case 1:
+                    return column - 1;
+                case 3:
+                    return column + 1;
+                default:
+                    return column;
+            }
+        }
+
+        private int SetNewRow(int goTo, int row)
+        {
+            switch (goTo)
+            {
+                case 2:
+                    return row - 1;
+                case 4:
+                    return row + 1;
+                default:
+                    return row;
+            }
         }
     }
 }
