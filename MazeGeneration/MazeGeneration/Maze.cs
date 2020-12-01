@@ -31,7 +31,7 @@ namespace MazeGeneration
 
             List<Cell_PathGeneration> path;
 
-            numberofEmptyFields = this.Height * this.Width - 1;
+           numberofEmptyFields = this.Height * this.Width - 1;
            // numberofEmptyFields = this.GetNumberOfEmptyFields();
 
             while (numberofEmptyFields > 0)
