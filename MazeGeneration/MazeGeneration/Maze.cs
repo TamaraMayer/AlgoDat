@@ -23,16 +23,16 @@ namespace MazeGeneration
 
         public void Generate()
         {
-            int numberofEmptyFields =0;
-            int randCol = random.Next(this.Height);
-            int randRow = random.Next(this.Width);
+            int numberofEmptyFields;
+            int randCol = random.Next(this.Width);
+            int randRow = random.Next(this.Height);
 
             this.MazeCells[randRow, randCol] = new Cell();
 
             List<Cell_PathGeneration> path;
 
-           numberofEmptyFields = this.Height * this.Width - 1;
-           // numberofEmptyFields = this.GetNumberOfEmptyFields();
+          // numberofEmptyFields = this.Height * this.Width - 1;
+            numberofEmptyFields = this.GetNumberOfEmptyFields();
 
             while (numberofEmptyFields > 0)
             {
