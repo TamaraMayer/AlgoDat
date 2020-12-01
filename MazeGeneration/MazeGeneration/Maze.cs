@@ -26,7 +26,7 @@ namespace MazeGeneration
             int randCol = random.Next(this.Height + 1);
             int randRow = random.Next(this.Width + 1);
 
-            MazeCells[randCol, randRow] = new Cell();
+            MazeCells[randRow, randCol] = new Cell();
 
             List<Cell_PathGeneration> path;
 
@@ -45,47 +45,47 @@ namespace MazeGeneration
 
             foreach (Cell_PathGeneration cell in path)
             {
-                MazeCells[cell.Column, cell.Row] = new Cell();
+                MazeCells[cell.Row, cell.Column] = new Cell();
 
                 if (cell.CameFrom == Direction.North || cell.GoTo == Direction.North)
                 {
-                    MazeCells[cell.Column, cell.Row].North = false;
+                    MazeCells[cell.Row, cell.Column].North = false;
                 }
 
                 if (cell.CameFrom == Direction.East || cell.GoTo == Direction.East)
                 {
-                    MazeCells[cell.Column, cell.Row].East = false;
+                    MazeCells[cell.Row, cell.Column].East = false;
                 }
 
                 if (cell.CameFrom == Direction.South || cell.GoTo == Direction.South)
                 {
-                    MazeCells[cell.Column, cell.Row].South = false;
+                    MazeCells[cell.Row, cell.Column].South = false;
                 }
 
                 if (cell.CameFrom == Direction.West || cell.GoTo == Direction.West)
                 {
-                    MazeCells[cell.Column, cell.Row].West = false;
+                    MazeCells[cell.Row, cell.Column].West = false;
                 }
             }
 
             if (lastCell.CameFrom == Direction.North)
             {
-                MazeCells[lastCell.Column, lastCell.Row].North = false;
+                MazeCells[lastCell.Row, lastCell.Column].North = false;
             }
 
             if (lastCell.CameFrom == Direction.East)
             {
-                MazeCells[lastCell.Column, lastCell.Row].East = false;
+                MazeCells[lastCell.Row, lastCell.Column].East = false;
             }
 
             if (lastCell.CameFrom == Direction.South)
             {
-                MazeCells[lastCell.Column, lastCell.Row].South = false;
+                MazeCells[lastCell.Row, lastCell.Column].South = false;
             }
 
             if (lastCell.CameFrom == Direction.West)
             {
-                MazeCells[lastCell.Column, lastCell.Row].West = false;
+                MazeCells[lastCell.Row, lastCell.Column].West = false;
             }
         }
 
@@ -104,11 +104,11 @@ namespace MazeGeneration
                 column = random.Next(this.Height + 1);
                 row = random.Next(this.Width + 1);
             }
-            while (MazeCells[column, row] != null);
+            while (MazeCells[row, column] != null);
 
             goTo = random.Next(5);
 
-            path.Add(new Cell_PathGeneration(column, row, (Direction)goTo, Direction.None));
+            path.Add(new Cell_PathGeneration(row, column, (Direction)goTo, Direction.None));
 
             do
             {
@@ -128,7 +128,7 @@ namespace MazeGeneration
                 cameFrom = goTo;
                 goTo = random.Next(5);
 
-                if (MazeCells[column, row] != null)
+                if (MazeCells[row, column] != null)
                 {
                     path.Add(new Cell_PathGeneration(column, row, Direction.None, (Direction)cameFrom));
                     return path;
@@ -158,29 +158,29 @@ namespace MazeGeneration
             while (true);
         }
 
-        private int SetNewColumn(int goTo, int column)
-        {
-            switch (goTo)
-            {
-                case 1:
-                    return column - 1;
-                case 3:
-                    return column + 1;
-                default:
-                    return column;
-            }
-        }
-
         private int SetNewRow(int goTo, int row)
         {
             switch (goTo)
             {
-                case 2:
+                case 1:
                     return row - 1;
-                case 4:
+                case 3:
                     return row + 1;
                 default:
                     return row;
+            }
+        }
+
+        private int SetNewColumn(int goTo, int column)
+        {
+            switch (goTo)
+            {
+                case 2:
+                    return column - 1;
+                case 4:
+                    return column + 1;
+                default:
+                    return column;
             }
         }
     }

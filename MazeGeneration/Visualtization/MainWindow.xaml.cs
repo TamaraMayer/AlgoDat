@@ -24,5 +24,16 @@ namespace Visualtization
         {
             InitializeComponent();
         }
+
+        public void ShowMaze_Click(object sender, RoutedEventArgs e)
+        {
+            Grid grid = new Grid();
+
+        }
+
+        public void ShowPath_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

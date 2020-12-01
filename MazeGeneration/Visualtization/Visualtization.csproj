@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MazeGeneration\MazeGeneration.csproj" />
+  </ItemGroup>
+
 </Project>

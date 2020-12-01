@@ -9,14 +9,21 @@ namespace Visualtization
     {
         public event EventHandler CanExecuteChanged;
 
+        private Action<object> action;
+
+        public Command(Action<object> action)
+        {
+            this.action = action;
+        }
+
         public bool CanExecute(object parameter)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            this.action(parameter);
         }
     }
 }
