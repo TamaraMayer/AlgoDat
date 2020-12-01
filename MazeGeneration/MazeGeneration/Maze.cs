@@ -141,7 +141,7 @@ namespace MazeGeneration
 
                     if (isInPath != null)
                     {
-                        //TODO delete up to the found one, and change goto
+                        // delete up to the found one, and change goto
 
                        int index= path.FindIndex(p => p.Column == newCell.Column && p.Row == newCell.Row);
 
