@@ -47,7 +47,7 @@ namespace Visualtization
             for (int i = 0; i < numberOfRows; i++)
             {
                 rowDefintion = new RowDefinition();
-                rowDefintion.Height = new GridLength(1, GridUnitType.Pixel);
+                rowDefintion.Height = new GridLength(1, GridUnitType.Star);
                 //rowDefintion.Height = new GridLength(10);
 
                 Visualization.RowDefinitions.Add(rowDefintion);
@@ -62,12 +62,15 @@ namespace Visualtization
             }
 
             TextBlock block;
+            MazeGeneration.Cell cell;
 
             for (int i = 0; i < vm.Maze.MazeCells.GetLength(0); i++)
             {
                 for (int j = 0; j < vm.Maze.MazeCells.GetLength(1); j++)
                 {
-                    if (vm.Maze.MazeCells[i, j].North)
+                    cell = vm.Maze.MazeCells[i, j];
+
+                    if (cell.North)
                     {
                         for (int h = 0; h < 3; h++)
                         {
