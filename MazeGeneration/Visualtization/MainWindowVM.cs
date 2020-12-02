@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Visualtization
 {
@@ -13,17 +16,18 @@ namespace Visualtization
         private Maze maze;
         private int height;
         private int width;
-        private Bitmap bitmap;
+        private BitmapSource bitmapSource;
 
-        public Bitmap Bitmap
+        public BitmapSource BitmapSource
         {
             get
             {
-                return this.bitmap;
+                return this.bitmapSource;
             }
             set
             {
-                this.bitmap = value;
+                this.bitmapSource = value;
+                this.Notify();
             }
         }
 
@@ -39,7 +43,7 @@ namespace Visualtization
             }
         }
 
-        public ICommand DrawMazeCommand
+        public ICommand ShowMazeCommand
         {
             get
             {
@@ -63,7 +67,7 @@ namespace Visualtization
                             {
                                 for (int h = 0; h < 3; h++)
                                 {
-                                    bitmap.SetPixel(j * 2 + h, i * 2, Color.Black);
+                                   tempBitmap.SetPixel(j * 2 + h, i * 2, Color.Black);
                                 }
                             }
 
@@ -72,7 +76,7 @@ namespace Visualtization
                                 //todo
                                 for (int h = 0; h < 3; h++)
                                 {
-                                    bitmap.SetPixel(j * 2 + 2, i * 2 + h, Color.Black);
+                                    tempBitmap.SetPixel(j * 2 + 2, i * 2 + h, Color.Black);
                                 }
                             }
                             if (Maze.MazeCells[i, j].South)
@@ -80,7 +84,7 @@ namespace Visualtization
                                 //todo
                                 for (int h = 0; h < 3; h++)
                                 {
-                                    bitmap.SetPixel(j * 2 + h, i * 2 + 2, Color.Black);
+                                    tempBitmap.SetPixel(j * 2 + h, i * 2 + 2, Color.Black);
                                 }
                             }
                             if (Maze.MazeCells[i, j].West)
@@ -88,13 +92,30 @@ namespace Visualtization
                                 //todo
                                 for (int h = 0; h < 3; h++)
                                 {
-                                    bitmap.SetPixel(j * 2, i * 2 + h, Color.Black);
-
+                                    tempBitmap.SetPixel(j * 2, i * 2 + h, Color.Black);
                                 }
                             }
                         }
                     }
 
+
+                    this.BitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                        tempBitmap.GetHbitmap(),
+                        IntPtr.Zero,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions());
+                });
+            }
+        }
+
+        public ICommand ShowPathCommand
+        {
+            get
+            {
+                return new Command(obj =>
+                {
+
+                    //TODO
                 });
             }
         }
@@ -134,5 +155,12 @@ namespace Visualtization
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Notify([CallerMemberName] string property = null)
+        {
+            //fires event that a property has changed
+
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
     }
 }
