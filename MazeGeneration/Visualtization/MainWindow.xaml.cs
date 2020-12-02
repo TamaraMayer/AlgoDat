@@ -77,7 +77,7 @@ namespace Visualtization
                             block = new TextBlock();
                             block.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
 
-                            block.SetValue(Grid.RowProperty, i);
+                            block.SetValue(Grid.RowProperty, i*2);
                             block.SetValue(Grid.ColumnProperty, j * 2 + h);
                             Visualization.Children.Add(block);
                         }
