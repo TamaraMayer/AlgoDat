@@ -24,6 +24,13 @@ namespace Visualtization
         {
             InitializeComponent();
         }
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // calculates incorrect when window is maximized
+            Visualization.MaxWidth = this.ActualWidth -20;
+            Visualization.MaxHeight = this.ActualHeight - 20;
+        }
+
 
         public void ShowMaze_Click(object sender, RoutedEventArgs e)
         {
@@ -43,8 +50,8 @@ namespace Visualtization
             int gridheight = Convert.ToInt32(MainGrid.RowDefinitions[0].ActualHeight / numberOfRows);
             int gridWidth = Convert.ToInt32(MainGrid.ActualWidth / numberOfColumns);
 
-            Visualization.Height = gridheight;
-            Visualization.Width = gridWidth;
+            Visualization.Height = gridheight*20;
+            Visualization.Width = gridWidth*20;
 
 
             //adds the row and columnsdefinition to the grid
