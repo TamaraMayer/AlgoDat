@@ -40,6 +40,13 @@ namespace Visualtization
             //TODO add something that a 50, 20 grid will be visible that that are two different sizes
             //something like divide height by the bigger one and set that a pixelwidth and height
 
+            int gridheight = Convert.ToInt32(MainGrid.RowDefinitions[0].ActualHeight / numberOfRows);
+            int gridWidth = Convert.ToInt32(MainGrid.ActualWidth / numberOfColumns);
+
+            Visualization.Height = gridheight;
+            Visualization.Width = gridWidth;
+
+
             //adds the row and columnsdefinition to the grid
             RowDefinition rowDefintion;
             ColumnDefinition columnDefintion;
@@ -48,7 +55,7 @@ namespace Visualtization
             {
                 rowDefintion = new RowDefinition();
                 rowDefintion.Height = new GridLength(1, GridUnitType.Star);
-                //rowDefintion.Height = new GridLength(10);
+                //rowDefintion.Height = new GridLength(gridheight);
 
                 Visualization.RowDefinitions.Add(rowDefintion);
             }
@@ -57,6 +64,7 @@ namespace Visualtization
             {
                 columnDefintion = new ColumnDefinition();
                 columnDefintion.Width = new GridLength(1, GridUnitType.Star);
+                // columnDefintion.Width = new GridLength(gridWidth);
 
                 Visualization.ColumnDefinitions.Add(columnDefintion);
             }
@@ -77,7 +85,7 @@ namespace Visualtization
                             block = new TextBlock();
                             block.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
 
-                            block.SetValue(Grid.RowProperty, i*2);
+                            block.SetValue(Grid.RowProperty, i * 2);
                             block.SetValue(Grid.ColumnProperty, j * 2 + h);
                             Visualization.Children.Add(block);
                         }
