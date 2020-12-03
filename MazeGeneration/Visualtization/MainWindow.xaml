@@ -27,8 +27,8 @@
             <Button Content="Generate" Command="{Binding Path=GenerateCommand}" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Show Maze" Command="{Binding Path=ShowMazeCommand}" Width="70"/>
-            <Separator Width="10" Visibility="Hidden"/>
-            <Button Content="Show Path" Command="{Binding Path=ShowPathCommand}" Width="70"/>
+            <!--<Separator Width="10" Visibility="Hidden"/>-->
+            <!--<Button Content="Show Path" Command="{Binding Path=ShowPathCommand}" Width="70"/>-->
         </StackPanel>
     </Grid>
 </Window>
