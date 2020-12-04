@@ -38,7 +38,7 @@ namespace SudokuSolver
                 Console.WriteLine("Original Sudoku: ");
                 Print();
 
-                //checks if it is solvable
+                //checks if it is solvable as far that the input meets the rules
                 if (!IsSolvable())
                 {
                     Console.WriteLine("The given Sudoku cannot be solved, it already breaks the rules!");
