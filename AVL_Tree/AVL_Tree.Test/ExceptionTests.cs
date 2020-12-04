@@ -33,7 +33,7 @@ namespace AVL_Tree.Test
         {
             vm.InputField = 4;
 
-            Assert.ThrowsException<ArgumentException>(()=>vm.RecurviseInsert(vm.root), "4 could not be inserted, it is already in the tree. No duplicates allowed!");
+            Assert.ThrowsException<ArgumentException>(()=>vm.RecursiveInsert(vm.root), "4 could not be inserted, it is already in the tree. No duplicates allowed!");
         }
 
         [TestMethod]

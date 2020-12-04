@@ -52,7 +52,7 @@ namespace AVL_Tree.Test
             for (int i = 0; i < values.Length; i++)
             {
                 vm.InputField = values[i];
-                vm.RecurviseInsert(vm.root);
+                vm.RecursiveInsert(vm.root);
             }
 
             vm.InputField = 7;
@@ -179,7 +179,7 @@ namespace AVL_Tree.Test
             for (int i = 0; i < values.Length; i++)
             {
                 vm.InputField = values[i];
-                vm.RecurviseInsert(vm.root);
+                vm.RecursiveInsert(vm.root);
             }
 
             Node expected = vm.root.Right.Left.Left;

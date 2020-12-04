@@ -98,7 +98,7 @@ namespace AVL_Tree
                             }
                             else
                             {
-                                RecurviseInsert(root);
+                                RecursiveInsert(root);
                             }
                             // rebalance is in recursive insert, every node from the one where it is inserted to the root is checked
                             this.FireTreeChangedEvent();
@@ -357,7 +357,7 @@ namespace AVL_Tree
 
             return height;
         }
-        internal void RecurviseInsert(Node currentNode)
+        internal void RecursiveInsert(Node currentNode)
         {
             //recursivly goes through the tree until it either finds a node with the value and throws an exception
             //or a place to insert is found, after inserting all nodes that were went through will be checked if
@@ -377,7 +377,7 @@ namespace AVL_Tree
                     }
                     else
                     {
-                        RecurviseInsert(currentNode.Left);
+                        RecursiveInsert(currentNode.Left);
                     }
                 }
                 else
@@ -388,7 +388,7 @@ namespace AVL_Tree
                     }
                     else
                     {
-                        RecurviseInsert(currentNode.Right);
+                        RecursiveInsert(currentNode.Right);
                     }
                 }
 
@@ -783,8 +783,6 @@ namespace AVL_Tree
 
         internal void Rebalance(Node current)
         {
-            //checks for null are "unnesseccary", balance factor would return 0
-
             //calculates balance factor for the current node,
             //if its grater than 1, checks the left side of the node
             //if the balance factor of the left side is bigger than zero it calls the rotate right method, otherwise the rotate left right method
