@@ -17,6 +17,7 @@ namespace Visualtization
         private int height;
         private int width;
         private BitmapSource bitmapSource;
+        private bool isMazeGenerated;
 
         public BitmapSource BitmapSource
         {
@@ -46,6 +47,8 @@ namespace Visualtization
 
                     this.Maze = new Maze(this.Height, this.Width);
                     this.Maze.Generate();
+
+                    this.isMazeGenerated = true;
                 });
             }
         }
@@ -56,6 +59,12 @@ namespace Visualtization
             {
                 return new Command(obj =>
                 {
+                    if (!this.isMazeGenerated)
+                    {
+                        MessageBox.Show("There is no maze to show jet! Generate it first!", "Show Maze error", MessageBoxButton.OK);
+                        return;
+                    }
+
                     //sets list to draw, gets the number of rows and calculates the number of columns
                     int numberOfRows = Height * 2 + 1;
                     int numberOfColumns = Width * 2 + 1;
@@ -159,6 +168,12 @@ namespace Visualtization
 
                 this.width = value;
             }
+        }
+
+        public MainWindowVM()
+        {
+            this.Height = 1;
+            this.Width = 1;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
