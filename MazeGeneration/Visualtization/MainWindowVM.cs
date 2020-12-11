@@ -37,6 +37,13 @@ namespace Visualtization
             {
                 return new Command(obj =>
                 {
+                    //initializes the maze class, generates the maze
+                    if(this.Height <1 || this.Width < 1)
+                    {
+                        MessageBox.Show("Height or Width is invalid! Check that both values are grater than or equal to 1.","Error",MessageBoxButton.OK);
+                        return;
+                    }
+
                     this.Maze = new Maze(this.Height, this.Width);
                     this.Maze.Generate();
                 });
@@ -76,7 +83,6 @@ namespace Visualtization
 
                             if (Maze.MazeCells[i, j].East)
                             {
-                                //todo
                                 for (int h = 0; h < 3; h++)
                                 {
                                     tempBitmap.SetPixel(j * 2 + 2, i * 2 + h, Color.Black);
@@ -84,7 +90,6 @@ namespace Visualtization
                             }
                             if (Maze.MazeCells[i, j].South)
                             {
-                                //todo
                                 for (int h = 0; h < 3; h++)
                                 {
                                     tempBitmap.SetPixel(j * 2 + h, i * 2 + 2, Color.Black);
@@ -92,76 +97,6 @@ namespace Visualtization
                             }
                             if (Maze.MazeCells[i, j].West)
                             {
-                                //todo
-                                for (int h = 0; h < 3; h++)
-                                {
-                                    tempBitmap.SetPixel(j * 2, i * 2 + h, Color.Black);
-                                }
-                            }
-                        }
-                    }
-
-
-                    this.BitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                        tempBitmap.GetHbitmap(),
-                        IntPtr.Zero,
-                        Int32Rect.Empty,
-                        BitmapSizeOptions.FromEmptyOptions());
-                });
-            }
-        }
-
-        //basically unnödig
-        public ICommand ShowPathCommand
-        {
-            get
-            {
-                return new Command(obj =>
-                {
-                    //sets list to draw, gets the number of rows and calculates the number of columns
-                    int numberOfRows = Height * 2 + 1;
-                    int numberOfColumns = Width * 2 + 1;
-
-                    Bitmap tempBitmap = new Bitmap(numberOfColumns, numberOfRows);
-
-                    Graphics g = Graphics.FromImage(tempBitmap);
-                    g.Clear(Color.GreenYellow);
-
-                    Cell cell;
-
-                    for (int i = 0; i < Maze.MazeCells.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < Maze.MazeCells.GetLength(1); j++)
-                        {
-                            cell = Maze.MazeCells[i, j];
-
-                            if (cell.North)
-                            {
-                                for (int h = 0; h < 3; h++)
-                                {
-                                    tempBitmap.SetPixel(j * 2 + h, i * 2, Color.Black);
-                                }
-                            }
-
-                            if (Maze.MazeCells[i, j].East)
-                            {
-                                //todo
-                                for (int h = 0; h < 3; h++)
-                                {
-                                    tempBitmap.SetPixel(j * 2 + 2, i * 2 + h, Color.Black);
-                                }
-                            }
-                            if (Maze.MazeCells[i, j].South)
-                            {
-                                //todo
-                                for (int h = 0; h < 3; h++)
-                                {
-                                    tempBitmap.SetPixel(j * 2 + h, i * 2 + 2, Color.Black);
-                                }
-                            }
-                            if (Maze.MazeCells[i, j].West)
-                            {
-                                //todo
                                 for (int h = 0; h < 3; h++)
                                 {
                                     tempBitmap.SetPixel(j * 2, i * 2 + h, Color.Black);
@@ -199,6 +134,12 @@ namespace Visualtization
             }
             set
             {
+                if (value < 1)
+                {
+                    this.height = value;
+                    throw new ArgumentOutOfRangeException("The specified parameter must not be smaller than one!");
+                }
+
                 this.height = value;
             }
         }
@@ -210,6 +151,12 @@ namespace Visualtization
             }
             set
             {
+                if (value < 1)
+                {
+                    this.width = value;
+                    throw new ArgumentOutOfRangeException("The specified parameter must not be smaller than one!");
+                }
+
                 this.width = value;
             }
         }

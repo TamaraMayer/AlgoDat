@@ -15,6 +15,16 @@ namespace MazeGeneration
 
         public Maze(int height, int width)
         {
+            if (height < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(height), "The specified parameter must not be smaller than one!");
+            }
+
+            if (width < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(height), "The specified parameter must not be smaller than one!");
+            }
+
             this.Height = height;
             this.Width = width;
             this.MazeCells = new Cell[height, width];
@@ -31,7 +41,7 @@ namespace MazeGeneration
 
             List<Cell_PathGeneration> path;
 
-          // numberofEmptyFields = this.Height * this.Width - 1;
+            // numberofEmptyFields = this.Height * this.Width - 1;
             numberofEmptyFields = this.GetNumberOfEmptyFields();
 
             while (numberofEmptyFields > 0)
@@ -46,9 +56,9 @@ namespace MazeGeneration
 
         private int GetNumberOfEmptyFields()
         {
-            int counter=0;
+            int counter = 0;
 
-            for (int i = 0; i <this.MazeCells.GetLength(0); i++)
+            for (int i = 0; i < this.MazeCells.GetLength(0); i++)
             {
                 for (int j = 0; j < this.MazeCells.GetLength(1); j++)
                 {
@@ -135,7 +145,7 @@ namespace MazeGeneration
             do
             {
                 goTo = random.Next(1, 5);
-            } while (!IsInsideMaze(column,row,goTo));
+            } while (!IsInsideMaze(column, row, goTo));
 
             //add the start point to the path
             path.Add(new Cell_PathGeneration(column, row, (Direction)goTo, Direction.None));
@@ -143,7 +153,7 @@ namespace MazeGeneration
             do
             {
                 //set row and column for the next cell
-                row = SetNewRow(goTo, path[path.Count-1].Row);
+                row = SetNewRow(goTo, path[path.Count - 1].Row);
                 column = SetNewColumn(goTo, path[path.Count - 1].Column);
 
                 //set came from to the opposite of the direction the previous cell went to
@@ -172,7 +182,7 @@ namespace MazeGeneration
                     {
                         // delete up to the found one, and change goto
 
-                       int index= path.FindIndex(p => p.Column == newCell.Column && p.Row == newCell.Row);
+                        int index = path.FindIndex(p => p.Column == newCell.Column && p.Row == newCell.Row);
 
                         path.RemoveRange(index + 1, path.Count - index - 1);
 
@@ -189,10 +199,10 @@ namespace MazeGeneration
 
         private bool IsInsideMaze(int column, int row, int goTo)
         {
-            
-                row = SetNewRow(goTo, row);
-                column = SetNewColumn(goTo, column);
-            
+
+            row = SetNewRow(goTo, row);
+            column = SetNewColumn(goTo, column);
+
 
             if (column < 0 || column >= this.Width)
             {

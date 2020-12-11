@@ -18,17 +18,57 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1" Height="25">
             <Separator Width="10" Visibility="Hidden"/>
             <TextBlock Text="Height:  "/>
-            <TextBox Text="{Binding Path=Height}" Width="70" />
+            <TextBox Text="{Binding Path=Height,ValidatesOnExceptions=True}" Width="70">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <Border BorderBrush="Red" BorderThickness="2" Name="errorBorder">
+                                <AdornedElementPlaceholder Name="textBox"/>
+                            </Border>
+                            <Popup IsOpen="True"
+                                PlacementTarget="{Binding ElementName=textBox}"
+                               Placement="Right" PopupAnimation="Fade"
+                               AllowsTransparency="True"
+                               HorizontalOffset="5">
+                                <Image Source="Images/error.png" Width="16">
+                                    <Image.ToolTip>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </Image.ToolTip>
+                                </Image>
+                            </Popup>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
             <Separator Width="5" Visibility="Hidden"/>
-            <TextBlock Text="Width:  " />
-            <TextBox Text="{Binding Path=Width}" Width="70"/>
-            
+            <TextBlock Text="Width:  "/>
+            <TextBox Text="{Binding Path=Width, ValidatesOnExceptions=True}" Width="70">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <Border BorderBrush="Red" BorderThickness="2" Name="errorBorder">
+                                <AdornedElementPlaceholder Name="textBox"/>
+                            </Border>
+                            <Popup IsOpen="True"
+                               PlacementTarget="{Binding ElementName=textBox}"
+                               Placement="Right" PopupAnimation="Fade"
+                               AllowsTransparency="True"
+                               HorizontalOffset="5">
+                                <Image Source="Images/error.png" Width="16">
+                                    <Image.ToolTip>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </Image.ToolTip>
+                                </Image>
+                            </Popup>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+
             <Separator Width="20" Visibility="Hidden"/>
             <Button Content="Generate" Command="{Binding Path=GenerateCommand}" Width="70"/>
             <Separator Width="10" Visibility="Hidden"/>
             <Button Content="Show Maze" Command="{Binding Path=ShowMazeCommand}" Width="70"/>
-            <!--<Separator Width="10" Visibility="Hidden"/>-->
-            <!--<Button Content="Show Path" Command="{Binding Path=ShowPathCommand}" Width="70"/>-->
         </StackPanel>
     </Grid>
 </Window>
