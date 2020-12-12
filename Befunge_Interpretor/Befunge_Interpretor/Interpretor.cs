@@ -7,10 +7,12 @@ namespace Befunge_Interpretor
 {
     public class Interpretor
     {
+
+        private Directions directionToMove;
         private bool end;
         private string input;
         private string[] inputLines;
-        public string Output { get; private set; }
+        //public string Output { get; private set; }
 
         public List<char> Stack { get; private set; }
 
@@ -20,6 +22,8 @@ namespace Befunge_Interpretor
 
         private int lineIndex;
         private int characterIndex;
+
+        public event EventHandler<OnOutpuEventArgs> OnNewOutput;
 
         public Interpretor(string inputString, IInputVisitor inputVisitor)
         {
@@ -42,6 +46,7 @@ namespace Befunge_Interpretor
             this.characterIndex = 0;
             this.end = false;
             this.isReadingString = false;
+            this.directionToMove = Directions.Right;
 
             inputLines = SetLines();
         }
@@ -71,10 +76,17 @@ namespace Befunge_Interpretor
 
             while (end)
             {
-                readCharacter = ReadNextCharacter();
+                this.Move();
+
+                readCharacter = ReadCharacter();
 
                 HandleCharacter(readCharacter);
             }
+        }
+
+        private void Move()
+        {
+            throw new NotImplementedException();
         }
 
         private void HandleCharacter(char readCharacter)
@@ -113,16 +125,16 @@ namespace Befunge_Interpretor
                     this.HandleBacktick();
                     break;
                 case '>':
-                    this.MoveRight();
+                    this.SetMoveRight();
                     break;
                 case '<':
-                    this.MoveLeft();
+                    this.SetMoveLeft();
                     break;
                 case '^':
-                    this.MoveUp();
+                    this.SetMoveUp();
                     break;
                 case 'v':
-                    this.MoveDown();
+                    this.SetMoveDown();
                     break;
                 case '?':
                     this.MoveRandom();
@@ -170,6 +182,7 @@ namespace Befunge_Interpretor
                     this.HandleAtSign();
                     break;
                 case ' ':
+                    //do i need this, since it don'T do anything?!
                     this.HandleSpace();
                     break;
                 case'A':
@@ -290,7 +303,7 @@ namespace Befunge_Interpretor
 
         private void HandleAtSign()
         {
-            throw new NotImplementedException();
+            this.end = true;
         }
 
         private void HandleSpace()
@@ -318,29 +331,30 @@ namespace Befunge_Interpretor
             throw new NotImplementedException();
         }
 
-        private void MoveDown()
+        private void SetMoveDown()
         {
-            throw new NotImplementedException();
+            this.directionToMove = Directions.Down;
         }
 
-        private void MoveLeft()
+        private void SetMoveLeft()
         {
-            throw new NotImplementedException();
+            this.directionToMove = Directions.Left;
         }
 
         private void MoveRandom()
         {
-            throw new NotImplementedException();
+            Random random = new Random();
+            this.directionToMove = (Directions)random.Next(1, 5);
         }
 
-        private void MoveRight()
+        private void SetMoveRight()
         {
-            throw new NotImplementedException();
+            this.directionToMove = Directions.Right;
         }
 
-        private void MoveUp()
+        private void SetMoveUp()
         {
-            throw new NotImplementedException();
+            this.directionToMove = Directions.Up;
         }
 
         private void MultiplyLastTwoValues()
@@ -383,7 +397,7 @@ namespace Befunge_Interpretor
             return temp;
         }
 
-        private char ReadNextCharacter()
+        private char ReadCharacter()
         {
             //TODO maybe erst überprüfen ob es diesen character gibt?
 
