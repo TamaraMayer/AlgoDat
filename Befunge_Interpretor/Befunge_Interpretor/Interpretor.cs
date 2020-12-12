@@ -181,10 +181,6 @@ namespace Befunge_Interpretor
                 case '@':
                     this.HandleAtSign();
                     break;
-                case ' ':
-                    //do i need this, since it don'T do anything?!
-                    this.HandleSpace();
-                    break;
                 case'A':
                     this.HandleA();
                     break;
@@ -203,6 +199,7 @@ namespace Befunge_Interpretor
                 case 'F':
                     this.HandleF();
                     break;
+                    // I did not include a case for space, since it does nothing
             }
         }
 
@@ -298,7 +295,14 @@ namespace Befunge_Interpretor
 
         private void HandleAmpersand()
         {
-            throw new NotImplementedException();
+            string input = this.visitor.GetUserInput("Please insert a ASCII character.");
+
+            while (!string.IsNullOrEmpty(input))
+            {
+                input = this.visitor.GetUserInput("Please insert a ASCII character!");
+            }
+
+            this.PushToStack(GetASCIIValue(input[0]));
         }
 
         private void HandleAtSign()
@@ -306,14 +310,16 @@ namespace Befunge_Interpretor
             this.end = true;
         }
 
-        private void HandleSpace()
-        {
-            throw new NotImplementedException();
-        }
-
         private void HandleTilde()
         {
-            throw new NotImplementedException();
+          string input = this.visitor.GetUserInput("Please insert a ASCII character.");
+
+            while (!string.IsNullOrEmpty(input))
+            {
+                input = this.visitor.GetUserInput("Please insert a ASCII character!");
+            }
+
+            this.PushToStack(GetASCIIValue(input[0]));
         }
 
         private void HandleUnderscore()
