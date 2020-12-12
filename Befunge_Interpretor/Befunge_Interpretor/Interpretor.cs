@@ -210,37 +210,37 @@ namespace Befunge_Interpretor
 
         private void HandleA()
         {
-            throw new NotImplementedException();
+            this.PushToStack(10);
         }
 
         private void HandleF()
         {
-            throw new NotImplementedException();
+            this.PushToStack(15);
         }
 
         private void HandleE()
         {
-            throw new NotImplementedException();
+            this.PushToStack(14);
         }
 
         private void HandleD()
         {
-            throw new NotImplementedException();
+            this.PushToStack(13);
         }
 
         private void HandleC()
         {
-            throw new NotImplementedException();
+            this.PushToStack(12);
         }
 
         private void HandleB()
         {
-            throw new NotImplementedException();
+            this.PushToStack(11);
         }
 
         private void HandleQuotationMark()
         {
-            throw new NotImplementedException();
+            this.isReadingString = !this.isReadingString;
         }
 
         private void HandleColon()
