@@ -54,7 +54,7 @@ namespace Befunge_Interpretor
             this.Stack = new List<int>();
             this.lineIndex = 0;
             this.characterIndex = 0;
-            this.end = false;
+            this.end = true;
             this.isReadingString = false;
             this.directionToMove = Directions.Right;
 
@@ -64,8 +64,8 @@ namespace Befunge_Interpretor
 
         private char[,] SetLines()
         {
-            int amountOfLines=0;
-            int amountOfCharacters=0;
+            int amountOfLines = 0;
+            int amountOfCharacters = 0;
             char[,] temp;
             string line;
 
@@ -78,7 +78,7 @@ namespace Befunge_Interpretor
                 {
                     amountOfLines++;
 
-                    if(amountOfCharacters<line.Length)
+                    if (amountOfCharacters < line.Length)
                     {
                         amountOfCharacters = line.Length;
                     }
@@ -92,18 +92,20 @@ namespace Befunge_Interpretor
             using (StringReader rd = new StringReader(this.input))
             {
                 temp = new char[amountOfLines, amountOfCharacters];
-                lineIndex = 0;
-                line = rd.ReadLine().PadLeft(amountOfCharacters);
+                int tempLineIndex = 0;
+                line = rd.ReadLine();
 
                 do
                 {
+                    line = line.PadRight(amountOfCharacters);
+
                     for (int i = 0; i < amountOfCharacters; i++)
                     {
-                        temp[lineIndex, i]=line[i];
+                        temp[tempLineIndex, i] = line[i];
                     }
 
                     line = rd.ReadLine();
-                    lineIndex++;
+                    tempLineIndex++;
                 }
                 while (line != null);
             }
@@ -113,7 +115,7 @@ namespace Befunge_Interpretor
 
         public void Run()
         {
-            char readCharacter ;
+            char readCharacter;
 
             //read the character, do whatever is supposed to happen, then move to the next spot; repeat
             while (end)
@@ -165,7 +167,7 @@ namespace Befunge_Interpretor
 
             this.characterIndex--;
 
-            if(this.characterIndex < 0)
+            if (this.characterIndex < 0)
             {
                 this.characterIndex = this.inputLines.GetLength(1) - 1;
             }
@@ -177,9 +179,9 @@ namespace Befunge_Interpretor
 
             this.lineIndex--;
 
-            if (this.lineIndex <0)
+            if (this.lineIndex < 0)
             {
-                this.lineIndex = this.inputLines.GetLength(0)-1;
+                this.lineIndex = this.inputLines.GetLength(0) - 1;
             }
         }
 
@@ -197,14 +199,22 @@ namespace Befunge_Interpretor
 
         private void HandleCharacter(char readCharacter)
         {
+            if (readCharacter == '"')
+            {
+                this.HandleQuotationMark();
+                return;
+            }
+
             if (this.isReadingString)
             {
                 this.PushToStack(GetASCIIValue(readCharacter));
+                return;
             }
 
             if (char.IsDigit(readCharacter))
             {
-                PushToStack(readCharacter);
+                PushToStack(Int32.Parse(readCharacter.ToString()));
+                return;
             }
 
             switch (readCharacter)
@@ -251,9 +261,6 @@ namespace Befunge_Interpretor
                 case '|':
                     this.HandleVerticalBar();
                     break;
-                case '"':
-                    this.HandleQuotationMark();
-                    break;
                 case ':':
                     this.HandleColon();
                     break;
@@ -290,7 +297,7 @@ namespace Befunge_Interpretor
                 case ' ':
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException($"Came accross some invalid code! In line {this.lineIndex} at position {this.characterIndex}");
+                    throw new Exception($"Came accross some invalid code! In line {this.lineIndex} at position {this.characterIndex}");
             }
         }
 
@@ -305,7 +312,7 @@ namespace Befunge_Interpretor
             }
             else
             {
-                PushToStack(b/a);
+                PushToStack(b / a);
             }
         }
 
@@ -345,7 +352,7 @@ namespace Befunge_Interpretor
 
         private void HandleColon()
         {
-            this.PushToStack(this.Stack[this.Stack.Count - 1]);
+            this.PushToStack(this.PeekFromStack());
         }
 
         private void HandleBackSlash()
@@ -380,7 +387,7 @@ namespace Befunge_Interpretor
 
             char temp = (char)a;
 
-            this.FireOutputEvent(temp.ToString());
+            this.FireOutputEvent($"{temp}");
         }
 
         private void HandleHash()
@@ -458,7 +465,7 @@ namespace Befunge_Interpretor
 
         private void HandleAtSign()
         {
-            this.end = true;
+            this.end = false;
         }
 
         private void HandleTilde()
@@ -506,7 +513,7 @@ namespace Befunge_Interpretor
             int a = PopFromStack();
             int b = PopFromStack();
 
-            PushToStack(b%a);
+            PushToStack(b % a);
         }
 
         private void SetMoveDown()
@@ -548,7 +555,7 @@ namespace Befunge_Interpretor
             int a = PopFromStack();
             int b = PopFromStack();
 
-            PushToStack(b-a);
+            PushToStack(b - a);
         }
 
         private void AddLastTwoValues()
@@ -584,9 +591,21 @@ namespace Befunge_Interpretor
             return temp;
         }
 
+        private int PeekFromStack()
+        {
+            if (Stack.Count == 0)
+            {
+                return 0;
+            }
+
+            int temp = this.Stack[this.Stack.Count - 1];
+
+            return temp;
+        }
+
         private char ReadCharacter()
         {
-            return inputLines[lineIndex,characterIndex];
+            return inputLines[lineIndex, characterIndex];
         }
 
         private void FireOutputEvent(string output)

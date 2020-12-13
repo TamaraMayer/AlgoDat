@@ -6,7 +6,21 @@
         xmlns:local="clr-namespace:Visualisierung"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainVM/>
+    </Window.DataContext>
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox Text="{Binding Path=Code}" Grid.Row="0" IsEnabled="{Binding Path=CanInputCode}" AcceptsReturn="True" FontStretch="Expanded" FontFamily="Courier New"/>
+        <TextBlock Text="{Binding Path=Output}" Grid.Row="1"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                        <Button Content="Run" Command="{Binding Path=RunCodeCommand}" Width="100" FontSize="16"/>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Separator Width="5" Visibility="Hidden"/>
+        </StackPanel>
     </Grid>
 </Window>
