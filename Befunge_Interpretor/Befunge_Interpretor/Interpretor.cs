@@ -11,7 +11,7 @@ namespace Befunge_Interpretor
         private Directions directionToMove;
         private bool end;
         private string input;
-        private string[] inputLines;
+        private char[,] inputLines;
         //public string Output { get; private set; }
 
         public List<char> Stack { get; private set; }
@@ -51,23 +51,51 @@ namespace Befunge_Interpretor
             inputLines = SetLines();
         }
 
-        private string[] SetLines()
+        private char[,] SetLines()
         {
-            List<string> temp = new List<string>();
+            int amountOfLines=0;
+            int amountOfCharacters=0;
+            char[,] temp;
+            string line;
 
             using (StringReader rd = new StringReader(this.input))
             {
-                string line;
+                line = rd.ReadLine();
 
                 do
                 {
+                    amountOfLines++;
+
+                    if(amountOfCharacters<line.Length)
+                    {
+                        amountOfCharacters = line.Length;
+                    }
+
                     line = rd.ReadLine();
-                    temp.Add(line);
                 }
                 while (line != null);
             }
 
-            return temp.ToArray();
+            using (StringReader rd = new StringReader(this.input))
+            {
+                temp = new char[amountOfLines, amountOfCharacters];
+                lineIndex = 0;
+                line = rd.ReadLine().PadLeft(amountOfCharacters);
+
+                do
+                {
+                    for (int i = 0; i < amountOfCharacters; i++)
+                    {
+                        temp[lineIndex, i]=line[i];
+                    }
+
+                    line = rd.ReadLine();
+                    lineIndex++;
+                }
+                while (line != null);
+            }
+
+            return temp;
         }
 
         public void Run()
@@ -96,7 +124,7 @@ namespace Befunge_Interpretor
                 this.PushToStack(GetASCIIValue(readCharacter));
             }
 
-            if(char.IsDigit(readCharacter))
+            if (char.IsDigit(readCharacter))
             {
                 PushToStack(readCharacter);
             }
@@ -181,25 +209,10 @@ namespace Befunge_Interpretor
                 case '@':
                     this.HandleAtSign();
                     break;
-                case'A':
-                    this.HandleA();
+                case ' ':
                     break;
-                case 'B':
-                    this.HandleB();
-                    break;
-                case 'C':
-                    this.HandleC();
-                    break;
-                case 'D':
-                    this.HandleD();
-                    break;
-                case 'E':
-                    this.HandleE();
-                    break;
-                case 'F':
-                    this.HandleF();
-                    break;
-                    // I did not include a case for space, since it does nothing
+                default:
+                    throw new ArgumentOutOfRangeException($"Came accross some invalid code! In line {this.lineIndex} at position {this.characterIndex}");
             }
         }
 
@@ -216,36 +229,6 @@ namespace Befunge_Interpretor
         private void HandleExclamationMark()
         {
             throw new NotImplementedException();
-        }
-
-        private void HandleA()
-        {
-            this.PushToStack(10);
-        }
-
-        private void HandleF()
-        {
-            this.PushToStack(15);
-        }
-
-        private void HandleE()
-        {
-            this.PushToStack(14);
-        }
-
-        private void HandleD()
-        {
-            this.PushToStack(13);
-        }
-
-        private void HandleC()
-        {
-            this.PushToStack(12);
-        }
-
-        private void HandleB()
-        {
-            this.PushToStack(11);
         }
 
         private void HandleQuotationMark()
@@ -295,14 +278,25 @@ namespace Befunge_Interpretor
 
         private void HandleAmpersand()
         {
-            string input = this.visitor.GetUserInput("Please insert a ASCII character.");
+            bool exit = false;
+            string input;
 
-            while (!string.IsNullOrEmpty(input))
+            while (exit)
             {
-                input = this.visitor.GetUserInput("Please insert a ASCII character!");
-            }
+                input = this.visitor.GetUserInput("Please enter a number!");
 
-            this.PushToStack(GetASCIIValue(input[0]));
+                if (input.Length != 1)
+                {
+                    continue;
+                }
+
+                if (Int32.TryParse(input, out int result))
+                {
+                    exit = true;
+                    this.PushToStack(result);
+
+                }
+            }
         }
 
         private void HandleAtSign()
@@ -312,11 +306,11 @@ namespace Befunge_Interpretor
 
         private void HandleTilde()
         {
-          string input = this.visitor.GetUserInput("Please insert a ASCII character.");
+            string input = this.visitor.GetUserInput("Please enter a ASCII character.");
 
-            while (!string.IsNullOrEmpty(input))
+            while (!string.IsNullOrEmpty(input) || input.Length != 1)
             {
-                input = this.visitor.GetUserInput("Please insert a ASCII character!");
+                input = this.visitor.GetUserInput("Please enter a ASCII character!");
             }
 
             this.PushToStack(GetASCIIValue(input[0]));
@@ -385,7 +379,7 @@ namespace Befunge_Interpretor
             return charByte[0];
         }
 
-            private void PushToStack(int toPush)
+        private void PushToStack(int toPush)
         {
             throw new NotImplementedException();
         }
@@ -405,9 +399,7 @@ namespace Befunge_Interpretor
 
         private char ReadCharacter()
         {
-            //TODO maybe erst überprüfen ob es diesen character gibt?
-
-            return inputLines[lineIndex][characterIndex];
+            return inputLines[lineIndex,characterIndex];
         }
     }
 }
