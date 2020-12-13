@@ -12,7 +12,6 @@ namespace Befunge_Interpretor
         private bool end;
         private string input;
         private char[,] inputLines;
-        //public string Output { get; private set; }
 
         public List<int> Stack { get; private set; }
 
@@ -361,17 +360,52 @@ namespace Befunge_Interpretor
 
         private void HandleHash()
         {
-            throw new NotImplementedException();
+            Move();
         }
 
         private void HandlePutCall()
         {
-            throw new NotImplementedException();
+            int y = this.PopFromStack();
+            int x = this.PopFromStack();
+            int v = this.PopFromStack();
+
+            if (x > this.inputLines.GetLength(0))
+            {
+                return;
+            }
+            if (y > this.inputLines.GetLength(1))
+            {
+                return;
+            }
+
+            if (v < 0)
+            {
+                //desided to do (char)0 if it is a negative int since it is null, and i don't quite know what else to do
+                this.inputLines[x, y] = (char)0;
+            }
+            else
+            {
+                this.inputLines[x, y] = (char)v;
+            }
         }
 
         private void HandleGetCall()
         {
-            throw new NotImplementedException();
+            int y = this.PopFromStack();
+            int x = this.PopFromStack();
+
+            if (x > this.inputLines.GetLength(0))
+            {
+                this.PushToStack(0);
+                return;
+            }
+            if (y > this.inputLines.GetLength(1))
+            {
+                this.PushToStack(0);
+                return;
+            }
+
+            this.PushToStack(this.inputLines[x, y]);
         }
 
         private void HandleAmpersand()
@@ -448,7 +482,6 @@ namespace Befunge_Interpretor
             int b = PopFromStack();
 
             PushToStack(b%a);
-            throw new NotImplementedException();
         }
 
         private void SetMoveDown()
