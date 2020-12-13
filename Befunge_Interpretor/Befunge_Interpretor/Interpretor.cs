@@ -114,7 +114,61 @@ namespace Befunge_Interpretor
 
         private void Move()
         {
-            throw new NotImplementedException();
+            switch (this.directionToMove)
+            {
+                case Directions.Down:
+                    this.MoveDown();
+                    break;
+                case Directions.Up:
+                    this.MoveUp();
+                    break;
+                case Directions.Left:
+                    this.MoveLeft();
+                    break;
+                case Directions.Right:
+                    this.MoveRight();
+                    break;
+            }
+        }
+
+        private void MoveRight()
+        {
+            this.characterIndex++;
+
+            if (this.characterIndex >= this.inputLines.GetLength(1))
+            {
+                this.characterIndex = 0;
+            }
+        }
+
+        private void MoveLeft()
+        {
+            this.characterIndex--;
+
+            if(this.characterIndex < 0)
+            {
+                this.characterIndex = this.inputLines.GetLength(1) - 1;
+            }
+        }
+
+        private void MoveUp()
+        {
+            this.lineIndex--;
+
+            if (this.lineIndex <0)
+            {
+                this.lineIndex = this.inputLines.GetLength(0)-1;
+            }
+        }
+
+        private void MoveDown()
+        {
+            this.lineIndex++;
+
+            if (this.lineIndex >= this.inputLines.GetLength(0))
+            {
+                this.lineIndex = 0;
+            }
         }
 
         private void HandleCharacter(char readCharacter)
