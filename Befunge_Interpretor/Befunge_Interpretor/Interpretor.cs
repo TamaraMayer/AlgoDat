@@ -7,21 +7,32 @@ namespace Befunge_Interpretor
 {
     public class Interpretor
     {
-
+        //the direction in which the program moves, by default right (set in constructor)
         private Directions directionToMove;
+
+        //a boolean determinating if the next char in the program shall be read, or not
         private bool end;
+
+        //the code as string
         private string input;
+
+        //the code as multidimensional char[]
         private char[,] inputLines;
 
+        //the stack
         public List<int> Stack { get; private set; }
 
+        //a visitor for the getting user input
         private IInputVisitor visitor;
 
+        //a boolean to determine if a string is read"
         private bool isReadingString;
 
+        //the index in line(row) and of character(column) where the program is currently at
         private int lineIndex;
         private int characterIndex;
 
+        //an event for showing that a new ouput occured
         public event EventHandler<OnOutpuEventArgs> OnNewOutput;
 
         public Interpretor(string inputString, IInputVisitor inputVisitor)
@@ -37,16 +48,17 @@ namespace Befunge_Interpretor
 
             }
 
+            //setting the instances
             this.input = inputString;
             this.visitor = inputVisitor;
             this.Stack = new List<int>();
-
             this.lineIndex = 0;
             this.characterIndex = 0;
             this.end = false;
             this.isReadingString = false;
             this.directionToMove = Directions.Right;
 
+            //setting the lines to the char[,]
             inputLines = SetLines();
         }
 
@@ -57,6 +69,7 @@ namespace Befunge_Interpretor
             char[,] temp;
             string line;
 
+            //figuring out the number of rows and the max number of characters in one line
             using (StringReader rd = new StringReader(this.input))
             {
                 line = rd.ReadLine();
@@ -75,6 +88,7 @@ namespace Befunge_Interpretor
                 while (line != null);
             }
 
+            //writing each character of each line into the char[,]
             using (StringReader rd = new StringReader(this.input))
             {
                 temp = new char[amountOfLines, amountOfCharacters];
@@ -99,20 +113,23 @@ namespace Befunge_Interpretor
 
         public void Run()
         {
-            char readCharacter;
+            char readCharacter ;
 
+            //read the character, do whatever is supposed to happen, then move to the next spot; repeat
             while (end)
             {
-                this.Move();
-
                 readCharacter = ReadCharacter();
 
                 HandleCharacter(readCharacter);
+
+                this.Move();
             }
         }
 
         private void Move()
         {
+            //determines in which direction to move
+
             switch (this.directionToMove)
             {
                 case Directions.Down:
@@ -132,6 +149,8 @@ namespace Befunge_Interpretor
 
         private void MoveRight()
         {
+            //increment characterIndex, if characterIndex is greather than the amount of chars per line, jump back to character 0
+
             this.characterIndex++;
 
             if (this.characterIndex >= this.inputLines.GetLength(1))
@@ -142,6 +161,8 @@ namespace Befunge_Interpretor
 
         private void MoveLeft()
         {
+            //decrement characterIndex, if smaller than 0, jumt to the end of the the line
+
             this.characterIndex--;
 
             if(this.characterIndex < 0)
@@ -152,6 +173,8 @@ namespace Befunge_Interpretor
 
         private void MoveUp()
         {
+            //decrement lineIndex, if smaller than 0, jump to last line
+
             this.lineIndex--;
 
             if (this.lineIndex <0)
@@ -162,6 +185,8 @@ namespace Befunge_Interpretor
 
         private void MoveDown()
         {
+            //increment lineIndex, if lineIndex is greather than the amount of lines, jump back to line 0
+
             this.lineIndex++;
 
             if (this.lineIndex >= this.inputLines.GetLength(0))
