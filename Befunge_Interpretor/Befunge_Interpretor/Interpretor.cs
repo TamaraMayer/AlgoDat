@@ -14,7 +14,7 @@ namespace Befunge_Interpretor
         private char[,] inputLines;
         //public string Output { get; private set; }
 
-        public List<char> Stack { get; private set; }
+        public List<int> Stack { get; private set; }
 
         private IInputVisitor visitor;
 
@@ -40,7 +40,7 @@ namespace Befunge_Interpretor
 
             this.input = inputString;
             this.visitor = inputVisitor;
-            this.Stack = new List<char>();
+            this.Stack = new List<int>();
 
             this.lineIndex = 0;
             this.characterIndex = 0;
@@ -272,17 +272,46 @@ namespace Befunge_Interpretor
 
         private void DivideLastTwoValues()
         {
-            throw new NotImplementedException();
+            int a = PopFromStack();
+            int b = PopFromStack();
+
+            if (a == 0)
+            {
+                this.PushToStack(0);
+            }
+            else
+            {
+                PushToStack(b/a);
+            }
         }
 
         private void HandleBacktick()
         {
-            throw new NotImplementedException();
+            int a = this.PopFromStack();
+            int b = this.PopFromStack();
+
+            if (b > a)
+            {
+                this.PushToStack(1);
+            }
+            else
+            {
+                this.PushToStack(0);
+            }
         }
 
         private void HandleExclamationMark()
         {
-            throw new NotImplementedException();
+            int a = PopFromStack();
+
+            if (a == 0)
+            {
+                this.PushToStack(1);
+            }
+            else
+            {
+                this.PushToStack(0);
+            }
         }
 
         private void HandleQuotationMark()
@@ -292,27 +321,42 @@ namespace Befunge_Interpretor
 
         private void HandleColon()
         {
-            throw new NotImplementedException();
+            this.PushToStack(this.Stack[this.Stack.Count - 1]);
         }
 
         private void HandleBackSlash()
         {
-            throw new NotImplementedException();
+            int a = this.PopFromStack();
+            int b = this.PopFromStack();
+
+            this.PushToStack(b);
+            this.PushToStack(a);
         }
 
         private void HandleDollarSign()
         {
-            throw new NotImplementedException();
+            this.PopFromStack();
         }
 
         private void HandleFullStop()
         {
-            throw new NotImplementedException();
+            int a = this.PopFromStack();
+
+            this.FireOutputEvent($"{a} ");
         }
 
         private void HandleComma()
         {
-            throw new NotImplementedException();
+            int a = this.PopFromStack();
+
+            if (a < 0)
+            {
+                this.FireOutputEvent("?");
+            }
+
+            char temp = (char)a;
+
+            this.FireOutputEvent(temp.ToString());
         }
 
         private void HandleHash()
@@ -372,16 +416,38 @@ namespace Befunge_Interpretor
 
         private void HandleUnderscore()
         {
-            throw new NotImplementedException();
+            int a = this.PopFromStack();
+
+            if (a == 0)
+            {
+                this.directionToMove = Directions.Right;
+            }
+            else
+            {
+                this.directionToMove = Directions.Left;
+            }
         }
 
         private void HandleVerticalBar()
         {
-            throw new NotImplementedException();
+            int a = this.PopFromStack();
+
+            if (a == 0)
+            {
+                this.directionToMove = Directions.Down;
+            }
+            else
+            {
+                this.directionToMove = Directions.Up;
+            }
         }
 
         private void ModuloLastTwoValues()
         {
+            int a = PopFromStack();
+            int b = PopFromStack();
+
+            PushToStack(b%a);
             throw new NotImplementedException();
         }
 
@@ -413,17 +479,26 @@ namespace Befunge_Interpretor
 
         private void MultiplyLastTwoValues()
         {
-            throw new NotImplementedException();
+            int a = PopFromStack();
+            int b = PopFromStack();
+
+            PushToStack(a * b);
         }
 
         private void SubtractLastTwoValues()
         {
-            throw new NotImplementedException();
+            int a = PopFromStack();
+            int b = PopFromStack();
+
+            PushToStack(b-a);
         }
 
         private void AddLastTwoValues()
         {
-            throw new NotImplementedException();
+            int a = PopFromStack();
+            int b = PopFromStack();
+
+            PushToStack(a + b);
         }
 
         private int GetASCIIValue(char character)
@@ -435,7 +510,7 @@ namespace Befunge_Interpretor
 
         private void PushToStack(int toPush)
         {
-            throw new NotImplementedException();
+            this.Stack.Add(toPush);
         }
 
         private int PopFromStack()
@@ -454,6 +529,11 @@ namespace Befunge_Interpretor
         private char ReadCharacter()
         {
             return inputLines[lineIndex,characterIndex];
+        }
+
+        private void FireOutputEvent(string output)
+        {
+            this.OnNewOutput?.Invoke(this, new OnOutpuEventArgs(output));
         }
     }
 }
