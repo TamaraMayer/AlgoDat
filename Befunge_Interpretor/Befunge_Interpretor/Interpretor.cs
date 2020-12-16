@@ -280,7 +280,7 @@ namespace Befunge_Interpretor
                     this.SetMoveDown();
                     break;
                 case '?':
-                    this.MoveRandom();
+                    this.SetMoveRandom();
                     break;
                 case '_':
                     this.HandleUnderscore();
@@ -346,7 +346,9 @@ namespace Befunge_Interpretor
             }
         }
 
-
+        /// <summary>
+        /// Pops two values and pushes either 0 or 1.
+        /// </summary>
         private void HandleBacktick()
         {
             int a = this.PopFromStack();
@@ -362,6 +364,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Pop a value. If the value is zero, push 1; otherwise, push zero.
+        /// </summary>
         private void HandleExclamationMark()
         {
             int a = PopFromStack();
@@ -376,16 +381,25 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Starts or Stops the string reading mode.
+        /// </summary>
         private void HandleQuotationMark()
         {
             this.isReadingString = !this.isReadingString;
         }
 
+        /// <summary>
+        /// Duplicate value on top of the stack.
+        /// </summary>
         private void HandleColon()
         {
             this.PushToStack(this.PeekFromStack());
         }
 
+        /// <summary>
+        /// Swap two values on top of the stack
+        /// </summary>
         private void HandleBackSlash()
         {
             int a = this.PopFromStack();
@@ -395,11 +409,17 @@ namespace Befunge_Interpretor
             this.PushToStack(a);
         }
 
+        /// <summary>
+        /// Pop value from the stack and discard it
+        /// </summary>
         private void HandleDollarSign()
         {
             this.PopFromStack();
         }
 
+        /// <summary>
+        /// Pop value and output as an integer followed by a space.
+        /// </summary>
         private void HandleFullStop()
         {
             int a = this.PopFromStack();
@@ -407,6 +427,9 @@ namespace Befunge_Interpretor
             this.FireOutputEvent($"{a} ");
         }
 
+        /// <summary>
+        /// Pop value and output as ASCII character.
+        /// </summary>
         private void HandleComma()
         {
             int a = this.PopFromStack();
@@ -421,11 +444,17 @@ namespace Befunge_Interpretor
             this.FireOutputEvent($"{temp}");
         }
 
+        /// <summary>
+        /// Makes an extra move to jump over one instruction.
+        /// </summary>
         private void HandleHash()
         {
             Move();
         }
 
+        /// <summary>
+        /// Pop y, x, and v, then change the character at (x,y) in the program to the character with ASCII value v.
+        /// </summary>
         private void HandlePutCall()
         {
             int y = this.PopFromStack();
@@ -452,6 +481,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Pop y and x, then push ASCII value of the character at that position in the program.
+        /// </summary>
         private void HandleGetCall()
         {
             int y = this.PopFromStack();
@@ -471,6 +503,9 @@ namespace Befunge_Interpretor
             this.PushToStack(this.inputLines[x, y]);
         }
 
+        /// <summary>
+        /// Askes a number from the user and pushes it to the stack.
+        /// </summary>
         private void HandleAmpersand()
         {
             bool exit = false;
@@ -494,11 +529,17 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Sets the end of the program.
+        /// </summary>
         private void HandleAtSign()
         {
             this.end = false;
         }
 
+        /// <summary>
+        /// Askes a ASCII character from the user and pushes the ascii value to the stack.
+        /// </summary>
         private void HandleTilde()
         {
             string input = this.visitor.GetUserInput("Please enter a ASCII character.");
@@ -511,6 +552,9 @@ namespace Befunge_Interpretor
             this.PushToStack(GetASCIIValue(input[0]));
         }
 
+        /// <summary>
+        /// Pops a value from the stack and changed direction based on that value.
+        /// </summary>
         private void HandleUnderscore()
         {
             int a = this.PopFromStack();
@@ -525,6 +569,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Pops a value from the stack and changed direction based on that value.
+        /// </summary>
         private void HandleVerticalBar()
         {
             int a = this.PopFromStack();
@@ -550,27 +597,42 @@ namespace Befunge_Interpretor
             PushToStack(b % a);
         }
 
+        /// <summary>
+        /// Sets the direction to move to the bottom.
+        /// </summary>
         private void SetMoveDown()
         {
             this.directionToMove = Directions.Down;
         }
 
+        /// <summary>
+        /// Sets the direction to move to the left.
+        /// </summary>
         private void SetMoveLeft()
         {
             this.directionToMove = Directions.Left;
         }
 
-        private void MoveRandom()
+        /// <summary>
+        /// Sets the direction to move to a random direction.
+        /// </summary>
+        private void SetMoveRandom()
         {
             Random random = new Random();
             this.directionToMove = (Directions)random.Next(1, 5);
         }
 
+        /// <summary>
+        /// Sets the direction to move to the right.
+        /// </summary>
         private void SetMoveRight()
         {
             this.directionToMove = Directions.Right;
         }
 
+        /// <summary>
+        /// Sets the direction to move to the top.
+        /// </summary>
         private void SetMoveUp()
         {
             this.directionToMove = Directions.Up;
