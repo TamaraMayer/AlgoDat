@@ -508,6 +508,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Pops the last two values from the stack and pushes the left over from a division.
+        /// </summary>
         private void ModuloLastTwoValues()
         {
             int a = PopFromStack();
@@ -542,6 +545,9 @@ namespace Befunge_Interpretor
             this.directionToMove = Directions.Up;
         }
 
+        /// <summary>
+        /// Pops the last two values from the stack and pushes them multiplied with each other.
+        /// </summary>
         private void MultiplyLastTwoValues()
         {
             int a = PopFromStack();
@@ -550,6 +556,9 @@ namespace Befunge_Interpretor
             PushToStack(a * b);
         }
 
+        /// <summary>
+        /// Pops the last two values from the stack and pushes them subtracted.
+        /// </summary>
         private void SubtractLastTwoValues()
         {
             int a = PopFromStack();
@@ -558,6 +567,9 @@ namespace Befunge_Interpretor
             PushToStack(b - a);
         }
 
+        /// <summary>
+        /// Pops the last two values from the stack and pushes them added together.
+        /// </summary>
         private void AddLastTwoValues()
         {
             int a = PopFromStack();
@@ -566,6 +578,11 @@ namespace Befunge_Interpretor
             PushToStack(a + b);
         }
 
+        /// <summary>
+        /// Converts a char into its ascii value.
+        /// </summary>
+        /// <param name="character">The ascii value.</param>
+        /// <returns></returns>
         private int GetASCIIValue(char character)
         {
             byte[] charByte = Encoding.ASCII.GetBytes(character.ToString());
@@ -573,11 +590,19 @@ namespace Befunge_Interpretor
             return charByte[0];
         }
 
+        /// <summary>
+        /// Puts a new element to the top of the Stack.
+        /// </summary>
+        /// <param name="toPush"></param>
         private void PushToStack(int toPush)
         {
             this.Stack.Add(toPush);
         }
 
+        /// <summary>
+        /// Takes the top element from the stack. The element gets deleted from the stack
+        /// </summary>
+        /// <returns>The element on top of the stack.</returns>
         private int PopFromStack()
         {
             if (Stack.Count == 0)
@@ -591,6 +616,10 @@ namespace Befunge_Interpretor
             return temp;
         }
 
+        /// <summary>
+        /// Takes a look at the top element on the stack, but does not delete it.
+        /// </summary>
+        /// <returns>The element on top of the stack.</returns>
         private int PeekFromStack()
         {
             if (Stack.Count == 0)
@@ -603,6 +632,10 @@ namespace Befunge_Interpretor
             return temp;
         }
 
+        /// <summary>
+        /// reads the next character in the given code
+        /// </summary>
+        /// <returns>The char at the lineIndex and characterIndex.</returns>
         private char ReadCharacter()
         {
             return inputLines[lineIndex, characterIndex];
