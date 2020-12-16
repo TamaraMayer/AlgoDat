@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Befunge_Interpretor", "Befunge_Interpretor\Befunge_Interpretor.csproj", "{5F1D02B6-B669-40C5-A5EF-938872D049D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualisierung", "Visualisierung\Visualisierung.csproj", "{B60C62A8-4702-43CE-94E5-F5B0B7252E3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualisierung", "Visualisierung\Visualisierung.csproj", "{B60C62A8-4702-43CE-94E5-F5B0B7252E3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Befunge.Test", "Befunge.Test\Befunge.Test.csproj", "{7AB9CAC4-D81F-4AAD-8189-6DB6CB638A02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B60C62A8-4702-43CE-94E5-F5B0B7252E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B60C62A8-4702-43CE-94E5-F5B0B7252E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B60C62A8-4702-43CE-94E5-F5B0B7252E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AB9CAC4-D81F-4AAD-8189-6DB6CB638A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB9CAC4-D81F-4AAD-8189-6DB6CB638A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB9CAC4-D81F-4AAD-8189-6DB6CB638A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB9CAC4-D81F-4AAD-8189-6DB6CB638A02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

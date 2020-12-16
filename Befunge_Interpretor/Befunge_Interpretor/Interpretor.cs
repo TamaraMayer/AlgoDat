@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Befunge.Test")]
 
 namespace Befunge_Interpretor
 {
