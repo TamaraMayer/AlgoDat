@@ -63,6 +63,10 @@ namespace Befunge_Interpretor
             inputLines = SetLines();
         }
 
+        /// <summary>
+        /// Sets the given code in string to a char array.
+        /// </summary>
+        /// <returns>The code seperated into a char array.</returns>
         private char[,] SetLines()
         {
             int amountOfLines = 0;
@@ -114,6 +118,9 @@ namespace Befunge_Interpretor
             return temp;
         }
 
+        /// <summary>
+        /// Runs the code.
+        /// </summary>
         public void Run()
         {
             char readCharacter;
@@ -129,6 +136,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Determines the direction in which to move and does the move
+        /// </summary>
         private void Move()
         {
             //determines in which direction to move
@@ -150,6 +160,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Moves one step to the right.
+        /// </summary>
         private void MoveRight()
         {
             //increment characterIndex, if characterIndex is greather than the amount of chars per line, jump back to character 0
@@ -162,6 +175,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Moves one step to the left.
+        /// </summary>
         private void MoveLeft()
         {
             //decrement characterIndex, if smaller than 0, jumt to the end of the the line
@@ -174,6 +190,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Moves one step to the top.
+        /// </summary>
         private void MoveUp()
         {
             //decrement lineIndex, if smaller than 0, jump to last line
@@ -186,6 +205,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// MOves one step to the bottom.
+        /// </summary>
         private void MoveDown()
         {
             //increment lineIndex, if lineIndex is greather than the amount of lines, jump back to line 0
@@ -198,6 +220,10 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Chooses what action to do with the given character.
+        /// </summary>
+        /// <param name="readCharacter">The given character.</param>
         private void HandleCharacter(char readCharacter)
         {
             if (readCharacter == '"')
@@ -302,6 +328,9 @@ namespace Befunge_Interpretor
             }
         }
 
+        /// <summary>
+        /// Pops the last two values from the stack and pushes the result after a divison.
+        /// </summary>
         private void DivideLastTwoValues()
         {
             int a = PopFromStack();
@@ -316,6 +345,7 @@ namespace Befunge_Interpretor
                 PushToStack(b / a);
             }
         }
+
 
         private void HandleBacktick()
         {
