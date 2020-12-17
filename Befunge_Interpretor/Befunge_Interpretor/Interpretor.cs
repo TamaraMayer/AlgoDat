@@ -36,6 +36,8 @@ namespace Befunge_Interpretor
         //an event for showing that a new ouput occured
         public event EventHandler<OnOutpuEventArgs> OnNewOutput;
 
+        public string OUtput;
+
         public Interpretor(string inputString, IInputVisitor inputVisitor)
         {
             if (string.IsNullOrWhiteSpace(inputString))
@@ -61,6 +63,8 @@ namespace Befunge_Interpretor
 
             //setting the lines to the char[,]
             inputLines = SetLines();
+
+            this.OUtput = "";
         }
 
         /// <summary>
@@ -331,7 +335,7 @@ namespace Befunge_Interpretor
         /// <summary>
         /// Pops the last two values from the stack and pushes the result after a divison.
         /// </summary>
-        private void DivideLastTwoValues()
+        internal void DivideLastTwoValues()
         {
             int a = PopFromStack();
             int b = PopFromStack();
@@ -506,7 +510,7 @@ namespace Befunge_Interpretor
         /// <summary>
         /// Askes a number from the user and pushes it to the stack.
         /// </summary>
-        private void HandleAmpersand()
+        internal void HandleAmpersand()
         {
             bool exit = false;
             string input;
@@ -540,7 +544,7 @@ namespace Befunge_Interpretor
         /// <summary>
         /// Askes a ASCII character from the user and pushes the ascii value to the stack.
         /// </summary>
-        private void HandleTilde()
+        internal void HandleTilde()
         {
             string input = this.visitor.GetUserInput("Please enter a ASCII character.");
 
@@ -589,7 +593,7 @@ namespace Befunge_Interpretor
         /// <summary>
         /// Pops the last two values from the stack and pushes the left over from a division.
         /// </summary>
-        private void ModuloLastTwoValues()
+        internal void ModuloLastTwoValues()
         {
             int a = PopFromStack();
             int b = PopFromStack();
@@ -641,7 +645,7 @@ namespace Befunge_Interpretor
         /// <summary>
         /// Pops the last two values from the stack and pushes them multiplied with each other.
         /// </summary>
-        private void MultiplyLastTwoValues()
+        internal void MultiplyLastTwoValues()
         {
             int a = PopFromStack();
             int b = PopFromStack();
@@ -652,7 +656,7 @@ namespace Befunge_Interpretor
         /// <summary>
         /// Pops the last two values from the stack and pushes them subtracted.
         /// </summary>
-        private void SubtractLastTwoValues()
+        internal void SubtractLastTwoValues()
         {
             int a = PopFromStack();
             int b = PopFromStack();
@@ -737,6 +741,8 @@ namespace Befunge_Interpretor
         private void FireOutputEvent(string output)
         {
             this.OnNewOutput?.Invoke(this, new OnOutpuEventArgs(output));
+
+            this.OUtput += output;
         }
     }
 }
