@@ -36,8 +36,6 @@ namespace Befunge_Interpretor
         //an event for showing that a new ouput occured
         public event EventHandler<OnOutpuEventArgs> OnNewOutput;
 
-        public string OUtput;
-
         public Interpretor(string inputString, IInputVisitor inputVisitor)
         {
             if (string.IsNullOrWhiteSpace(inputString))
@@ -63,8 +61,6 @@ namespace Befunge_Interpretor
 
             //setting the lines to the char[,]
             inputLines = SetLines();
-
-            this.OUtput = "";
         }
 
         /// <summary>
@@ -730,8 +726,6 @@ namespace Befunge_Interpretor
         private void FireOutputEvent(string output)
         {
             this.OnNewOutput?.Invoke(this, new OnOutpuEventArgs(output));
-
-            this.OUtput += output;
         }
     }
 }
