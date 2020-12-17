@@ -11,11 +11,11 @@ namespace Befunge.Test
         {
             if(messageToUser == "Please enter a number!")
             {
-                return "13";
+                return "113";
             }
             else
             {
-                return "ñ";
+                return "T";
             }
             
         }

@@ -409,8 +409,8 @@ namespace Befunge_Interpretor
             int a = this.PopFromStack();
             int b = this.PopFromStack();
 
-            this.PushToStack(b);
             this.PushToStack(a);
+            this.PushToStack(b);
         }
 
         /// <summary>
@@ -438,11 +438,6 @@ namespace Befunge_Interpretor
         {
             int a = this.PopFromStack();
 
-            if (a < 0)
-            {
-                this.FireOutputEvent("?");
-            }
-
             char temp = (char)a;
 
             this.FireOutputEvent($"{temp}");
@@ -461,8 +456,8 @@ namespace Befunge_Interpretor
         /// </summary>
         private void HandlePutCall()
         {
-            int y = this.PopFromStack();
             int x = this.PopFromStack();
+            int y = this.PopFromStack();
             int v = this.PopFromStack();
 
             if (x > this.inputLines.GetLength(0))
@@ -474,15 +469,9 @@ namespace Befunge_Interpretor
                 return;
             }
 
-            if (v < 0)
-            {
-                //desided to do (char)0 if it is a negative int since it is null, and i don't quite know what else to do
-                this.inputLines[x, y] = (char)0;
-            }
-            else
-            {
+
                 this.inputLines[x, y] = (char)v;
-            }
+
         }
 
         /// <summary>
@@ -490,17 +479,17 @@ namespace Befunge_Interpretor
         /// </summary>
         private void HandleGetCall()
         {
-            int y = this.PopFromStack();
             int x = this.PopFromStack();
+            int y = this.PopFromStack();
 
-            if (x > this.inputLines.GetLength(0))
+            if (x >= this.inputLines.GetLength(0))
             {
-                this.PushToStack(0);
+                this.PushToStack(32);
                 return;
             }
-            if (y > this.inputLines.GetLength(1))
+            if (y >= this.inputLines.GetLength(1))
             {
-                this.PushToStack(0);
+                this.PushToStack(32);
                 return;
             }
 
@@ -515,20 +504,14 @@ namespace Befunge_Interpretor
             bool exit = false;
             string input;
 
-            while (exit)
+            while (!exit)
             {
                 input = this.visitor.GetUserInput("Please enter a number!");
-
-                if (input.Length != 1)
-                {
-                    continue;
-                }
 
                 if (Int32.TryParse(input, out int result))
                 {
                     exit = true;
                     this.PushToStack(result);
-
                 }
             }
         }
@@ -546,11 +529,17 @@ namespace Befunge_Interpretor
         /// </summary>
         internal void HandleTilde()
         {
+            bool exit = false;
             string input = this.visitor.GetUserInput("Please enter a ASCII character.");
 
-            while (!string.IsNullOrEmpty(input) || input.Length != 1)
+            while (!exit)
             {
                 input = this.visitor.GetUserInput("Please enter a ASCII character!");
+
+                if(!string.IsNullOrEmpty(input) && input.Length == 1)
+                {
+                    exit = true;
+                }
             }
 
             this.PushToStack(GetASCIIValue(input[0]));
