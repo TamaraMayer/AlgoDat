@@ -16,10 +16,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBox Text="{Binding Path=Code}" Grid.Row="0" IsEnabled="{Binding Path=CanInputCode}" AcceptsReturn="True" FontStretch="Expanded" FontFamily="Courier New"/>
-        <TextBlock Text="{Binding Path=Output}" Grid.Row="1"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" >
+        <TextBlock Text="{Binding Path=Output}" TextWrapping="Wrap" />
+        </ScrollViewer>
+        
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-                        <Button Content="Run" Command="{Binding Path=RunCodeCommand}" Width="100" FontSize="16"/>
+            <Button Content="Run" Command="{Binding Path=RunCodeCommand}" Width="100" FontSize="16"/>
             <Separator Width="10" Visibility="Hidden"/>
+            <Button Content="Stop" Command="{Binding Path=StopCodeCommand}" Width="100" FontSize="16"/>
             <Separator Width="5" Visibility="Hidden"/>
         </StackPanel>
     </Grid>

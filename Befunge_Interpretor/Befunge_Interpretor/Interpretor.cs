@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
+
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Befunge.Test")]
 
 namespace Befunge_Interpretor
@@ -12,7 +14,7 @@ namespace Befunge_Interpretor
         private Directions directionToMove;
 
         //a boolean determinating if the next char in the program shall be read, or not
-        private bool end;
+        public bool end;
 
         //the code as string
         private string input;
@@ -35,6 +37,7 @@ namespace Befunge_Interpretor
 
         //an event for showing that a new ouput occured
         public event EventHandler<OnOutpuEventArgs> OnNewOutput;
+        public event EventHandler<EventArgs> CodeEnd;
 
         public Interpretor(string inputString, IInputVisitor inputVisitor)
         {
@@ -55,7 +58,7 @@ namespace Befunge_Interpretor
             this.Stack = new List<int>();
             this.lineIndex = 0;
             this.characterIndex = 0;
-            this.end = true;
+            this.end = false;
             this.isReadingString = false;
             this.directionToMove = Directions.Right;
 
@@ -126,7 +129,7 @@ namespace Befunge_Interpretor
             char readCharacter;
 
             //read the character, do whatever is supposed to happen, then move to the next spot; repeat
-            while (end)
+            while (!end)
             {
                 readCharacter = ReadCharacter();
 
@@ -517,7 +520,7 @@ namespace Befunge_Interpretor
         /// </summary>
         private void HandleAtSign()
         {
-            this.end = false;
+            this.end = true;
         }
 
         /// <summary>

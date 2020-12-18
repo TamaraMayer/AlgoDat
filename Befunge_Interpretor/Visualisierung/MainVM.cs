@@ -5,6 +5,8 @@ using Befunge_Interpretor;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows;
 
 namespace Visualisierung
 {
@@ -43,6 +45,8 @@ namespace Visualisierung
         private string output;
         private bool canInputCode;
 
+        public Thread thread { get; private set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand RunCodeCommand
@@ -53,10 +57,40 @@ namespace Visualisierung
                 {
                     this.Output = "";
 
-                    interpretor = new Interpretor(Code, visitor);
-                    interpretor.OnNewOutput += Interpretor_OnNewOutput;
-                    interpretor.Run();
+                    this.thread = new Thread(obj =>
+                    {
+                        interpretor = new Interpretor(Code, visitor);
+                        interpretor.OnNewOutput += Interpretor_OnNewOutput;
+                        interpretor.CodeEnd += OnCodeEnd;
+                        interpretor.Run();
+                    });
+                    this.thread.IsBackground = true;
+                    this.thread.Start();
                 });
+            }
+        }
+
+        public ICommand StopCodeCommand
+        {
+            get
+            {
+                return new Command(obj =>
+                {
+                    if (this.interpretor != null)
+                    {
+                        this.interpretor.end = true;
+                    }
+                });
+            }
+        }
+
+        private void OnCodeEnd(object sender, EventArgs e)
+        {
+            MessageBox.Show("The Code reached its end!", "End", MessageBoxButton.OK);
+
+            if (this.thread.IsAlive)
+            {
+                this.thread.Abort();
             }
         }
 
@@ -73,7 +107,12 @@ namespace Visualisierung
 
         private void Notify([CallerMemberName]string property = null)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            //Application.Current.Dispatcher.Invoke(() =>
+            //{
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+
+            //});
+
         }
     }
 }

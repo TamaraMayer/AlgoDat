@@ -20,9 +20,19 @@ namespace Visualisierung
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainVM vm;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            vm = (MainVM)DataContext;
+            //this.Closed += OnClosedWindow;
         }
+
+        //private void OnClosedWindow(object sender, EventArgs e)
+        //{
+        //    vm.thread.Abort();
+        //}
     }
 }
